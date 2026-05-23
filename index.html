@@ -6,526 +6,227 @@
   <title>NexusStore — Productos Digitales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #09090f;
-      --surface: #111118;
-      --surface2: #18181f;
+      --bg: #09090f; --surface: #111118; --surface2: #18181f;
       --border: rgba(255,255,255,0.07);
-      --accent: #7c3aed;
-      --accent2: #06b6d4;
-      --accent3: #f59e0b;
-      --text: #f0f0f8;
-      --muted: #7b7b8f;
-      --radius: 14px;
+      --accent: #7c3aed; --accent2: #06b6d4; --accent3: #f59e0b;
+      --text: #f0f0f8; --muted: #7b7b8f; --radius: 14px;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── NOISE OVERLAY ─────────────────────────── */
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
     body::before {
-      content: '';
-      position: fixed; inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none; z-index: 0; opacity: .5;
     }
 
-    /* ── HEADER ────────────────────────────────── */
-    header {
-      position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(20px) saturate(180%);
-      background: rgba(9,9,15,.82);
-      border-bottom: 1px solid var(--border);
-    }
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
 
-    .header-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: flex; align-items: center; gap: 24px;
-      padding: 0 28px; height: 68px;
-    }
-
-    /* Logo */
-    .logo {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none; flex-shrink: 0;
-    }
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-    }
-    .logo-text {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 1.25rem;
-      letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #fff 40%, var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    /* Nav */
+    /* ── HEADER ── */
+    header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px) saturate(180%); background: rgba(9,9,15,.82); border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 24px; padding: 0 28px; height: 68px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; cursor: pointer; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.5px; background: linear-gradient(90deg,#fff 40%,var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     nav { display: flex; align-items: center; gap: 4px; }
-    nav a {
-      color: var(--muted); text-decoration: none;
-      font-size: .9rem; font-weight: 500;
-      padding: 7px 14px; border-radius: 8px;
-      transition: color .2s, background .2s;
-      white-space: nowrap;
-    }
+    nav a { color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; padding: 7px 14px; border-radius: 8px; transition: color .2s, background .2s; white-space: nowrap; cursor: pointer; }
     nav a:hover { color: var(--text); background: var(--surface2); }
     nav a.active { color: var(--text); }
-
-    /* Search */
-    .search-wrap {
-      flex: 1; max-width: 380px; margin-left: auto;
-      position: relative;
-    }
-    .search-wrap svg {
-      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      color: var(--muted); pointer-events: none;
-    }
-    .search-wrap input {
-      width: 100%; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 10px;
-      color: var(--text); font-family: 'DM Sans', sans-serif;
-      font-size: .88rem; padding: 9px 14px 9px 40px;
-      outline: none; transition: border-color .2s, box-shadow .2s;
-    }
+    .search-wrap { flex: 1; max-width: 380px; margin-left: auto; position: relative; }
+    .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .search-wrap input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .88rem; padding: 9px 14px 9px 40px; outline: none; transition: border-color .2s, box-shadow .2s; }
     .search-wrap input::placeholder { color: var(--muted); }
-    .search-wrap input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.18);
-    }
-
-    /* Header CTA */
-    .btn-header {
-      flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), #5b21b6);
-      color: #fff; border: none; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      font-size: .88rem; padding: 9px 20px; border-radius: 9px;
-      white-space: nowrap; transition: opacity .2s, transform .15s;
-    }
-    .btn-header:hover { opacity: .88; transform: translateY(-1px); }
-
-    /* Hamburger */
+    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.18); }
     .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
-    .hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: var(--text); border-radius: 2px;
-      margin: 5px 0; transition: .3s;
-    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; margin: 5px 0; transition: .3s; }
 
-    /* ── HERO ──────────────────────────────────── */
-    .hero {
-      position: relative; overflow: hidden;
-      max-width: 1280px; margin: 0 auto;
-      padding: 80px 28px 70px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-    }
-
-    .hero-orb {
-      position: absolute;
-      border-radius: 50%; filter: blur(80px); pointer-events: none;
-    }
+    /* ── HERO ── */
+    .hero { position: relative; overflow: hidden; max-width: 1280px; margin: 0 auto; padding: 80px 28px 70px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
     .orb1 { width: 500px; height: 500px; background: rgba(124,58,237,.25); top: -100px; right: 0; }
     .orb2 { width: 350px; height: 350px; background: rgba(6,182,212,.18); bottom: -80px; right: 200px; }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.35);
-      color: #a78bfa; font-size: .78rem; font-weight: 500;
-      padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
-      letter-spacing: .3px;
-    }
+    .hero-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.35); color: #a78bfa; font-size: .78rem; font-weight: 500; padding: 5px 12px; border-radius: 20px; margin-bottom: 20px; letter-spacing: .3px; }
     .hero-badge span { width: 6px; height: 6px; background: #7c3aed; border-radius: 50%; animation: pulse 1.8s infinite; }
-
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
 
-    .hero h1 {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(2.2rem, 4vw, 3.4rem);
-      line-height: 1.1; letter-spacing: -1.5px;
-      margin-bottom: 20px;
-    }
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(90deg, var(--accent2), var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    /* PLAYFAIR for hero headline */
+    .hero h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(2.2rem,4vw,3.4rem); line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+    .hero h1 em { font-style: italic; background: linear-gradient(90deg, var(--accent2), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero p { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 420px; margin-bottom: 32px; }
-
     .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #5b21b6);
-      color: #fff; text-decoration: none;
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      padding: 13px 28px; border-radius: 11px; font-size: .95rem;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 8px 24px rgba(124,58,237,.35);
-    }
+    .btn-primary { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; text-decoration: none; font-family: 'DM Sans',sans-serif; font-weight: 500; padding: 13px 28px; border-radius: 11px; font-size: .95rem; transition: transform .2s, box-shadow .2s; box-shadow: 0 8px 24px rgba(124,58,237,.35); cursor: pointer; border: none; }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,58,237,.45); }
-    .btn-ghost {
-      background: transparent; color: var(--text);
-      border: 1px solid var(--border); text-decoration: none;
-      font-family: 'DM Sans', sans-serif; font-weight: 400;
-      padding: 13px 28px; border-radius: 11px; font-size: .95rem;
-      transition: background .2s, border-color .2s;
-    }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); text-decoration: none; font-family: 'DM Sans',sans-serif; font-weight: 400; padding: 13px 28px; border-radius: 11px; font-size: .95rem; transition: background .2s, border-color .2s; cursor: pointer; }
     .btn-ghost:hover { background: var(--surface2); border-color: rgba(255,255,255,.15); }
-
-    .hero-stats {
-      display: flex; gap: 32px; margin-top: 40px; padding-top: 32px;
-      border-top: 1px solid var(--border);
-    }
-    .stat-val {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: 1.6rem; letter-spacing: -1px;
-    }
+    .hero-stats { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .stat-val { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1.6rem; letter-spacing: -1px; }
     .stat-lbl { font-size: .78rem; color: var(--muted); margin-top: 2px; }
 
-    /* Hero visual */
-    .hero-visual {
-      position: relative; display: flex; justify-content: center;
-    }
-    .hero-card-stack { position: relative; width: 320px; height: 340px; }
-    .hcard {
-      position: absolute; border-radius: 20px;
-      padding: 24px; font-family: 'DM Sans', sans-serif;
-      box-shadow: 0 24px 48px rgba(0,0,0,.5);
-    }
-    .hcard1 {
-      width: 280px; background: linear-gradient(135deg,#1e1030,#2d1b69);
-      border: 1px solid rgba(124,58,237,.4);
-      top: 0; left: 20px; transform: rotate(-4deg);
-    }
-    .hcard2 {
-      width: 280px; background: linear-gradient(135deg,#0c1a2e,#0f3460);
-      border: 1px solid rgba(6,182,212,.3);
-      top: 40px; left: 0; z-index: 2;
-      animation: float 4s ease-in-out infinite;
-    }
-    .hcard3 {
-      width: 180px; background: var(--surface2);
-      border: 1px solid var(--border);
-      bottom: 10px; right: 0; z-index: 3;
-      animation: float 4s ease-in-out infinite .6s;
-    }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    /* Hero visual — image mosaic */
+    .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+    .hero-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; width: 340px; height: 320px; }
+    .mosaic-img { border-radius: 14px; overflow: hidden; position: relative; }
+    .mosaic-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .mosaic-img:hover img { transform: scale(1.05); }
+    .mosaic-img:first-child { grid-row: 1 / 3; border-radius: 18px; }
+    .mosaic-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(9,9,15,.7) 0%, transparent 60%); border-radius: inherit; }
+    .mosaic-label { position: absolute; bottom: 10px; left: 12px; font-size: .7rem; font-weight: 600; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
 
-    .hcard-icon { font-size: 2rem; margin-bottom: 10px; }
-    .hcard-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; margin-bottom: 4px; }
-    .hcard-sub { font-size: .78rem; color: var(--muted); }
-    .hcard-price {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: 1.2rem; color: #34d399; margin-top: 14px;
-    }
-    .hcard3 .hcard-icon { font-size: 1.4rem; }
-    .hcard3 .hcard-title { font-size: .82rem; }
-
-    /* ── CATEGORIES ────────────────────────────── */
-    .categories {
-      max-width: 1280px; margin: 0 auto; padding: 0 28px 60px;
-    }
-    .section-header {
-      display: flex; align-items: baseline; justify-content: space-between;
-      margin-bottom: 28px;
-    }
-    .section-header h2 {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 1.5rem; letter-spacing: -0.5px;
-    }
-    .see-all {
-      font-size: .85rem; color: var(--accent2);
-      text-decoration: none; font-weight: 500;
-      transition: opacity .2s;
-    }
+    /* ── CATEGORIES ── */
+    .categories { max-width: 1280px; margin: 0 auto; padding: 0 28px 60px; }
+    .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+    .section-header h2 { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 1.6rem; letter-spacing: -0.3px; }
+    .see-all { font-size: .85rem; color: var(--accent2); text-decoration: none; font-weight: 500; transition: opacity .2s; }
     .see-all:hover { opacity: .7; }
-
-    .cat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 14px;
-    }
-    .cat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 22px 16px;
-      text-align: center; cursor: pointer;
-      transition: border-color .2s, transform .2s, background .2s;
-      text-decoration: none; color: var(--text);
-    }
-    .cat-card:hover {
-      border-color: var(--accent);
-      background: var(--surface2);
-      transform: translateY(-3px);
-    }
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 14px; }
+    .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 16px; text-align: center; cursor: pointer; transition: border-color .2s, transform .2s, background .2s; text-decoration: none; color: var(--text); }
+    .cat-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-3px); }
     .cat-card.active { border-color: var(--accent); background: rgba(124,58,237,.1); }
     .cat-emoji { font-size: 2rem; margin-bottom: 10px; }
     .cat-name { font-size: .85rem; font-weight: 500; }
     .cat-count { font-size: .72rem; color: var(--muted); margin-top: 3px; }
 
-    /* ── PRODUCTS ──────────────────────────────── */
-    .products-section {
-      max-width: 1280px; margin: 0 auto; padding: 0 28px 80px;
-    }
-
-    /* Filter bar */
-    .filter-bar {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 32px; flex-wrap: wrap;
-    }
-    .filter-btn {
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--muted); font-family: 'DM Sans', sans-serif;
-      font-size: .82rem; font-weight: 500;
-      padding: 7px 16px; border-radius: 20px; cursor: pointer;
-      transition: all .2s;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent); border-color: var(--accent);
-      color: #fff;
-    }
-    .sort-select {
-      margin-left: auto;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text); font-family: 'DM Sans', sans-serif;
-      font-size: .82rem; padding: 8px 14px; border-radius: 8px;
-      outline: none; cursor: pointer;
-    }
-
-    /* Product grid */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 20px;
-    }
-
-    .product-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 18px; overflow: hidden;
-      transition: transform .25s, border-color .25s, box-shadow .25s;
-      cursor: pointer; position: relative;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(124,58,237,.4);
-      box-shadow: 0 16px 40px rgba(0,0,0,.4);
-    }
-
-    .product-thumb {
-      height: 160px; position: relative;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3.5rem;
-    }
-    .thumb-bg { position: absolute; inset: 0; opacity: .15; }
-
-    .badge-new, .badge-hot, .badge-sale {
-      position: absolute; top: 12px; left: 12px;
-      font-size: .65rem; font-weight: 700; letter-spacing: .5px;
-      text-transform: uppercase; padding: 3px 8px; border-radius: 5px;
-    }
+    /* ── PRODUCTS ── */
+    .products-section { max-width: 1280px; margin: 0 auto; padding: 0 28px 80px; }
+    .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; flex-wrap: wrap; }
+    .filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'DM Sans',sans-serif; font-size: .82rem; font-weight: 500; padding: 7px 16px; border-radius: 20px; cursor: pointer; transition: all .2s; }
+    .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .sort-select { margin-left: auto; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'DM Sans',sans-serif; font-size: .82rem; padding: 8px 14px; border-radius: 8px; outline: none; cursor: pointer; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(270px,1fr)); gap: 20px; }
+    .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: transform .25s, border-color .25s, box-shadow .25s; cursor: pointer; position: relative; }
+    .product-card:hover { transform: translateY(-5px); border-color: rgba(124,58,237,.4); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .product-thumb { height: 190px; position: relative; overflow: hidden; }
+    .product-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .product-card:hover .product-thumb img { transform: scale(1.06); }
+    .badge-new, .badge-hot, .badge-sale { position: absolute; top: 12px; left: 12px; font-size: .65rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; }
     .badge-new { background: #065f46; color: #34d399; }
     .badge-hot { background: #7f1d1d; color: #fca5a5; }
     .badge-sale { background: #78350f; color: #fbbf24; }
-
-    .wish-btn {
-      position: absolute; top: 10px; right: 10px;
-      background: rgba(0,0,0,.5); border: 1px solid var(--border);
-      color: var(--muted); width: 32px; height: 32px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: .95rem; transition: all .2s;
-    }
+    .wish-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,.5); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .95rem; transition: all .2s; }
     .wish-btn:hover, .wish-btn.active { background: rgba(239,68,68,.2); color: #f87171; border-color: #f87171; }
-
     .product-body { padding: 18px; }
-    .product-cat {
-      font-size: .7rem; color: var(--accent2); font-weight: 600;
-      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;
-    }
-    .product-name {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 1rem; margin-bottom: 6px; line-height: 1.3;
-    }
+    .product-cat { font-size: .7rem; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+    .product-name { font-family: 'Syne',sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; line-height: 1.3; }
     .product-desc { font-size: .8rem; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
-
     .product-footer { display: flex; align-items: center; justify-content: space-between; }
-    .product-price {
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
-    }
-    .price-old {
-      font-size: .78rem; color: var(--muted); text-decoration: line-through;
-      margin-left: 6px; font-weight: 400; font-family: 'DM Sans', sans-serif;
-    }
-    .btn-add {
-      background: linear-gradient(135deg, var(--accent), #5b21b6);
-      color: #fff; border: none; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      font-size: .8rem; padding: 8px 16px; border-radius: 8px;
-      transition: opacity .2s, transform .15s;
-    }
-    .btn-add:hover { opacity: .85; transform: scale(1.03); }
-
-    .product-meta {
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 18px; border-top: 1px solid var(--border);
-      font-size: .75rem; color: var(--muted);
-    }
+    .product-price { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1.1rem; }
+    .price-old { font-size: .78rem; color: var(--muted); text-decoration: line-through; margin-left: 6px; font-weight: 400; }
+    .btn-ver { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; border: none; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 500; font-size: .8rem; padding: 8px 16px; border-radius: 8px; transition: opacity .2s, transform .15s; text-decoration: none; }
+    .btn-ver:hover { opacity: .85; transform: scale(1.03); }
+    .product-meta { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-top: 1px solid var(--border); font-size: .75rem; color: var(--muted); }
     .stars { color: var(--accent3); letter-spacing: -2px; }
 
-    /* ── PROMO BANNER ──────────────────────────── */
+    /* ── PROMO ── */
     .promo-wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px 70px; }
-    .promo-banner {
-      background: linear-gradient(135deg, #1e0a3c 0%, #0c2a4a 50%, #061a1f 100%);
-      border: 1px solid rgba(124,58,237,.3);
-      border-radius: 24px; padding: 48px 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 30px; overflow: hidden; position: relative;
-    }
-    .promo-orb {
-      position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none;
-    }
+    .promo-banner { background: linear-gradient(135deg,#1e0a3c 0%,#0c2a4a 50%,#061a1f 100%); border: 1px solid rgba(124,58,237,.3); border-radius: 24px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 30px; overflow: hidden; position: relative; }
+    .promo-orb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
     .porb1 { width: 300px; height: 300px; background: rgba(124,58,237,.3); right: -80px; top: -80px; }
     .porb2 { width: 200px; height: 200px; background: rgba(6,182,212,.2); left: 200px; bottom: -60px; }
-
     .promo-text { position: relative; }
-    .promo-tag {
-      display: inline-block; background: rgba(245,158,11,.15);
-      border: 1px solid rgba(245,158,11,.3); color: var(--accent3);
-      font-size: .75rem; font-weight: 600; letter-spacing: .5px;
-      text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
-    }
-    .promo-text h2 {
-      font-family: 'Syne', sans-serif; font-weight: 800;
-      font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -1px;
-      margin-bottom: 10px;
-    }
+    .promo-tag { display: inline-block; background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.3); color: var(--accent3); font-size: .75rem; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
+    .promo-text h2 { font-family: 'Playfair Display',serif; font-weight: 800; font-size: clamp(1.6rem,3vw,2.2rem); letter-spacing: -0.5px; margin-bottom: 10px; }
     .promo-text p { color: var(--muted); font-size: .9rem; max-width: 380px; }
     .promo-actions { display: flex; gap: 12px; flex-shrink: 0; position: relative; }
 
-    /* ── NEWSLETTER ────────────────────────────── */
+    /* ── NEWSLETTER ── */
     .newsletter { max-width: 1280px; margin: 0 auto; padding: 0 28px 80px; }
-    .newsletter-inner {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 24px; padding: 48px;
-      display: flex; align-items: center; justify-content: space-between; gap: 40px;
-    }
-    .nl-text h3 {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: 1.4rem; margin-bottom: 8px; letter-spacing: -0.5px;
-    }
+    .newsletter-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+    .nl-text h3 { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 1.5rem; margin-bottom: 8px; letter-spacing: -0.3px; }
     .nl-text p { color: var(--muted); font-size: .88rem; }
     .nl-form { display: flex; gap: 10px; flex: 1; max-width: 460px; }
-    .nl-form input {
-      flex: 1; background: var(--surface2); border: 1px solid var(--border);
-      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .88rem;
-      padding: 12px 16px; border-radius: 10px; outline: none;
-      transition: border-color .2s;
-    }
+    .nl-form input { flex: 1; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'DM Sans',sans-serif; font-size: .88rem; padding: 12px 16px; border-radius: 10px; outline: none; transition: border-color .2s; }
     .nl-form input::placeholder { color: var(--muted); }
     .nl-form input:focus { border-color: var(--accent); }
-    .btn-nl {
-      background: linear-gradient(135deg, var(--accent), #5b21b6);
-      color: #fff; border: none; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      padding: 12px 24px; border-radius: 10px; white-space: nowrap;
-      transition: opacity .2s;
-    }
+    .btn-nl { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; border: none; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 500; padding: 12px 24px; border-radius: 10px; white-space: nowrap; transition: opacity .2s; }
     .btn-nl:hover { opacity: .85; }
 
-    /* ── FOOTER ────────────────────────────────── */
-    footer {
-      background: var(--surface); border-top: 1px solid var(--border);
-    }
-    .footer-inner {
-      max-width: 1280px; margin: 0 auto;
-      padding: 56px 28px 32px;
-    }
-    .footer-top {
-      display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px;
-      margin-bottom: 48px;
-    }
-    .footer-brand p {
-      color: var(--muted); font-size: .85rem; line-height: 1.7;
-      margin: 14px 0 20px; max-width: 280px;
-    }
+    /* ── FOOTER ── */
+    footer { background: var(--surface); border-top: 1px solid var(--border); }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 56px 28px 32px; }
+    .footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer-brand p { color: var(--muted); font-size: .85rem; line-height: 1.7; margin: 14px 0 20px; max-width: 280px; }
     .social-links { display: flex; gap: 10px; }
-    .social-link {
-      width: 36px; height: 36px; border-radius: 9px;
-      background: var(--surface2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: .95rem; text-decoration: none;
-      transition: border-color .2s, background .2s;
-    }
+    .social-link { width: 36px; height: 36px; border-radius: 9px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .95rem; text-decoration: none; transition: border-color .2s, background .2s; }
     .social-link:hover { background: var(--accent); border-color: var(--accent); }
-
-    .footer-col h4 {
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: .88rem; margin-bottom: 16px; letter-spacing: .2px;
-    }
+    .footer-col h4 { font-family: 'Syne',sans-serif; font-weight: 700; font-size: .88rem; margin-bottom: 16px; letter-spacing: .2px; }
     .footer-col ul { list-style: none; }
     .footer-col ul li { margin-bottom: 10px; }
-    .footer-col ul li a {
-      color: var(--muted); text-decoration: none; font-size: .84rem;
-      transition: color .2s;
-    }
+    .footer-col ul li a { color: var(--muted); text-decoration: none; font-size: .84rem; transition: color .2s; }
     .footer-col ul li a:hover { color: var(--text); }
-
-    .footer-bottom {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 24px; border-top: 1px solid var(--border);
-      font-size: .78rem; color: var(--muted); gap: 20px; flex-wrap: wrap;
-    }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border); font-size: .78rem; color: var(--muted); gap: 20px; flex-wrap: wrap; }
     .footer-bottom a { color: var(--muted); text-decoration: none; }
     .footer-bottom a:hover { color: var(--text); }
     .payment-badges { display: flex; gap: 8px; }
-    .pay-badge {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 6px; padding: 3px 8px; font-size: .7rem; font-weight: 600;
-    }
+    .pay-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; font-size: .7rem; font-weight: 600; }
 
-    /* ── CART TOAST ────────────────────────────── */
-    .toast {
-      position: fixed; bottom: 28px; right: 28px; z-index: 500;
-      background: #065f46; border: 1px solid #059669;
-      color: #d1fae5; font-size: .88rem; font-weight: 500;
-      padding: 12px 20px; border-radius: 12px;
-      display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.4);
-      transform: translateY(80px); opacity: 0;
-      transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s;
-    }
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 28px; right: 28px; z-index: 500; background: #065f46; border: 1px solid #059669; color: #d1fae5; font-size: .88rem; font-weight: 500; padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.4); transform: translateY(80px); opacity: 0; transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    /* ── MOBILE NAV DRAWER ─────────────────────── */
-    .nav-drawer {
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
-    }
+    /* ── MOBILE DRAWER ── */
+    .nav-drawer { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); }
     .nav-drawer.open { display: flex; }
-    .nav-drawer-panel {
-      background: var(--surface); width: 260px; height: 100%;
-      padding: 28px 20px; display: flex; flex-direction: column; gap: 8px;
-    }
-    .nav-drawer-panel a {
-      color: var(--text); text-decoration: none; font-size: .95rem;
-      padding: 12px 16px; border-radius: 10px; transition: background .2s;
-    }
+    .nav-drawer-panel { background: var(--surface); width: 260px; height: 100%; padding: 28px 20px; display: flex; flex-direction: column; gap: 8px; }
+    .nav-drawer-panel a { color: var(--text); text-decoration: none; font-size: .95rem; padding: 12px 16px; border-radius: 10px; transition: background .2s; cursor: pointer; }
     .nav-drawer-panel a:hover { background: var(--surface2); }
 
-    /* ── RESPONSIVE ────────────────────────────── */
+    /* ══════════════════════════════════════
+       PRODUCT LANDING PAGE
+    ══════════════════════════════════════ */
+    #page-product { display: none; }
+    #page-product.active { display: block; }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: .88rem; cursor: pointer; padding: 10px 0; transition: color .2s; border: none; background: none; font-family: 'DM Sans',sans-serif; }
+    .back-btn:hover { color: var(--text); }
+    .back-btn svg { transition: transform .2s; }
+    .back-btn:hover svg { transform: translateX(-3px); }
+
+    .product-landing { max-width: 1100px; margin: 0 auto; padding: 32px 28px 80px; }
+    .product-landing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-bottom: 80px; }
+
+    .lp-gallery { position: sticky; top: 90px; }
+    .lp-main-img { border-radius: 20px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--border); }
+    .lp-main-img img { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; }
+    .lp-thumbs { display: flex; gap: 10px; }
+    .lp-thumb { width: 72px; height: 56px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: border-color .2s; flex-shrink: 0; }
+    .lp-thumb.active { border-color: var(--accent); }
+    .lp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .lp-info { }
+    .lp-cat { font-size: .72rem; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+    .lp-title { font-family: 'Playfair Display',serif; font-weight: 900; font-size: clamp(1.8rem,3vw,2.6rem); line-height: 1.1; letter-spacing: -1px; margin-bottom: 14px; }
+    .lp-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: .85rem; color: var(--muted); }
+    .lp-rating .stars { color: var(--accent3); font-size: 1rem; }
+    .lp-desc { color: var(--muted); font-size: .95rem; line-height: 1.8; margin-bottom: 28px; }
+    .lp-price-box { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; }
+    .lp-price { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 2.4rem; letter-spacing: -1px; }
+    .lp-price-old { font-size: 1rem; color: var(--muted); text-decoration: line-through; }
+    .lp-discount { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.3); color: var(--accent3); font-size: .75rem; font-weight: 700; padding: 3px 9px; border-radius: 5px; }
+    .lp-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
+    .lp-features li { display: flex; align-items: center; gap: 10px; font-size: .88rem; color: var(--muted); }
+    .lp-features li::before { content: '✓'; color: #34d399; font-weight: 700; font-size: .8rem; background: rgba(52,211,153,.1); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lp-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-buy { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; border: none; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 600; font-size: 1rem; padding: 15px 36px; border-radius: 12px; transition: transform .2s, box-shadow .2s; box-shadow: 0 8px 24px rgba(124,58,237,.35); text-decoration: none; }
+    .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(124,58,237,.45); }
+
+    /* Landing — details section */
+    .lp-details { border-top: 1px solid var(--border); padding-top: 60px; }
+    .lp-details h2 { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 1.6rem; margin-bottom: 28px; }
+    .lp-specs { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 16px; margin-bottom: 50px; }
+    .spec-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .spec-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+    .spec-val { font-family: 'Syne',sans-serif; font-weight: 700; font-size: .95rem; }
+
+    /* Related */
+    .related-section { max-width: 1100px; margin: 0 auto; padding: 0 28px 80px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 18px; }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { display: none; }
       .hamburger { display: flex; flex-direction: column; }
@@ -539,6 +240,8 @@
       .nl-form { max-width: 100%; }
       .promo-banner { flex-direction: column; text-align: center; padding: 36px 28px; }
       .promo-actions { justify-content: center; }
+      .product-landing-grid { grid-template-columns: 1fr; }
+      .lp-gallery { position: static; }
     }
     @media (max-width: 540px) {
       .header-inner { padding: 0 16px; }
@@ -550,406 +253,586 @@
 </head>
 <body>
 
-<!-- ── HEADER ──────────────────────────────── -->
+<!-- ── HEADER ── -->
 <header>
   <div class="header-inner">
-    <!-- Logo -->
-    <a href="#" class="logo">
+    <div class="logo" onclick="goHome()">
       <div class="logo-icon">⚡</div>
       <span class="logo-text">NexusStore</span>
-    </a>
-
-    <!-- Navigation -->
+    </div>
     <nav id="main-nav">
-      <a href="#" class="active">Inicio</a>
-      <a href="#productos">Productos</a>
-      <a href="#categorias">Categorías</a>
+      <a onclick="goHome()" class="active">Inicio</a>
+      <a onclick="goHome();setTimeout(()=>document.getElementById('productos').scrollIntoView({behavior:'smooth'}),100)">Productos</a>
+      <a onclick="goHome();setTimeout(()=>document.getElementById('categorias').scrollIntoView({behavior:'smooth'}),100)">Categorías</a>
       <a href="#">Ofertas</a>
       <a href="#">Blog</a>
       <a href="#">Contacto</a>
     </nav>
-
-    <!-- Search -->
     <div class="search-wrap">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input type="text" id="search-input" placeholder="Buscar templates, cursos, plugins…" oninput="filterProducts()" />
     </div>
-
-    <!-- CTA -->
-    <button class="btn-header" onclick="showToast('🛒 Carrito abierto')">Carrito (0)</button>
-
-    <!-- Hamburger -->
     <button class="hamburger" onclick="toggleDrawer()" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<!-- ── MOBILE DRAWER ────────────────────────── -->
+<!-- ── MOBILE DRAWER ── -->
 <div class="nav-drawer" id="nav-drawer" onclick="closeDrawer(event)">
   <div class="nav-drawer-panel">
-    <a href="#" onclick="closeDrawerDirect()">🏠 Inicio</a>
-    <a href="#productos" onclick="closeDrawerDirect()">📦 Productos</a>
-    <a href="#categorias" onclick="closeDrawerDirect()">🗂 Categorías</a>
-    <a href="#" onclick="closeDrawerDirect()">🔥 Ofertas</a>
-    <a href="#" onclick="closeDrawerDirect()">📝 Blog</a>
-    <a href="#" onclick="closeDrawerDirect()">📬 Contacto</a>
+    <a onclick="goHome();closeDrawerDirect()">🏠 Inicio</a>
+    <a onclick="goHome();closeDrawerDirect()">📦 Productos</a>
+    <a onclick="goHome();closeDrawerDirect()">🗂 Categorías</a>
+    <a onclick="closeDrawerDirect()">🔥 Ofertas</a>
+    <a onclick="closeDrawerDirect()">📝 Blog</a>
+    <a onclick="closeDrawerDirect()">📬 Contacto</a>
   </div>
 </div>
 
-<!-- ── HERO ─────────────────────────────────── -->
-<section class="hero">
-  <div class="orb1 hero-orb"></div>
-  <div class="orb2 hero-orb"></div>
+<!-- ════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════ -->
+<div id="page-home" class="page active">
 
-  <div class="hero-copy">
-    <div class="hero-badge"><span></span> +2,400 productos digitales disponibles</div>
-    <h1>Tu marketplace de<br><em>productos digitales</em><br>premium</h1>
-    <p>Templates, cursos, plugins, herramientas de diseño y más. Descarga al instante, úsalos de por vida.</p>
-    <div class="hero-btns">
-      <a href="#productos" class="btn-primary">Explorar productos →</a>
-      <a href="#" class="btn-ghost">Ver demos gratis</a>
-    </div>
-    <div class="hero-stats">
-      <div>
-        <div class="stat-val">12K+</div>
-        <div class="stat-lbl">Clientes felices</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="orb1 hero-orb"></div>
+    <div class="orb2 hero-orb"></div>
+    <div class="hero-copy">
+      <div class="hero-badge"><span></span> +2,400 productos digitales disponibles</div>
+      <h1>Tu marketplace de<br><em>productos digitales</em><br>premium</h1>
+      <p>Templates, cursos, plugins, herramientas de diseño y más. Descarga al instante, úsalos de por vida.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">Explorar productos →</button>
+        <button class="btn-ghost">Ver demos gratis</button>
       </div>
-      <div>
-        <div class="stat-val">2.4K</div>
-        <div class="stat-lbl">Productos</div>
-      </div>
-      <div>
-        <div class="stat-val">4.9★</div>
-        <div class="stat-lbl">Valoración media</div>
+      <div class="hero-stats">
+        <div><div class="stat-val">12K+</div><div class="stat-lbl">Clientes felices</div></div>
+        <div><div class="stat-val">2.4K</div><div class="stat-lbl">Productos</div></div>
+        <div><div class="stat-val">4.9★</div><div class="stat-lbl">Valoración media</div></div>
       </div>
     </div>
-  </div>
-
-  <div class="hero-visual">
-    <div class="hero-card-stack">
-      <div class="hcard hcard1">
-        <div class="hcard-icon">🎨</div>
-        <div class="hcard-title">UI Kit Pro — Figma</div>
-        <div class="hcard-sub">800+ componentes</div>
-        <div class="hcard-price">$49</div>
-      </div>
-      <div class="hcard hcard2">
-        <div class="hcard-icon">⚡</div>
-        <div class="hcard-title">SaaS Dashboard Template</div>
-        <div class="hcard-sub">Next.js + Tailwind</div>
-        <div class="hcard-price">$89</div>
-      </div>
-      <div class="hcard hcard3">
-        <div class="hcard-icon">🚀</div>
-        <div class="hcard-title">Landing Builder</div>
-        <div class="hcard-price">$29</div>
-      </div>
+    <div class="hero-visual">
+      <div class="hero-mosaic" id="hero-mosaic"></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── CATEGORIES ───────────────────────────── -->
-<section class="categories" id="categorias">
-  <div class="section-header">
-    <h2>Categorías</h2>
-    <a href="#" class="see-all">Ver todas →</a>
-  </div>
-  <div class="cat-grid">
-    <a class="cat-card active" href="#" onclick="filterByCategory('todos',this)">
-      <div class="cat-emoji">🌐</div>
-      <div class="cat-name">Todos</div>
-      <div class="cat-count">2,413 items</div>
-    </a>
-    <a class="cat-card" href="#" onclick="filterByCategory('ui-kits',this)">
-      <div class="cat-emoji">🎨</div>
-      <div class="cat-name">UI Kits</div>
-      <div class="cat-count">348 items</div>
-    </a>
-    <a class="cat-card" href="#" onclick="filterByCategory('templates',this)">
-      <div class="cat-emoji">📐</div>
-      <div class="cat-name">Templates Web</div>
-      <div class="cat-count">512 items</div>
-    </a>
-    <a class="cat-card" href="#" onclick="filterByCategory('cursos',this)">
-      <div class="cat-emoji">🎓</div>
-      <div class="cat-name">Cursos</div>
-      <div class="cat-count">194 items</div>
-    </a>
-    <a class="cat-card" href="#" onclick="filterByCategory('plugins',this)">
-      <div class="cat-emoji">🔌</div>
-      <div class="cat-name">Plugins</div>
-      <div class="cat-count">287 items</div>
-    </a>
-    <a class="cat-card" href="#" onclick="filterByCategory('fuentes',this)">
-      <div class="cat-emoji">✒️</div>
-      <div class="cat-name">Fuentes</div>
-      <div class="cat-count">420 items</div>
-    </a>
-    <a class="cat-card" href="#" onclick="filterByCategory('iconos',this)">
-      <div class="cat-emoji">🖼</div>
-      <div class="cat-name">Iconos</div>
-      <div class="cat-count">653 items</div>
-    </a>
-  </div>
-</section>
-
-<!-- ── PRODUCTS ──────────────────────────────── -->
-<section class="products-section" id="productos">
-  <div class="section-header">
-    <h2>Productos destacados</h2>
-    <a href="#" class="see-all">Ver todos →</a>
-  </div>
-
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
-    <button class="filter-btn" onclick="setFilter('nuevo',this)">Nuevos</button>
-    <button class="filter-btn" onclick="setFilter('popular',this)">Populares</button>
-    <button class="filter-btn" onclick="setFilter('oferta',this)">Ofertas</button>
-    <select class="sort-select" onchange="sortProducts(this.value)">
-      <option value="default">Ordenar por</option>
-      <option value="price-asc">Precio: menor</option>
-      <option value="price-desc">Precio: mayor</option>
-      <option value="rating">Mejor valorados</option>
-    </select>
-  </div>
-
-  <div class="product-grid" id="product-grid">
-    <!-- Rendered by JS -->
-  </div>
-</section>
-
-<!-- ── PROMO ─────────────────────────────────── -->
-<div class="promo-wrap">
-  <div class="promo-banner">
-    <div class="porb1 promo-orb"></div>
-    <div class="porb2 promo-orb"></div>
-    <div class="promo-text">
-      <div class="promo-tag">🔥 Oferta por tiempo limitado</div>
-      <h2>50% OFF en todos los UI Kits</h2>
-      <p>Solo este fin de semana. Más de 300 kits de diseño para Figma, Sketch y Adobe XD.</p>
+  <!-- CATEGORIES -->
+  <section class="categories" id="categorias">
+    <div class="section-header">
+      <h2>Categorías</h2>
+      <a href="#" class="see-all">Ver todas →</a>
     </div>
-    <div class="promo-actions">
-      <a href="#productos" class="btn-primary">Comprar ahora</a>
-      <a href="#" class="btn-ghost">Ver colección</a>
+    <div class="cat-grid">
+      <a class="cat-card active" href="#" onclick="filterByCategory('todos',this);return false">
+        <div class="cat-emoji">🌐</div><div class="cat-name">Todos</div><div class="cat-count">2,413 items</div>
+      </a>
+      <a class="cat-card" href="#" onclick="filterByCategory('ui-kits',this);return false">
+        <div class="cat-emoji">🎨</div><div class="cat-name">UI Kits</div><div class="cat-count">348 items</div>
+      </a>
+      <a class="cat-card" href="#" onclick="filterByCategory('templates',this);return false">
+        <div class="cat-emoji">📐</div><div class="cat-name">Templates Web</div><div class="cat-count">512 items</div>
+      </a>
+      <a class="cat-card" href="#" onclick="filterByCategory('cursos',this);return false">
+        <div class="cat-emoji">🎓</div><div class="cat-name">Cursos</div><div class="cat-count">194 items</div>
+      </a>
+      <a class="cat-card" href="#" onclick="filterByCategory('plugins',this);return false">
+        <div class="cat-emoji">🔌</div><div class="cat-name">Plugins</div><div class="cat-count">287 items</div>
+      </a>
+      <a class="cat-card" href="#" onclick="filterByCategory('fuentes',this);return false">
+        <div class="cat-emoji">✒️</div><div class="cat-name">Fuentes</div><div class="cat-count">420 items</div>
+      </a>
+      <a class="cat-card" href="#" onclick="filterByCategory('iconos',this);return false">
+        <div class="cat-emoji">🖼</div><div class="cat-name">Iconos</div><div class="cat-count">653 items</div>
+      </a>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- ── NEWSLETTER ────────────────────────────── -->
-<section class="newsletter">
-  <div class="newsletter-inner">
-    <div class="nl-text">
-      <h3>Recibe novedades y descuentos</h3>
-      <p>Únete a más de 12,000 diseñadores y desarrolladores que ya reciben nuestras ofertas exclusivas.</p>
+  <!-- PRODUCTS -->
+  <section class="products-section" id="productos">
+    <div class="section-header">
+      <h2>Productos destacados</h2>
+      <a href="#" class="see-all">Ver todos →</a>
     </div>
-    <div class="nl-form">
-      <input type="email" placeholder="tu@email.com" />
-      <button class="btn-nl" onclick="subscribeNewsletter()">Suscribirme</button>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="setFilter('nuevo',this)">Nuevos</button>
+      <button class="filter-btn" onclick="setFilter('popular',this)">Populares</button>
+      <button class="filter-btn" onclick="setFilter('oferta',this)">Ofertas</button>
+      <select class="sort-select" onchange="sortProducts(this.value)">
+        <option value="default">Ordenar por</option>
+        <option value="price-asc">Precio: menor</option>
+        <option value="price-desc">Precio: mayor</option>
+        <option value="rating">Mejor valorados</option>
+      </select>
     </div>
-  </div>
-</section>
+    <div class="product-grid" id="product-grid"></div>
+  </section>
 
-<!-- ── FOOTER ────────────────────────────────── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#" class="logo">
-          <div class="logo-icon">⚡</div>
-          <span class="logo-text">NexusStore</span>
-        </a>
-        <p>El marketplace líder de productos digitales para diseñadores y desarrolladores de habla hispana.</p>
-        <div class="social-links">
-          <a class="social-link" href="#" aria-label="Twitter">𝕏</a>
-          <a class="social-link" href="#" aria-label="Instagram">📸</a>
-          <a class="social-link" href="#" aria-label="LinkedIn">in</a>
-          <a class="social-link" href="#" aria-label="YouTube">▶</a>
-        </div>
+  <!-- PROMO -->
+  <div class="promo-wrap">
+    <div class="promo-banner">
+      <div class="porb1 promo-orb"></div>
+      <div class="porb2 promo-orb"></div>
+      <div class="promo-text">
+        <div class="promo-tag">🔥 Oferta por tiempo limitado</div>
+        <h2>50% OFF en todos los UI Kits</h2>
+        <p>Solo este fin de semana. Más de 300 kits de diseño para Figma, Sketch y Adobe XD.</p>
       </div>
-      <div class="footer-col">
-        <h4>Tienda</h4>
-        <ul>
-          <li><a href="#">UI Kits</a></li>
-          <li><a href="#">Templates Web</a></li>
-          <li><a href="#">Cursos</a></li>
-          <li><a href="#">Plugins</a></li>
-          <li><a href="#">Fuentes</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Empresa</h4>
-        <ul>
-          <li><a href="#">Acerca de</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Afiliados</a></li>
-          <li><a href="#">Ser Vendedor</a></li>
-          <li><a href="#">Prensa</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Soporte</h4>
-        <ul>
-          <li><a href="#">Centro de ayuda</a></li>
-          <li><a href="#">Términos de uso</a></li>
-          <li><a href="#">Privacidad</a></li>
-          <li><a href="#">Reembolsos</a></li>
-          <li><a href="#">Contacto</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 NexusStore. Todos los derechos reservados. · <a href="#">nexusstore.com</a></span>
-      <div class="payment-badges">
-        <span class="pay-badge">💳 Visa</span>
-        <span class="pay-badge">💳 MC</span>
-        <span class="pay-badge">🅿 PayPal</span>
-        <span class="pay-badge">₿ Crypto</span>
+      <div class="promo-actions">
+        <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">Comprar ahora</button>
+        <button class="btn-ghost">Ver colección</button>
       </div>
     </div>
   </div>
-</footer>
 
-<!-- ── CART TOAST ─────────────────────────────── -->
-<div class="toast" id="toast">✅ <span id="toast-msg">Producto añadido</span></div>
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="newsletter-inner">
+      <div class="nl-text">
+        <h3>Recibe novedades y descuentos</h3>
+        <p>Únete a más de 12,000 diseñadores y desarrolladores que ya reciben nuestras ofertas exclusivas.</p>
+      </div>
+      <div class="nl-form">
+        <input type="email" placeholder="tu@email.com" />
+        <button class="btn-nl" onclick="subscribeNewsletter()">Suscribirme</button>
+      </div>
+    </div>
+  </section>
 
-<script>
-  /* ── DATA ─────────────────────────────────── */
-  const products = [
-    { id:1, name:'Aurora UI Kit', cat:'UI Kits', catKey:'ui-kits', desc:'800+ componentes para Figma con auto-layout y variables.', price:49, oldPrice:99, emoji:'🎨', bg:'#2d1b69', badge:'hot', rating:4.9, reviews:312, tag:'popular' },
-    { id:2, name:'SaaS Dashboard Pro', cat:'Templates Web', catKey:'templates', desc:'Template Next.js completo con autenticación, gráficas y dark mode.', price:89, oldPrice:null, emoji:'📊', bg:'#0c2a4a', badge:'nuevo', rating:4.8, reviews:148, tag:'nuevo' },
-    { id:3, name:'Curso UX Research', cat:'Cursos', catKey:'cursos', desc:'60h de contenido práctico. Aprende a investigar y diseñar experiencias.', price:39, oldPrice:79, emoji:'🎓', bg:'#1a2e1a', badge:'sale', rating:4.9, reviews:522, tag:'oferta' },
-    { id:4, name:'IconFlow 3000', cat:'Iconos', catKey:'iconos', desc:'3,000 iconos SVG optimizados en 12 estilos. Licencia comercial incluida.', price:29, oldPrice:null, emoji:'🖼', bg:'#2a1a2e', badge:null, rating:4.7, reviews:210, tag:'popular' },
-    { id:5, name:'Geist Font Family', cat:'Fuentes', catKey:'fuentes', desc:'Familia tipográfica moderna con 8 pesos y versión mono incluida.', price:19, oldPrice:38, emoji:'✒️', bg:'#1a1a2e', badge:'sale', rating:4.8, reviews:88, tag:'oferta' },
-    { id:6, name:'FormKit Plugin', cat:'Plugins', catKey:'plugins', desc:'Plugin Figma para generar formularios validados en React o Vue.', price:24, oldPrice:null, emoji:'🔌', bg:'#1e2a1a', badge:'nuevo', rating:4.6, reviews:67, tag:'nuevo' },
-    { id:7, name:'Landing Page Builder', cat:'Templates Web', catKey:'templates', desc:'Constructor de landing pages con 50+ secciones y exportación limpia.', price:59, oldPrice:null, emoji:'🚀', bg:'#2a1a1a', badge:null, rating:4.9, reviews:394, tag:'popular' },
-    { id:8, name:'Motion Design Kit', cat:'UI Kits', catKey:'ui-kits', desc:'Variables de animación, easing presets y micro-interacciones para Figma.', price:34, oldPrice:69, emoji:'🎬', bg:'#1a2a2a', badge:'sale', rating:4.7, reviews:156, tag:'oferta' },
-  ];
-
-  let activeFilter = 'todos';
-  let wishlist = new Set();
-
-  /* ── RENDER ────────────────────────────────── */
-  function renderProducts(list) {
-    const grid = document.getElementById('product-grid');
-    if (!list.length) {
-      grid.innerHTML = `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:60px 0">No se encontraron productos.</p>`;
-      return;
-    }
-    grid.innerHTML = list.map(p => `
-      <div class="product-card" id="pc-${p.id}">
-        <div class="product-thumb" style="background:linear-gradient(135deg,${p.bg},#09090f)">
-          <div class="thumb-bg" style="background:${p.bg}"></div>
-          ${p.badge === 'nuevo' ? '<span class="badge-new">Nuevo</span>' : p.badge === 'hot' ? '<span class="badge-hot">🔥 Top</span>' : p.badge === 'sale' ? '<span class="badge-sale">Sale</span>' : ''}
-          <button class="wish-btn ${wishlist.has(p.id)?'active':''}" onclick="toggleWish(${p.id})" title="Favorito">${wishlist.has(p.id)?'❤️':'🤍'}</button>
-          <span style="font-size:3.2rem;position:relative">${p.emoji}</span>
-        </div>
-        <div class="product-body">
-          <div class="product-cat">${p.cat}</div>
-          <div class="product-name">${p.name}</div>
-          <div class="product-desc">${p.desc}</div>
-          <div class="product-footer">
-            <div>
-              <span class="product-price">$${p.price}</span>
-              ${p.oldPrice ? `<span class="price-old">$${p.oldPrice}</span>` : ''}
-            </div>
-            <button class="btn-add" onclick="addToCart('${p.name}')">+ Añadir</button>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo" onclick="goHome()">
+            <div class="logo-icon">⚡</div>
+            <span class="logo-text">NexusStore</span>
+          </div>
+          <p>El marketplace líder de productos digitales para diseñadores y desarrolladores de habla hispana.</p>
+          <div class="social-links">
+            <a class="social-link" href="#" aria-label="Twitter">𝕏</a>
+            <a class="social-link" href="#" aria-label="Instagram">📸</a>
+            <a class="social-link" href="#" aria-label="LinkedIn">in</a>
+            <a class="social-link" href="#" aria-label="YouTube">▶</a>
           </div>
         </div>
-        <div class="product-meta">
-          <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
-          <span>${p.rating} (${p.reviews})</span>
-          <span style="margin-left:auto">⬇ Descarga instant.</span>
+        <div class="footer-col">
+          <h4>Tienda</h4>
+          <ul>
+            <li><a href="#">UI Kits</a></li>
+            <li><a href="#">Templates Web</a></li>
+            <li><a href="#">Cursos</a></li>
+            <li><a href="#">Plugins</a></li>
+            <li><a href="#">Fuentes</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Empresa</h4>
+          <ul>
+            <li><a href="#">Acerca de</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Afiliados</a></li>
+            <li><a href="#">Ser Vendedor</a></li>
+            <li><a href="#">Prensa</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Soporte</h4>
+          <ul>
+            <li><a href="#">Centro de ayuda</a></li>
+            <li><a href="#">Términos de uso</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Reembolsos</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
         </div>
       </div>
-    `).join('');
+      <div class="footer-bottom">
+        <span>© 2025 NexusStore. Todos los derechos reservados. · <a href="#">nexusstore.com</a></span>
+        <div class="payment-badges">
+          <span class="pay-badge">💳 Visa</span>
+          <span class="pay-badge">💳 MC</span>
+          <span class="pay-badge">🅿 PayPal</span>
+          <span class="pay-badge">₿ Crypto</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+<!-- ════════════════════════════════════
+     PAGE: PRODUCT LANDING
+════════════════════════════════════ -->
+<div id="page-product" class="page">
+  <div class="product-landing">
+    <button class="back-btn" onclick="goHome()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver al catálogo
+    </button>
+
+    <div class="product-landing-grid">
+      <!-- Gallery -->
+      <div class="lp-gallery">
+        <div class="lp-main-img">
+          <img id="lp-main-img" src="" alt="Producto" />
+        </div>
+        <div class="lp-thumbs" id="lp-thumbs"></div>
+      </div>
+
+      <!-- Info -->
+      <div class="lp-info">
+        <div class="lp-cat" id="lp-cat"></div>
+        <h1 class="lp-title" id="lp-title"></h1>
+        <div class="lp-rating">
+          <span class="stars" id="lp-stars"></span>
+          <span id="lp-rating-text"></span>
+        </div>
+        <p class="lp-desc" id="lp-desc"></p>
+        <div class="lp-price-box">
+          <span class="lp-price" id="lp-price"></span>
+          <span class="lp-price-old" id="lp-price-old"></span>
+          <span class="lp-discount" id="lp-discount" style="display:none"></span>
+        </div>
+        <ul class="lp-features" id="lp-features"></ul>
+        <div class="lp-cta">
+          <a href="#" class="btn-buy" onclick="showToast('✅ Redirigiendo al pago…');return false">Comprar ahora — <span id="lp-cta-price"></span></a>
+          <button class="btn-ghost" onclick="showToast('❤️ Guardado en favoritos')">♡ Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specs -->
+    <div class="lp-details">
+      <h2>Especificaciones</h2>
+      <div class="lp-specs" id="lp-specs"></div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="related-section">
+    <div class="section-header">
+      <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.5rem">Productos relacionados</h2>
+    </div>
+    <div class="related-grid" id="related-grid"></div>
+  </div>
+</div><!-- /page-product -->
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ <span id="toast-msg">Listo</span></div>
+
+<script>
+/* ── PRODUCT DATA ── */
+const products = [
+  {
+    id:1, name:'Aurora UI Kit', cat:'UI Kits', catKey:'ui-kits',
+    desc:'800+ componentes para Figma con auto-layout y variables de diseño. Incluye dark/light mode, sistema de color completo y documentación.',
+    longDesc:'Aurora UI Kit es el sistema de diseño más completo para Figma del mercado hispano. Con más de 800 componentes organizados en 40 categorías, variables de color para dark y light mode, y compatibilidad total con Auto Layout 4.0. Incluye biblioteca de iconos, sistema tipográfico y guía de uso paso a paso.',
+    price:49, oldPrice:99,
+    img:'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
+      'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80',
+    ],
+    badge:'hot', rating:4.9, reviews:312, tag:'popular',
+    features:['800+ componentes listos para usar','Dark & Light mode variables','Auto Layout 4.0 compatible','Sistema tipográfico completo','Licencia comercial incluida','Actualizaciones de por vida'],
+    specs:[{l:'Formato',v:'Figma'},{l:'Componentes',v:'800+'},{l:'Versiones',v:'Dark & Light'},{l:'Actualizaciones',v:'De por vida'},{l:'Soporte',v:'Email 24h'},{l:'Licencia',v:'Comercial'}]
+  },
+  {
+    id:2, name:'SaaS Dashboard Pro', cat:'Templates Web', catKey:'templates',
+    desc:'Template Next.js completo con autenticación, gráficas y dark mode. Construido con Tailwind CSS, listo para producción.',
+    longDesc:'SaaS Dashboard Pro es el template más completo para lanzar tu aplicación SaaS en tiempo récord. Incluye sistema de autenticación con NextAuth, 15+ páginas pre-construidas, más de 30 componentes de datos, gráficas interactivas con Recharts y modo oscuro nativo.',
+    price:89, oldPrice:null,
+    img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80',
+    ],
+    badge:'nuevo', rating:4.8, reviews:148, tag:'nuevo',
+    features:['Next.js 14 + Tailwind CSS','Autenticación lista con NextAuth','15 páginas incluidas','30+ componentes de datos','Gráficas con Recharts','TypeScript incluido'],
+    specs:[{l:'Framework',v:'Next.js 14'},{l:'CSS',v:'Tailwind CSS'},{l:'Lenguaje',v:'TypeScript'},{l:'Páginas',v:'15+'},{l:'Gráficas',v:'Recharts'},{l:'Auth',v:'NextAuth.js'}]
+  },
+  {
+    id:3, name:'Curso UX Research', cat:'Cursos', catKey:'cursos',
+    desc:'60h de contenido práctico. Aprende a investigar y diseñar experiencias que los usuarios aman.',
+    longDesc:'Este curso intensivo de UX Research cubre desde los fundamentos de la investigación de usuarios hasta técnicas avanzadas de análisis. Aprenderás a diseñar estudios de usabilidad, interpretar datos cualitativos y cuantitativos, y traducir hallazgos en decisiones de diseño concretas y basadas en evidencia.',
+    price:39, oldPrice:79,
+    img:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
+      'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80',
+      'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80',
+    ],
+    badge:'sale', rating:4.9, reviews:522, tag:'oferta',
+    features:['60 horas de video HD','Proyectos prácticos reales','Certificado de finalización','Acceso de por vida','Comunidad privada','Mentorías grupales mensuales'],
+    specs:[{l:'Duración',v:'60 horas'},{l:'Nivel',v:'Intermedio'},{l:'Idioma',v:'Español'},{l:'Formato',v:'Video HD'},{l:'Acceso',v:'De por vida'},{l:'Certificado',v:'Sí'}]
+  },
+  {
+    id:4, name:'IconFlow 3000', cat:'Iconos', catKey:'iconos',
+    desc:'3,000 iconos SVG optimizados en 12 estilos. Licencia comercial incluida para todos tus proyectos.',
+    longDesc:'IconFlow 3000 es la colección de iconos más versátil del mercado. Cada icono está disponible en 12 estilos visuales (outline, filled, duotone, rounded y más) y viene en formatos SVG, PNG y como componente React. Incluye plugin para Figma y herramienta de búsqueda online.',
+    price:29, oldPrice:null,
+    img:'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
+      'https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=800&q=80',
+      'https://images.unsplash.com/photo-1542744094-24638eff58bb?w=800&q=80',
+    ],
+    badge:null, rating:4.7, reviews:210, tag:'popular',
+    features:['3,000 iconos únicos','12 estilos visuales','Formatos SVG, PNG, React','Plugin para Figma incluido','Actualizaciones gratuitas','Licencia comercial ilimitada'],
+    specs:[{l:'Total iconos',v:'3,000'},{l:'Estilos',v:'12'},{l:'Formatos',v:'SVG / PNG / JSX'},{l:'Plugin Figma',v:'Incluido'},{l:'Búsqueda',v:'Herramienta online'},{l:'Licencia',v:'Comercial'}]
+  },
+  {
+    id:5, name:'Geist Font Family', cat:'Fuentes', catKey:'fuentes',
+    desc:'Familia tipográfica moderna con 8 pesos y versión mono incluida. Perfecta para interfaces digitales.',
+    longDesc:'Geist Font Family es una tipografía humanista sans-serif diseñada específicamente para interfaces digitales. Ofrece 8 pesos (desde Thin hasta Black) más una versión monoespaciada ideal para código. Incluye caracteres latinos extendidos, ligaduras OpenType y soporte para más de 40 idiomas.',
+    price:19, oldPrice:38,
+    img:'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
+      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80',
+    ],
+    badge:'sale', rating:4.8, reviews:88, tag:'oferta',
+    features:['8 pesos tipográficos','Versión mono incluida','Caracteres latinos extendidos','Ligaduras OpenType','40+ idiomas soportados','Web font incluida (WOFF2)'],
+    specs:[{l:'Pesos',v:'8 (Thin–Black)'},{l:'Versión Mono',v:'Sí'},{l:'Formatos',v:'OTF / TTF / WOFF2'},{l:'Caracteres',v:'1,200+'},{l:'Idiomas',v:'40+'},{l:'Licencia',v:'Web + Desktop'}]
+  },
+  {
+    id:6, name:'FormKit Plugin', cat:'Plugins', catKey:'plugins',
+    desc:'Plugin Figma para generar formularios validados en React o Vue. Exporta código limpio en segundos.',
+    longDesc:'FormKit Plugin revoluciona la manera en que diseñas y exportas formularios. Diseña visualmente en Figma y exporta automáticamente código React o Vue con validación incluida (Zod, Yup o VeeValidate), accesibilidad WCAG 2.1 y soporte para React Hook Form.',
+    price:24, oldPrice:null,
+    img:'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80',
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+      'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&q=80',
+    ],
+    badge:'nuevo', rating:4.6, reviews:67, tag:'nuevo',
+    features:['Genera código React y Vue','Validación automática (Zod/Yup)','Accesibilidad WCAG 2.1','Integra React Hook Form','30+ tipos de campos','Actualizaciones gratuitas 1 año'],
+    specs:[{l:'Plugin',v:'Figma'},{l:'Frameworks',v:'React / Vue'},{l:'Validación',v:'Zod / Yup / VeeValidate'},{l:'Accesibilidad',v:'WCAG 2.1'},{l:'Campos',v:'30+'},{l:'Soporte',v:'1 año'}]
+  },
+  {
+    id:7, name:'Landing Page Builder', cat:'Templates Web', catKey:'templates',
+    desc:'Constructor de landing pages con 50+ secciones modulares y exportación de código limpio HTML/CSS.',
+    longDesc:'Landing Page Builder es un sistema modular de secciones pre-diseñadas para construir páginas de aterrizaje de alta conversión. Las 50+ secciones incluyen heroes, testimonios, precios, FAQs y más. Disponible en HTML/CSS puro y como componentes React, con animaciones CSS incluidas.',
+    price:59, oldPrice:null,
+    img:'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+      'https://images.unsplash.com/photo-1481487196290-c152efe083f5?w=800&q=80',
+      'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&q=80',
+    ],
+    badge:null, rating:4.9, reviews:394, tag:'popular',
+    features:['50+ secciones modulares','HTML/CSS puro + React','Animaciones CSS incluidas','Responsive por defecto','Alta conversión probada','Documentación completa'],
+    specs:[{l:'Secciones',v:'50+'},{l:'Tecnología',v:'HTML/CSS + React'},{l:'Responsive',v:'Sí'},{l:'Animaciones',v:'CSS + JS'},{l:'Documentación',v:'Completa'},{l:'Licencia',v:'Comercial'}]
+  },
+  {
+    id:8, name:'Motion Design Kit', cat:'UI Kits', catKey:'ui-kits',
+    desc:'Variables de animación, easing presets y micro-interacciones para Figma. Lleva tu UI al siguiente nivel.',
+    longDesc:'Motion Design Kit te da todo lo que necesitas para crear interfaces con animaciones fluidas y memorables. Incluye 100+ variables de animación, 40 easing presets calibrados, 60 micro-interacciones listas para usar y una guía de principios de motion design que transformará tu proceso.',
+    price:34, oldPrice:69,
+    img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
+    imgs:[
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+      'https://images.unsplash.com/photo-1536240478700-b869ad10e2c7?w=800&q=80',
+    ],
+    badge:'sale', rating:4.7, reviews:156, tag:'oferta',
+    features:['100+ variables de animación','40 easing presets','60 micro-interacciones','Guía de motion design','Compatible con Figma Variables','Biblioteca de componentes animados'],
+    specs:[{l:'Formato',v:'Figma'},{l:'Variables',v:'100+'},{l:'Easing presets',v:'40'},{l:'Micro-interacciones',v:'60'},{l:'Guía incluida',v:'Sí'},{l:'Licencia',v:'Comercial'}]
   }
+];
 
-  /* ── FILTERS ───────────────────────────────── */
-  function applyFilters() {
-    const q = document.getElementById('search-input').value.toLowerCase();
-    let res = products.filter(p =>
-      (activeFilter === 'todos' || p.tag === activeFilter) &&
-      (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
-    );
-    renderProducts(res);
+let activeFilter = 'todos';
+let wishlist = new Set();
+
+/* ── RENDER PRODUCTS ── */
+function renderProducts(list) {
+  const grid = document.getElementById('product-grid');
+  if (!list.length) {
+    grid.innerHTML = `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:60px 0">No se encontraron productos.</p>`;
+    return;
   }
+  grid.innerHTML = list.map(p => `
+    <div class="product-card" onclick="openProduct(${p.id})">
+      <div class="product-thumb">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" />
+        ${p.badge==='nuevo'?'<span class="badge-new">Nuevo</span>':p.badge==='hot'?'<span class="badge-hot">🔥 Top</span>':p.badge==='sale'?'<span class="badge-sale">Sale</span>':''}
+        <button class="wish-btn ${wishlist.has(p.id)?'active':''}" onclick="event.stopPropagation();toggleWish(${p.id})" title="Favorito">${wishlist.has(p.id)?'❤️':'🤍'}</button>
+      </div>
+      <div class="product-body">
+        <div class="product-cat">${p.cat}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div>
+            <span class="product-price">$${p.price}</span>
+            ${p.oldPrice?`<span class="price-old">$${p.oldPrice}</span>`:''}
+          </div>
+          <span class="btn-ver">Ver producto →</span>
+        </div>
+      </div>
+      <div class="product-meta">
+        <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
+        <span>${p.rating} (${p.reviews})</span>
+        <span style="margin-left:auto">⬇ Descarga instant.</span>
+      </div>
+    </div>
+  `).join('');
+}
 
-  function filterProducts() { applyFilters(); }
+/* ── HERO MOSAIC ── */
+function renderHeroMosaic() {
+  const mosaic = document.getElementById('hero-mosaic');
+  if (!mosaic) return;
+  const picks = [products[0], products[1], products[6]];
+  mosaic.innerHTML = picks.map((p,i) => `
+    <div class="mosaic-img" onclick="openProduct(${p.id})" style="cursor:pointer${i===0?';grid-row:1/3':''}">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" />
+      <div class="mosaic-overlay"></div>
+      <span class="mosaic-label">${p.name}</span>
+    </div>
+  `).join('');
+}
 
-  function setFilter(tag, el) {
-    activeFilter = tag;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-    applyFilters();
-  }
+/* ── OPEN PRODUCT LANDING ── */
+function openProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
 
-  function filterByCategory(catKey, el) {
-    event.preventDefault();
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    const q = document.getElementById('search-input').value.toLowerCase();
-    let res = catKey === 'todos' ? products : products.filter(p => p.catKey === catKey);
-    if (q) res = res.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
-    renderProducts(res);
-    document.getElementById('productos').scrollIntoView({ behavior:'smooth' });
-  }
+  // Fill landing page
+  document.getElementById('lp-cat').textContent = p.cat;
+  document.getElementById('lp-title').textContent = p.name;
+  document.getElementById('lp-stars').textContent = '★'.repeat(Math.floor(p.rating)) + '☆'.repeat(5-Math.floor(p.rating));
+  document.getElementById('lp-rating-text').textContent = `${p.rating} — ${p.reviews} reseñas`;
+  document.getElementById('lp-desc').textContent = p.longDesc;
+  document.getElementById('lp-price').textContent = `$${p.price}`;
+  document.getElementById('lp-cta-price').textContent = `$${p.price}`;
+  const po = document.getElementById('lp-price-old');
+  const pd = document.getElementById('lp-discount');
+  if (p.oldPrice) {
+    po.textContent = `$${p.oldPrice}`; po.style.display='inline';
+    const pct = Math.round((1 - p.price/p.oldPrice)*100);
+    pd.textContent = `-${pct}%`; pd.style.display='inline';
+  } else { po.style.display='none'; pd.style.display='none'; }
 
-  function sortProducts(val) {
-    const q = document.getElementById('search-input').value.toLowerCase();
-    let res = products.filter(p =>
-      (activeFilter === 'todos' || p.tag === activeFilter) &&
-      (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q))
-    );
-    if (val === 'price-asc') res.sort((a,b) => a.price - b.price);
-    else if (val === 'price-desc') res.sort((a,b) => b.price - a.price);
-    else if (val === 'rating') res.sort((a,b) => b.rating - a.rating);
-    renderProducts(res);
-  }
+  // Features
+  document.getElementById('lp-features').innerHTML = p.features.map(f=>`<li>${f}</li>`).join('');
 
-  /* ── WISHLIST ──────────────────────────────── */
-  function toggleWish(id) {
-    if (wishlist.has(id)) { wishlist.delete(id); showToast('💔 Eliminado de favoritos'); }
-    else { wishlist.add(id); showToast('❤️ Añadido a favoritos'); }
-    applyFilters();
-  }
+  // Specs
+  document.getElementById('lp-specs').innerHTML = p.specs.map(s=>`<div class="spec-card"><div class="spec-label">${s.l}</div><div class="spec-val">${s.v}</div></div>`).join('');
 
-  /* ── CART ──────────────────────────────────── */
-  let cartCount = 0;
-  function addToCart(name) {
-    cartCount++;
-    document.querySelector('.btn-header').textContent = `Carrito (${cartCount})`;
-    showToast(`🛒 "${name}" añadido`);
-  }
+  // Gallery
+  document.getElementById('lp-main-img').src = p.imgs[0];
+  document.getElementById('lp-thumbs').innerHTML = p.imgs.map((img,i)=>`
+    <div class="lp-thumb ${i===0?'active':''}" onclick="switchImg(this,'${img}')">
+      <img src="${img}" alt="" loading="lazy" />
+    </div>
+  `).join('');
 
-  /* ── TOAST ─────────────────────────────────── */
-  let toastTimer;
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    document.getElementById('toast-msg').textContent = msg;
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-  }
+  // Related
+  const related = products.filter(x => x.catKey===p.catKey && x.id!==p.id).slice(0,4);
+  document.getElementById('related-grid').innerHTML = related.map(r=>`
+    <div class="product-card" onclick="openProduct(${r.id})" style="cursor:pointer">
+      <div class="product-thumb"><img src="${r.img}" alt="${r.name}" loading="lazy" /></div>
+      <div class="product-body">
+        <div class="product-cat">${r.cat}</div>
+        <div class="product-name">${r.name}</div>
+        <div class="product-footer">
+          <span class="product-price">$${r.price}</span>
+          <span class="btn-ver" style="font-size:.75rem;padding:6px 12px">Ver →</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 
-  /* ── NEWSLETTER ────────────────────────────── */
-  function subscribeNewsletter() {
-    const inp = document.querySelector('.nl-form input');
-    if (inp.value && inp.value.includes('@')) {
-      showToast('✉️ ¡Suscripción confirmada!');
-      inp.value = '';
-    } else { inp.focus(); }
-  }
+  // Switch pages
+  document.getElementById('page-home').classList.remove('active');
+  document.getElementById('page-product').classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 
-  /* ── MOBILE DRAWER ─────────────────────────── */
-  function toggleDrawer() { document.getElementById('nav-drawer').classList.toggle('open'); }
-  function closeDrawer(e) { if (e.target === document.getElementById('nav-drawer')) document.getElementById('nav-drawer').classList.remove('open'); }
-  function closeDrawerDirect() { document.getElementById('nav-drawer').classList.remove('open'); }
+function switchImg(thumb, src) {
+  document.getElementById('lp-main-img').src = src;
+  document.querySelectorAll('.lp-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+}
 
-  /* ── INIT ──────────────────────────────────── */
-  renderProducts(products);
+/* ── GO HOME ── */
+function goHome() {
+  document.getElementById('page-product').classList.remove('active');
+  document.getElementById('page-home').classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ── FILTERS ── */
+function applyFilters() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  let res = products.filter(p =>
+    (activeFilter==='todos' || p.tag===activeFilter) &&
+    (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
+  );
+  renderProducts(res);
+}
+function filterProducts() { applyFilters(); }
+function setFilter(tag, el) {
+  activeFilter = tag;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active'); applyFilters();
+}
+function filterByCategory(catKey, el) {
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const q = document.getElementById('search-input').value.toLowerCase();
+  let res = catKey==='todos' ? products : products.filter(p => p.catKey===catKey);
+  if (q) res = res.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+  renderProducts(res);
+  document.getElementById('productos').scrollIntoView({behavior:'smooth'});
+}
+function sortProducts(val) {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  let res = products.filter(p => (activeFilter==='todos'||p.tag===activeFilter) && (p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
+  if (val==='price-asc') res.sort((a,b)=>a.price-b.price);
+  else if (val==='price-desc') res.sort((a,b)=>b.price-a.price);
+  else if (val==='rating') res.sort((a,b)=>b.rating-a.rating);
+  renderProducts(res);
+}
+
+/* ── WISHLIST ── */
+function toggleWish(id) {
+  if (wishlist.has(id)) { wishlist.delete(id); showToast('💔 Eliminado de favoritos'); }
+  else { wishlist.add(id); showToast('❤️ Añadido a favoritos'); }
+  applyFilters();
+}
+
+/* ── TOAST ── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show'); clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── NEWSLETTER ── */
+function subscribeNewsletter() {
+  const inp = document.querySelector('.nl-form input');
+  if (inp.value && inp.value.includes('@')) { showToast('✉️ ¡Suscripción confirmada!'); inp.value=''; }
+  else inp.focus();
+}
+
+/* ── MOBILE DRAWER ── */
+function toggleDrawer() { document.getElementById('nav-drawer').classList.toggle('open'); }
+function closeDrawer(e) { if (e.target===document.getElementById('nav-drawer')) document.getElementById('nav-drawer').classList.remove('open'); }
+function closeDrawerDirect() { document.getElementById('nav-drawer').classList.remove('open'); }
+
+/* ── INIT ── */
+renderProducts(products);
+renderHeroMosaic();
 </script>
 </body>
 </html>
