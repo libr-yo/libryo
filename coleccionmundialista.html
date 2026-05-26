@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colección Premium de Álbumes de Fútbol</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/webp" href="2022 QATAR portada.webp">
+  
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Montserrat',sans-serif;
+      background:#050505;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:
+        radial-gradient(circle at top,#0b3d1d 0%,#050505 50%),
+        url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=1920&auto=format&fit=crop');
+      background-size:cover;
+      background-position:center;
+      opacity:0.18;
+      z-index:-2;
+    }
+
+    .particles{
+      position:fixed;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      z-index:-1;
+    }
+
+    .ball{
+      position:absolute;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:#ffd700;
+      opacity:.6;
+      animation:float 12s linear infinite;
+    }
+
+    @keyframes float{
+      from{
+        transform:translateY(100vh) rotate(0deg);
+      }
+      to{
+        transform:translateY(-100vh) rotate(360deg);
+      }
+    }
+
+    header{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+      position:relative;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:50px;
+      max-width:1400px;
+      align-items:center;
+    }
+
+    .hero-text h1{
+      font-size:4rem;
+      line-height:1;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      text-shadow:0 0 20px rgba(255,215,0,.5);
+    }
+
+    .hero-text h1 span{
+      color:#ffd700;
+    }
+
+    .hero-text p{
+      font-size:1.2rem;
+      line-height:1.8;
+      margin-bottom:30px;
+      color:#e0e0e0;
+    }
+
+    .cta{
+      display:inline-block;
+      padding:18px 40px;
+      border-radius:50px;
+      background:linear-gradient(45deg,#00c853,#ffd600);
+      color:#000;
+      font-weight:900;
+      text-decoration:none;
+      font-size:1.1rem;
+      transition:.4s;
+      box-shadow:0 10px 40px rgba(0,200,83,.5);
+      animation:pulse 2s infinite;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(1);}
+      50%{transform:scale(1.05);}
+      100%{transform:scale(1);}
+    }
+
+    .cta:hover{
+      transform:translateY(-5px) scale(1.05);
+      box-shadow:0 20px 50px rgba(255,214,0,.7);
+    }
+
+    .hero-image{
+      perspective:1500px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .card-3d{
+      width:100%;
+      max-width:550px;
+      transform-style:preserve-3d;
+      animation:rotateCard 8s ease-in-out infinite;
+      border-radius:25px;
+      overflow:hidden;
+      box-shadow:0 25px 80px rgba(255,215,0,.35);
+    }
+
+    .card-3d img{
+      width:100%;
+      display:block;
+    }
+
+    @keyframes rotateCard{
+      0%{transform:rotateY(-10deg) rotateX(4deg);}
+      50%{transform:rotateY(10deg) rotateX(-4deg) translateY(-10px);}
+      100%{transform:rotateY(-10deg) rotateX(4deg);}
+    }
+
+    section{
+      padding:100px 20px;
+    }
+
+    .section-title{
+      text-align:center;
+      font-size:3rem;
+      margin-bottom:70px;
+      text-transform:uppercase;
+      font-weight:900;
+    }
+
+    .section-title span{
+      color:#ffd700;
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    .feature-card{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      padding:40px 30px;
+      border-radius:25px;
+      backdrop-filter:blur(8px);
+      transition:.4s;
+      transform-style:preserve-3d;
+    }
+
+    .feature-card:hover{
+      transform:translateY(-10px) rotateX(5deg) rotateY(-5deg);
+      box-shadow:0 20px 40px rgba(255,215,0,.25);
+    }
+
+    .feature-card h3{
+      margin-bottom:15px;
+      color:#ffd700;
+      font-size:1.4rem;
+    }
+
+    .slider-container{
+      width:100%;
+      overflow:hidden;
+      position:relative;
+      margin-top:40px;
+    }
+
+    .slider-track{
+      display:flex;
+      width:calc(350px * 12);
+      animation:scroll 30s linear infinite;
+      gap:25px;
+    }
+
+    @keyframes scroll{
+      0%{transform:translateX(0);}
+      100%{transform:translateX(calc(-350px * 6));}
+    }
+
+    .album-card{
+      width:350px;
+      height:500px;
+      border-radius:20px;
+      overflow:hidden;
+      position:relative;
+      flex-shrink:0;
+      transform-style:preserve-3d;
+      transition:.5s;
+      box-shadow:0 20px 50px rgba(0,0,0,.5);
+    }
+
+    .album-card:hover{
+      transform:rotateY(10deg) scale(1.05);
+    }
+
+    .album-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,.95),transparent);
+      display:flex;
+      align-items:flex-end;
+      padding:25px;
+      font-size:1.3rem;
+      font-weight:800;
+    }
+
+    .emotion{
+      max-width:1200px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:40px;
+      align-items:center;
+    }
+
+    .emotion-text h2{
+      font-size:3rem;
+      margin-bottom:20px;
+    }
+
+    .emotion-text h2 span{
+      color:#ffd700;
+    }
+
+    .emotion-text p{
+      font-size:1.15rem;
+      line-height:1.9;
+      color:#d6d6d6;
+      margin-bottom:25px;
+    }
+
+    .emotion-image{
+      perspective:1200px;
+    }
+
+    .emotion-image img{
+      width:100%;
+      border-radius:25px;
+      transform:rotateY(-8deg);
+      box-shadow:0 30px 60px rgba(255,215,0,.25);
+    }
+
+    .final-cta{
+      text-align:center;
+      padding:120px 20px;
+      background:linear-gradient(180deg,transparent,#071d0f);
+    }
+
+    .final-cta h2{
+      font-size:4rem;
+      margin-bottom:20px;
+      text-transform:uppercase;
+      font-weight:900;
+    }
+
+    .final-cta p{
+      max-width:900px;
+      margin:auto;
+      font-size:1.2rem;
+      line-height:1.8;
+      color:#e0e0e0;
+      margin-bottom:40px;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      background:#020202;
+      color:#aaa;
+    }
+
+    @media(max-width:900px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+
+      .hero-text{
+        text-align:center;
+      }
+
+      .hero-text h1{
+        font-size:2.8rem;
+      }
+
+      .section-title,
+      .emotion-text h2,
+      .final-cta h2{
+        font-size:2.3rem;
+      }
+
+      .slider-track{
+        width:max-content;
+      }
+    }
+  </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1288720260122475');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1288720260122475&ev=PageView&noscript=1"
+  /></noscript>
+  
+  <!-- End Meta Pixel Code -->
+
+</head>
+<body>
+
+  <div class="particles">
+    <div class="ball" style="left:10%; animation-duration:10s"></div>
+    <div class="ball" style="left:20%; animation-duration:14s"></div>
+    <div class="ball" style="left:35%; animation-duration:9s"></div>
+    <div class="ball" style="left:50%; animation-duration:16s"></div>
+    <div class="ball" style="left:65%; animation-duration:11s"></div>
+    <div class="ball" style="left:80%; animation-duration:13s"></div>
+    <div class="ball" style="left:90%; animation-duration:15s"></div>
+  </div>
+
+  <header>
+    <div class="hero">
+
+      <div class="hero-text">
+        <h1>
+          Revive la <span>Historia</span><br>
+          del Fútbol Mundial
+        </h1>
+
+        <p>
+          Accede a la colección definitiva de álbumes digitales del MUNDIAL,
+          COPA AMÉRICA y EUROCOPA. Más de 90 años de pasión, recuerdos,
+          estrellas legendarias y emociones inolvidables en una sola colección.
+          Ahora también con contenido y FIGURITAS DEL MUNDIAL 2026.
+        </p>
+
+        <a href="https://hotm.io/coleccionpremium" target="_blank" class="cta">
+          ⚽ QUIERO MI COLECCIÓN PREMIUM
+        </a>
+      </div>
+
+      <div class="hero-image">
+        <div class="card-3d">
+          <img src="FLYER DE ÁLBUMES.png" alt="Colección Premium de Álbumes">
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <section>
+    <h2 class="section-title">
+      ¿Qué incluye esta <span>colección?</span>
+    </h2>
+
+    <div class="features">
+
+      <div class="feature-card">
+        <img src="mundial camp.jpg" style="width:100%; border-radius:18px; margin-bottom:20px; height:240px; object-fit:cover;">
+        <h3>🏆 Mundiales FIFA</h3>
+        <p>
+            Todos los álbumes oficiales desde Uruguay 1930 hasta Qatar 2022, además de contenido y figuritas del Mundial 2026 para seguir viviendo la historia del fútbol generación tras generación.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <img src="america camp.jpg" style="width:100%; border-radius:18px; margin-bottom:20px; height:240px; object-fit:cover;">
+        <h3>🔥 Copa América</h3>
+        <p>
+          Revive las gestas históricas de Argentina, Uruguay y Brasil en el torneo más antiguo del mundo.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <img src="euro camp.jpeg" style="width:100%; border-radius:18px; margin-bottom:20px; height:240px; object-fit:cover;">
+        <h3>⚽ Eurocopa</h3>
+        <p>
+          España, Italia, Alemania y Francia protagonizaron momentos inolvidables del fútbol europeo.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">
+      Vive la pasión del <span>fútbol</span>
+    </h2>
+
+    <div class="slider-container">
+      <div class="slider-track">
+
+        <!-- BLOQUE 1 -->
+
+        <div class="album-card">
+          <img src="FLYER DE ÁLBUMES.png" alt="Álbum Mundial">
+          <div class="overlay">Mundiales Legendarios</div>
+        </div>
+
+        <div class="album-card">
+          <img src="https://images.unsplash.com/photo-1543357480-c60d40007a3f?q=80&w=1200&auto=format&fit=crop" alt="Fútbol">
+          <div class="overlay">La Emoción de Cada Gol</div>
+        </div>
+
+        <div class="album-card">
+          <img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?q=80&w=1200&auto=format&fit=crop" alt="Estadio">
+          <div class="overlay">Historia y Pasión</div>
+        </div>
+
+        <div class="album-card">
+          <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1200&auto=format&fit=crop" alt="Fans">
+          <div class="overlay">Recuerdos Inolvidables</div>
+        </div>
+
+        <div class="album-card">
+          <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?q=80&w=1200&auto=format&fit=crop" alt="Trofeo">
+          <div class="overlay">Toda una Era Dorada</div>
+        </div>
+
+        <div class="album-card">
+          <img src="FLYER DE ÁLBUMES.png" alt="Colección Premium">
+          <div class="overlay">Colección Premium</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="emotion">
+
+      <div class="emotion-text">
+        <h2>
+          El fútbol se <span>siente</span>
+        </h2>
+
+        <p>
+          Cada figurita representa una historia. Cada álbum revive emociones,
+          héroes, finales épicas y generaciones completas de fanáticos.
+        </p>
+
+        <p>
+          Esta colección está diseñada para coleccionistas, amantes del fútbol
+          y personas que quieren conservar para siempre la historia mundialista.
+        </p>
+
+        <a href="https://hotm.io/coleccionpremium" target="_blank" class="cta">
+          ACCEDER AHORA
+        </a>
+      </div>
+
+      <div class="emotion-image">
+        <img src="FLYER DE ÁLBUMES.png" alt="Colección Mundialista">
+      </div>
+
+    </div>
+  </section>
+
+  <section class="final-cta">
+
+    <h2>
+      ⚽ La Historia del Fútbol en tus manos
+    </h2>
+
+    <p>
+      No dejes pasar la oportunidad de tener la colección más completa de álbumes
+      de fútbol del mundo. Revive MUNDIALES, COPA AMÉRICA y EUROCOPAS desde cualquier dispositivo, incluyendo contenido y FIGURITAS DEL MUNDIAL 2026.
+    </p>
+
+    <a href="https://hotm.io/coleccionpremium" target="_blank" class="cta">
+      🔥 COMPRAR AHORA
+    </a>
+
+  </section>
+
+  <footer>
+    © 2026 Colección Premium de Álbumes • Diseñado para fanáticos del fútbol.
+  </footer>
+
+  <a href="https://wa.me/51958747534" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+    <span class="tooltip">Contactar por WhatsApp</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="white">
+      <path d="M20.52 3.48A11.8 11.8 0 0012.07 0C5.53 0 .2 5.33.2 11.87c0 2.09.55 4.13 1.6 5.93L0 24l6.39-1.67a11.86 11.86 0 005.68 1.45h.01c6.54 0 11.87-5.33 11.87-11.87 0-3.17-1.23-6.14-3.43-8.43zM12.08 21.7a9.78 9.78 0 01-4.99-1.37l-.36-.21-3.79.99 1.01-3.7-.24-.38a9.77 9.77 0 01-1.5-5.16c0-5.42 4.41-9.83 9.84-9.83 2.62 0 5.08 1.02 6.93 2.88a9.72 9.72 0 012.88 6.93c0 5.43-4.41 9.85-9.78 9.85zm5.39-7.34c-.29-.15-1.72-.85-1.99-.95-.27-.1-.46-.15-.66.15-.19.29-.75.95-.91 1.15-.17.19-.34.22-.63.07-.29-.15-1.21-.45-2.31-1.44-.85-.76-1.43-1.7-1.6-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.49.1-.19.05-.37-.02-.51-.07-.15-.66-1.59-.91-2.18-.24-.57-.49-.49-.66-.5h-.56c-.19 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.19 3.02.15.19 2.06 3.14 5 4.41.7.3 1.25.48 1.67.61.7.22 1.34.19 1.84.12.56-.08 1.72-.7 1.96-1.37.24-.66.24-1.22.17-1.34-.07-.12-.27-.19-.56-.34z"/>
+    </svg>
+  </a>
+
+  <style>
+    .whatsapp-float{
+      position:fixed;
+      right:25px;
+      bottom:25px;
+      width:72px;
+      height:72px;
+      border-radius:50%;
+      background:#25D366;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 15px 40px rgba(37,211,102,.5);
+      z-index:9999;
+      transition:.35s;
+      text-decoration:none;
+      animation:whatsappPulse 2s infinite, glowBorder 1.5s infinite alternate;
+    }
+
+    .whatsapp-float:hover{
+      transform:scale(1.1) rotate(8deg);
+    }
+
+    .tooltip{
+      position:absolute;
+      right:90px;
+      background:#111;
+      color:#fff;
+      padding:12px 18px;
+      border-radius:12px;
+      white-space:nowrap;
+      opacity:0;
+      transform:translateX(10px);
+      transition:.3s;
+      font-weight:700;
+      font-size:.95rem;
+      pointer-events:none;
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .whatsapp-float:hover .tooltip{
+      opacity:1;
+      transform:translateX(0);
+    }
+
+    @keyframes whatsappPulse{
+      0%{transform:scale(1);}
+      50%{transform:scale(1.08);}
+      100%{transform:scale(1);}
+    }
+
+    @keyframes glowBorder{
+      0%{
+        box-shadow:
+          0 0 10px rgba(37,211,102,.5),
+          0 0 20px rgba(37,211,102,.4),
+          0 0 35px rgba(37,211,102,.3);
+      }
+
+      100%{
+        box-shadow:
+          0 0 20px rgba(37,211,102,.9),
+          0 0 45px rgba(37,211,102,.8),
+          0 0 70px rgba(37,211,102,.6);
+      }
+    }
+
+    @media(max-width:768px){
+      .whatsapp-float{
+        width:64px;
+        height:64px;
+        right:18px;
+        bottom:18px;
+      }
+
+      .tooltip{
+        display:none;
+      }
+    }
+  </style>
+
+</body>
+</html>
