@@ -1,313 +1,766 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Libryo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/webp" href="librio logo nuevo.png">
-  
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #09090f; --surface: #111118; --surface2: #18181f;
-      --border: rgba(255,255,255,0.07);
-      --accent: #7c3aed; --accent2: #06b6d4; --accent3: #f59e0b;
-      --text: #f0f0f8; --muted: #7b7b8f; --radius: 14px;
-    }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 0; opacity: .5;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NexusStore — Productos Digitales Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05050d;--surface:#0d0d1a;--surface2:#131326;--surface3:#1a1a35;
+  --border:rgba(130,100,255,.13);--border2:rgba(6,182,212,.1);
+  --accent:#7c3aed;--accent2:#06b6d4;--accent3:#f59e0b;--accent4:#ec4899;
+  --text:#f0f0f8;--muted:#7878a0;--radius:14px;
+  --glow:rgba(124,58,237,.6);--glow2:rgba(6,182,212,.5);
+  --card-h:rgba(124,58,237,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;cursor:none}
 
-    /* PAGES */
-    .page { display: none; }
-    .page.active { display: block; }
+/* ══ CURSOR ══ */
+#cur-dot{position:fixed;width:8px;height:8px;background:var(--accent2);border-radius:50%;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s,background .2s}
+#cur-ring{position:fixed;width:38px;height:38px;border:1.5px solid rgba(124,58,237,.55);border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:width .35s,height .35s,border-color .3s}
+body:has(a:hover,button:hover) #cur-dot{width:14px;height:14px;background:var(--accent)}
+body:has(a:hover,button:hover) #cur-ring{width:52px;height:52px;border-color:rgba(124,58,237,.8)}
 
-    /* ── HEADER ── */
-    header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px) saturate(180%); background: rgba(9,9,15,.82); border-bottom: 1px solid var(--border); }
-    .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 24px; padding: 0 28px; height: 68px; }
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; cursor: pointer; }
-    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.5px; background: linear-gradient(90deg,#fff 40%,var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    nav { display: flex; align-items: center; gap: 4px; }
-    nav a { color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; padding: 7px 14px; border-radius: 8px; transition: color .2s, background .2s; white-space: nowrap; cursor: pointer; }
-    nav a:hover { color: var(--text); background: var(--surface2); }
-    nav a.active { color: var(--text); }
-    .search-wrap { flex: 1; max-width: 380px; margin-left: auto; position: relative; }
-    .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
-    .search-wrap input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .88rem; padding: 9px 14px 9px 40px; outline: none; transition: border-color .2s, box-shadow .2s; }
-    .search-wrap input::placeholder { color: var(--muted); }
-    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.18); }
-    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; margin: 5px 0; transition: .3s; }
+/* ══ BG GRID + ORBS ══ */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(124,58,237,.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(124,58,237,.025) 1px,transparent 1px);
+  background-size:64px 64px}
+#orb1,#orb2,#orb3{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+#orb1{width:700px;height:700px;background:rgba(124,58,237,.18);top:-200px;right:-150px;animation:orbFloat 18s ease-in-out infinite}
+#orb2{width:500px;height:500px;background:rgba(6,182,212,.12);bottom:-100px;left:-100px;animation:orbFloat 22s ease-in-out infinite .5s reverse}
+#orb3{width:400px;height:400px;background:rgba(236,72,153,.1);top:40%;left:40%;animation:orbFloat 14s ease-in-out infinite 2s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-60px) scale(1.06)}66%{transform:translate(-30px,40px) scale(.95)}}
 
-    /* ── HERO ── */
-    .hero { position: relative; overflow: hidden; max-width: 1280px; margin: 0 auto; padding: 80px 28px 70px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
-    .orb1 { width: 500px; height: 500px; background: rgba(124,58,237,.25); top: -100px; right: 0; }
-    .orb2 { width: 350px; height: 350px; background: rgba(6,182,212,.18); bottom: -80px; right: 200px; }
-    .hero-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.35); color: #a78bfa; font-size: .78rem; font-weight: 500; padding: 5px 12px; border-radius: 20px; margin-bottom: 20px; letter-spacing: .3px; }
-    .hero-badge span { width: 6px; height: 6px; background: #7c3aed; border-radius: 50%; animation: pulse 1.8s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+/* ══ PAGES ══ */
+.page{display:none;position:relative;z-index:1}.page.active{display:block}
 
-    /* PLAYFAIR for hero headline */
-    .hero h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(2.2rem,4vw,3.4rem); line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
-    .hero h1 em { font-style: italic; background: linear-gradient(90deg, var(--accent2), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 420px; margin-bottom: 32px; }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn-primary { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; text-decoration: none; font-family: 'DM Sans',sans-serif; font-weight: 500; padding: 13px 28px; border-radius: 11px; font-size: .95rem; transition: transform .2s, box-shadow .2s; box-shadow: 0 8px 24px rgba(124,58,237,.35); cursor: pointer; border: none; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,58,237,.45); }
-    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); text-decoration: none; font-family: 'DM Sans',sans-serif; font-weight: 400; padding: 13px 28px; border-radius: 11px; font-size: .95rem; transition: background .2s, border-color .2s; cursor: pointer; }
-    .btn-ghost:hover { background: var(--surface2); border-color: rgba(255,255,255,.15); }
-    .hero-stats { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
-    .stat-val { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1.6rem; letter-spacing: -1px; }
-    .stat-lbl { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+/* ══════════════════════════
+   HEADER
+══════════════════════════ */
+header{
+  position:sticky;top:0;z-index:300;
+  backdrop-filter:blur(32px) saturate(200%) brightness(.98);
+  background:rgba(5,5,13,.88);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 0 rgba(124,58,237,.15),0 4px 40px rgba(0,0,0,.6)
+}
+.header-inner{max-width:1340px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:0 28px;height:68px}
 
-    /* Hero visual — image mosaic */
-    .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
-    .hero-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; width: 340px; height: 320px; }
-    .mosaic-img { border-radius: 14px; overflow: hidden; position: relative; }
-    .mosaic-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
-    .mosaic-img:hover img { transform: scale(1.05); }
-    .mosaic-img:first-child { grid-row: 1 / 3; border-radius: 18px; }
-    .mosaic-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(9,9,15,.7) 0%, transparent 60%); border-radius: inherit; }
-    .mosaic-label { position: absolute; bottom: 10px; left: 12px; font-size: .7rem; font-weight: 600; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+/* Logo */
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;cursor:pointer;
+  perspective:700px;transition:filter .3s}
+.logo-cube{
+  width:40px;height:40px;position:relative;transform-style:preserve-3d;
+  animation:cubeRotate 8s linear infinite;
+  filter:drop-shadow(0 0 14px var(--glow))
+}
+@keyframes cubeRotate{0%{transform:rotateY(0) rotateX(8deg)}100%{transform:rotateY(360deg) rotateX(8deg)}}
+.logo:hover .logo-cube{animation-play-state:paused;transform:rotateY(30deg) rotateX(-15deg) scale(1.12)!important}
+.cube-face{position:absolute;width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(255,255,255,.2)}
+.cube-front{background:linear-gradient(135deg,var(--accent),var(--accent2));transform:translateZ(20px)}
+.cube-back{background:linear-gradient(135deg,#5b21b6,#0891b2);transform:rotateY(180deg) translateZ(20px)}
+.cube-left{background:linear-gradient(135deg,#4c1d95,#155e75);transform:rotateY(-90deg) translateZ(20px)}
+.cube-right{background:linear-gradient(135deg,#6d28d9,#0e7490);transform:rotateY(90deg) translateZ(20px)}
+.logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:1.22rem;letter-spacing:-.5px;
+  background:linear-gradient(90deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-    /* ── CATEGORIES ── */
-    .categories { max-width: 1280px; margin: 0 auto; padding: 0 28px 60px; }
-    .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
-    .section-header h2 { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 1.6rem; letter-spacing: -0.3px; }
-    .see-all { font-size: .85rem; color: var(--accent2); text-decoration: none; font-weight: 500; transition: opacity .2s; }
-    .see-all:hover { opacity: .7; }
-    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 14px; }
-    .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 16px; text-align: center; cursor: pointer; transition: border-color .2s, transform .2s, background .2s; text-decoration: none; color: var(--text); }
-    .cat-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-3px); }
-    .cat-card.active { border-color: var(--accent); background: rgba(124,58,237,.1); }
-    .cat-emoji { font-size: 2rem; margin-bottom: 10px; }
-    .cat-name { font-size: .85rem; font-weight: 500; }
-    .cat-count { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+/* Nav links */
+nav{display:flex;align-items:center;gap:1px}
+nav a{color:var(--muted);text-decoration:none;font-size:.86rem;font-weight:500;
+  padding:7px 12px;border-radius:9px;transition:all .22s;white-space:nowrap;cursor:pointer;position:relative}
+nav a::after{content:'';position:absolute;bottom:4px;left:50%;
+  transform:translateX(-50%) scaleX(0);width:55%;height:2px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:2px;transition:transform .28s}
+nav a:hover{color:var(--text);background:rgba(124,58,237,.09)}
+nav a:hover::after,nav a.active::after{transform:translateX(-50%) scaleX(1)}
+nav a.active{color:var(--text)}
 
-    /* ── PRODUCTS ── */
-    .products-section { max-width: 1280px; margin: 0 auto; padding: 0 28px 80px; }
-    .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; flex-wrap: wrap; }
-    .filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-family: 'DM Sans',sans-serif; font-size: .82rem; font-weight: 500; padding: 7px 16px; border-radius: 20px; cursor: pointer; transition: all .2s; }
-    .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .sort-select { margin-left: auto; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'DM Sans',sans-serif; font-size: .82rem; padding: 8px 14px; border-radius: 8px; outline: none; cursor: pointer; }
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(270px,1fr)); gap: 20px; }
-    .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: transform .25s, border-color .25s, box-shadow .25s; cursor: pointer; position: relative; }
-    .product-card:hover { transform: translateY(-5px); border-color: rgba(124,58,237,.4); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
-    .product-thumb { height: 190px; position: relative; overflow: hidden; }
-    .product-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
-    .product-card:hover .product-thumb img { transform: scale(1.06); }
-    .badge-new, .badge-hot, .badge-sale { position: absolute; top: 12px; left: 12px; font-size: .65rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; }
-    .badge-new { background: #065f46; color: #34d399; }
-    .badge-hot { background: #7f1d1d; color: #fca5a5; }
-    .badge-sale { background: #78350f; color: #fbbf24; }
-    .wish-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,.5); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .95rem; transition: all .2s; }
-    .wish-btn:hover, .wish-btn.active { background: rgba(239,68,68,.2); color: #f87171; border-color: #f87171; }
-    .product-body { padding: 18px; }
-    .product-cat { font-size: .7rem; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-    .product-name { font-family: 'Syne',sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; line-height: 1.3; }
-    .product-desc { font-size: .8rem; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
-    .product-footer { display: flex; align-items: center; justify-content: space-between; }
-    .product-price { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1.1rem; }
-    .price-old { font-size: .78rem; color: var(--muted); text-decoration: line-through; margin-left: 6px; font-weight: 400; }
-    .btn-ver { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; border: none; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 500; font-size: .8rem; padding: 8px 16px; border-radius: 8px; transition: opacity .2s, transform .15s; text-decoration: none; }
-    .btn-ver:hover { opacity: .85; transform: scale(1.03); }
-    .product-meta { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-top: 1px solid var(--border); font-size: .75rem; color: var(--muted); }
-    .stars { color: var(--accent3); letter-spacing: -2px; }
+/* Social icons */
+.nav-socials{display:flex;align-items:center;gap:7px;margin-left:2px;padding-left:14px;border-left:1px solid var(--border)}
+.soc-btn{
+  width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;flex-shrink:0;position:relative;overflow:hidden;
+  transform-style:preserve-3d;perspective:400px;
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .38s,filter .25s
+}
+.soc-btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.3) 0%,transparent 60%);
+  opacity:0;transition:opacity .22s;z-index:2;border-radius:inherit}
+.soc-btn svg{width:17px;height:17px;fill:#fff;position:relative;z-index:3;transition:transform .25s}
+.soc-btn:hover{transform:translateY(-7px) rotateX(25deg) rotateZ(-4deg) scale(1.2);filter:brightness(1.2)}
+.soc-btn:hover::before{opacity:1}
+.soc-btn:hover svg{transform:scale(1.1)}
+.soc-ig{background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  box-shadow:0 4px 16px rgba(220,39,67,.45)}
+.soc-ig:hover{box-shadow:0 12px 32px rgba(220,39,67,.75)}
+.soc-fb{background:linear-gradient(135deg,#1877f2,#0d5ecb);box-shadow:0 4px 16px rgba(24,119,242,.45)}
+.soc-fb:hover{box-shadow:0 12px 32px rgba(24,119,242,.75)}
+.soc-tt{background:linear-gradient(135deg,#010101,#1c1c1c);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 4px 16px rgba(0,0,0,.55)}
+.soc-tt:hover{box-shadow:0 12px 32px rgba(100,200,210,.6)}
+.soc-wa{background:linear-gradient(135deg,#25d366,#128c7e);box-shadow:0 4px 16px rgba(37,211,102,.38)}
+.soc-wa:hover{box-shadow:0 12px 32px rgba(37,211,102,.7)}
 
-    /* ── PROMO ── */
-    .promo-wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px 70px; }
-    .promo-banner { background: linear-gradient(135deg,#1e0a3c 0%,#0c2a4a 50%,#061a1f 100%); border: 1px solid rgba(124,58,237,.3); border-radius: 24px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 30px; overflow: hidden; position: relative; }
-    .promo-orb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
-    .porb1 { width: 300px; height: 300px; background: rgba(124,58,237,.3); right: -80px; top: -80px; }
-    .porb2 { width: 200px; height: 200px; background: rgba(6,182,212,.2); left: 200px; bottom: -60px; }
-    .promo-text { position: relative; }
-    .promo-tag { display: inline-block; background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.3); color: var(--accent3); font-size: .75rem; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
-    .promo-text h2 { font-family: 'Playfair Display',serif; font-weight: 800; font-size: clamp(1.6rem,3vw,2.2rem); letter-spacing: -0.5px; margin-bottom: 10px; }
-    .promo-text p { color: var(--muted); font-size: .9rem; max-width: 380px; }
-    .promo-actions { display: flex; gap: 12px; flex-shrink: 0; position: relative; }
+/* Search */
+.search-wrap{flex:1;max-width:340px;margin-left:auto;position:relative}
+.search-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;width:15px;height:15px}
+.search-wrap input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:11px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:9px 14px 9px 38px;
+  outline:none;transition:border-color .22s,box-shadow .22s,background .22s}
+.search-wrap input::placeholder{color:var(--muted)}
+.search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.2);background:var(--surface3)}
 
-    /* ── NEWSLETTER ── */
-    .newsletter { max-width: 1280px; margin: 0 auto; padding: 0 28px 80px; }
-    .newsletter-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
-    .nl-text h3 { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 1.5rem; margin-bottom: 8px; letter-spacing: -0.3px; }
-    .nl-text p { color: var(--muted); font-size: .88rem; }
-    .nl-form { display: flex; gap: 10px; flex: 1; max-width: 460px; }
-    .nl-form input { flex: 1; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'DM Sans',sans-serif; font-size: .88rem; padding: 12px 16px; border-radius: 10px; outline: none; transition: border-color .2s; }
-    .nl-form input::placeholder { color: var(--muted); }
-    .nl-form input:focus { border-color: var(--accent); }
-    .btn-nl { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; border: none; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 500; padding: 12px 24px; border-radius: 10px; white-space: nowrap; transition: opacity .2s; }
-    .btn-nl:hover { opacity: .85; }
+/* Hamburger */
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;margin:5px 0;transition:.3s}
 
-    /* ── FOOTER ── */
-    footer { background: var(--surface); border-top: 1px solid var(--border); }
-    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 56px 28px 32px; }
-    .footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
-    .footer-brand p { color: var(--muted); font-size: .85rem; line-height: 1.7; margin: 14px 0 20px; max-width: 280px; }
-    .social-links { display: flex; gap: 10px; }
-    .social-link { width: 36px; height: 36px; border-radius: 9px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .95rem; text-decoration: none; transition: border-color .2s, background .2s; }
-    .social-link:hover { background: var(--accent); border-color: var(--accent); }
-    .footer-col h4 { font-family: 'Syne',sans-serif; font-weight: 700; font-size: .88rem; margin-bottom: 16px; letter-spacing: .2px; }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 10px; }
-    .footer-col ul li a { color: var(--muted); text-decoration: none; font-size: .84rem; transition: color .2s; }
-    .footer-col ul li a:hover { color: var(--text); }
-    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border); font-size: .78rem; color: var(--muted); gap: 20px; flex-wrap: wrap; }
-    .footer-bottom a { color: var(--muted); text-decoration: none; }
-    .footer-bottom a:hover { color: var(--text); }
-    .payment-badges { display: flex; gap: 8px; }
-    .pay-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; font-size: .7rem; font-weight: 600; }
+/* ══ SCROLL REVEAL ══ */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
 
-    /* ── TOAST ── */
-    .toast { position: fixed; bottom: 28px; right: 28px; z-index: 500; background: #065f46; border: 1px solid #059669; color: #d1fae5; font-size: .88rem; font-weight: 500; padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.4); transform: translateY(80px); opacity: 0; transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s; }
-    .toast.show { transform: translateY(0); opacity: 1; }
+/* ══ 3D CARD TILT WRAPPER ══ */
+.tilt-card{transform-style:preserve-3d;perspective:1000px;transition:transform .05s}
 
-    /* ── MOBILE DRAWER ── */
-    .nav-drawer { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); }
-    .nav-drawer.open { display: flex; }
-    .nav-drawer-panel { background: var(--surface); width: 260px; height: 100%; padding: 28px 20px; display: flex; flex-direction: column; gap: 8px; }
-    .nav-drawer-panel a { color: var(--text); text-decoration: none; font-size: .95rem; padding: 12px 16px; border-radius: 10px; transition: background .2s; cursor: pointer; }
-    .nav-drawer-panel a:hover { background: var(--surface2); }
+/* ══════════════════════════
+   HERO
+══════════════════════════ */
+.hero{
+  position:relative;max-width:1340px;margin:0 auto;
+  padding:90px 28px 80px;
+  display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;
+  perspective:1200px;overflow:hidden
+}
+/* animated line accent */
+.hero::after{content:'';position:absolute;bottom:0;left:10%;width:80%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);opacity:.4}
 
-    /* ══════════════════════════════════════
-       PRODUCT LANDING PAGE
-    ══════════════════════════════════════ */
-    #page-product { display: none; }
-    #page-product.active { display: block; }
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.4);
+  color:#c4b5fd;font-size:.76rem;font-weight:600;
+  padding:5px 14px;border-radius:20px;margin-bottom:22px;letter-spacing:.4px;
+  box-shadow:0 0 20px rgba(124,58,237,.2);
+  animation:badgePop .8s cubic-bezier(.34,1.56,.64,1) both
+}
+@keyframes badgePop{0%{opacity:0;transform:translateY(-12px) scale(.9)}100%{opacity:1;transform:none}}
+.hero-badge .dot{width:7px;height:7px;background:var(--accent2);border-radius:50%;
+  animation:pulse 1.8s infinite;box-shadow:0 0 8px var(--accent2)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
 
-    .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: .88rem; cursor: pointer; padding: 10px 0; transition: color .2s; border: none; background: none; font-family: 'DM Sans',sans-serif; }
-    .back-btn:hover { color: var(--text); }
-    .back-btn svg { transition: transform .2s; }
-    .back-btn:hover svg { transform: translateX(-3px); }
+.hero h1{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2.3rem,4.2vw,3.7rem);line-height:1.05;letter-spacing:-1.5px;
+  margin-bottom:22px;
+  animation:heroTitle .9s cubic-bezier(.34,1.56,.64,1) .15s both
+}
+@keyframes heroTitle{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:none}}
+.hero h1 em{font-style:italic;
+  background:linear-gradient(100deg,var(--accent2) 0%,var(--accent) 60%,var(--accent4) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 18px rgba(124,58,237,.5))}
+.hero p{color:var(--muted);font-size:.98rem;line-height:1.75;max-width:430px;margin-bottom:34px;
+  animation:heroTitle .9s ease .3s both}
+.hero-btns{display:flex;gap:13px;flex-wrap:wrap;animation:heroTitle .9s ease .45s both}
 
-    .product-landing { max-width: 1100px; margin: 0 auto; padding: 32px 28px 80px; }
-    .product-landing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-bottom: 80px; }
+/* ── Buttons ── */
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent) 0%,#5b21b6 100%);
+  color:#fff;text-decoration:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-weight:600;
+  padding:14px 30px;border-radius:12px;font-size:.95rem;
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 8px 28px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.2);
+  position:relative;overflow:hidden
+}
+.btn-primary::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .2s}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 40px rgba(124,58,237,.6)}
+.btn-primary:hover::after{opacity:1}
+.btn-ghost{
+  background:transparent;color:var(--text);border:1px solid var(--border);text-decoration:none;
+  font-family:'DM Sans',sans-serif;font-weight:400;
+  padding:14px 30px;border-radius:12px;font-size:.95rem;cursor:pointer;
+  transition:background .22s,border-color .22s,box-shadow .22s,transform .22s
+}
+.btn-ghost:hover{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.4);
+  box-shadow:0 0 20px rgba(124,58,237,.18);transform:translateY(-2px)}
 
-    .lp-gallery { position: sticky; top: 90px; }
-    .lp-main-img { border-radius: 20px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--border); }
-    .lp-main-img img { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; }
-    .lp-thumbs { display: flex; gap: 10px; }
-    .lp-thumb { width: 72px; height: 56px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: border-color .2s; flex-shrink: 0; }
-    .lp-thumb.active { border-color: var(--accent); }
-    .lp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-stats{display:flex;gap:36px;margin-top:44px;padding-top:34px;border-top:1px solid var(--border);
+  animation:heroTitle .9s ease .6s both}
+.stat-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.65rem;letter-spacing:-1px;
+  background:linear-gradient(90deg,var(--text),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-lbl{font-size:.76rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
 
-    .lp-info { }
-    .lp-cat { font-size: .72rem; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
-    .lp-title { font-family: 'Playfair Display',serif; font-weight: 900; font-size: clamp(1.8rem,3vw,2.6rem); line-height: 1.1; letter-spacing: -1px; margin-bottom: 14px; }
-    .lp-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: .85rem; color: var(--muted); }
-    .lp-rating .stars { color: var(--accent3); font-size: 1rem; }
-    .lp-desc { color: var(--muted); font-size: .95rem; line-height: 1.8; margin-bottom: 28px; }
-    .lp-price-box { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; }
-    .lp-price { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 2.4rem; letter-spacing: -1px; }
-    .lp-price-old { font-size: 1rem; color: var(--muted); text-decoration: line-through; }
-    .lp-discount { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.3); color: var(--accent3); font-size: .75rem; font-weight: 700; padding: 3px 9px; border-radius: 5px; }
-    .lp-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
-    .lp-features li { display: flex; align-items: center; gap: 10px; font-size: .88rem; color: var(--muted); }
-    .lp-features li::before { content: '✓'; color: #34d399; font-weight: 700; font-size: .8rem; background: rgba(52,211,153,.1); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .lp-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn-buy { background: linear-gradient(135deg,var(--accent),#5b21b6); color: #fff; border: none; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 600; font-size: 1rem; padding: 15px 36px; border-radius: 12px; transition: transform .2s, box-shadow .2s; box-shadow: 0 8px 24px rgba(124,58,237,.35); text-decoration: none; }
-    .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(124,58,237,.45); }
+/* ── Hero visual: 3D scene ── */
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:380px}
+.scene3d-wrap{perspective:1000px;width:100%;display:flex;justify-content:center}
+.scene3d{
+  position:relative;width:340px;height:380px;
+  transform-style:preserve-3d;
+  animation:sceneFloat 6s ease-in-out infinite;
+  transition:transform .08s ease-out
+}
+@keyframes sceneFloat{0%,100%{transform:rotateX(8deg) rotateY(-5deg)}50%{transform:rotateX(3deg) rotateY(5deg)}}
 
-    /* Landing — details section */
-    .lp-details { border-top: 1px solid var(--border); padding-top: 60px; }
-    .lp-details h2 { font-family: 'Playfair Display',serif; font-weight: 700; font-size: 1.6rem; margin-bottom: 28px; }
-    .lp-specs { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 16px; margin-bottom: 50px; }
-    .spec-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-    .spec-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
-    .spec-val { font-family: 'Syne',sans-serif; font-weight: 700; font-size: .95rem; }
+/* 3D cards in scene */
+.s-card{
+  position:absolute;border-radius:20px;
+  transform-style:preserve-3d;
+  box-shadow:0 24px 60px rgba(0,0,0,.7),
+             0 0 0 1px rgba(255,255,255,.07),
+             inset 0 1px 0 rgba(255,255,255,.12)
+}
+.s-card::before{content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,transparent 50%);pointer-events:none;z-index:1}
+.s-card-img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
 
-    /* Related */
-    .related-section { max-width: 1100px; margin: 0 auto; padding: 0 28px 80px; }
-    .related-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 18px; }
+.sc1{width:210px;height:240px;top:10px;left:30px;
+  background:#0d0d24;transform:translateZ(50px) rotateY(-10deg);
+  animation:scFloat1 5s ease-in-out infinite}
+.sc2{width:160px;height:120px;top:50px;right:0;
+  background:#0a1628;transform:translateZ(80px) rotateY(8deg);
+  animation:scFloat2 6s ease-in-out infinite .5s}
+.sc3{width:140px;height:90px;bottom:30px;right:20px;
+  background:#100a28;transform:translateZ(60px) rotateY(5deg);
+  animation:scFloat3 7s ease-in-out infinite 1s}
+.sc4{width:120px;height:70px;bottom:10px;left:20px;
+  background:#0a1a1c;transform:translateZ(30px) rotateY(-6deg);
+  animation:scFloat1 4.5s ease-in-out infinite 1.5s}
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { display: none; }
-      .hamburger { display: flex; flex-direction: column; }
-      .hero { grid-template-columns: 1fr; text-align: center; padding: 50px 20px 40px; }
-      .hero p { margin: 0 auto 28px; }
-      .hero-btns { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .hero-visual { display: none; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .newsletter-inner { flex-direction: column; }
-      .nl-form { max-width: 100%; }
-      .promo-banner { flex-direction: column; text-align: center; padding: 36px 28px; }
-      .promo-actions { justify-content: center; }
-      .product-landing-grid { grid-template-columns: 1fr; }
-      .lp-gallery { position: static; }
-    }
-    @media (max-width: 540px) {
-      .header-inner { padding: 0 16px; }
-      .search-wrap { display: none; }
-      .footer-top { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
-    }
-  </style>
+@keyframes scFloat1{0%,100%{transform:translateZ(50px) rotateY(-10deg) translateY(0)}50%{transform:translateZ(50px) rotateY(-10deg) translateY(-10px)}}
+@keyframes scFloat2{0%,100%{transform:translateZ(80px) rotateY(8deg) translateY(0)}50%{transform:translateZ(80px) rotateY(8deg) translateY(-14px)}}
+@keyframes scFloat3{0%,100%{transform:translateZ(60px) rotateY(5deg) translateY(0)}50%{transform:translateZ(60px) rotateY(5deg) translateY(-8px)}}
+
+.s-card-label{position:absolute;bottom:12px;left:14px;right:14px;z-index:2;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;
+  color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.s-card-price{position:absolute;top:12px;right:14px;z-index:2;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;
+  padding:3px 9px;color:#34d399}
+
+/* ══════════════════════════
+   CATEGORIES
+══════════════════════════ */
+.categories{max-width:1340px;margin:0 auto;padding:0 28px 64px}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px}
+.section-header h2{
+  font-family:'Playfair Display',serif;font-weight:700;font-size:1.75rem;letter-spacing:-.3px;
+  background:linear-gradient(90deg,var(--text),rgba(200,200,255,.7));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+}
+.see-all{font-size:.85rem;color:var(--accent2);text-decoration:none;font-weight:500;
+  transition:opacity .2s,letter-spacing .2s}
+.see-all:hover{opacity:.7;letter-spacing:.3px}
+
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
+.cat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;
+  text-decoration:none;color:var(--text);
+  transform-style:preserve-3d;perspective:600px;
+  transition:border-color .25s,box-shadow .25s;
+  position:relative;overflow:hidden
+}
+.cat-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(124,58,237,.08) 0%,transparent 60%);
+  opacity:0;transition:opacity .25s}
+.cat-card:hover,.cat-card.active{
+  border-color:rgba(124,58,237,.5);
+  box-shadow:0 0 30px rgba(124,58,237,.2),0 8px 24px rgba(0,0,0,.4),
+             inset 0 1px 0 rgba(124,58,237,.2)
+}
+.cat-card:hover::before,.cat-card.active::before{opacity:1}
+.cat-card:hover .cat-emoji{transform:translateY(-4px) scale(1.15) rotateY(20deg);filter:drop-shadow(0 6px 12px rgba(124,58,237,.5))}
+.cat-card.active{background:rgba(124,58,237,.1)}
+.cat-emoji{font-size:2.1rem;margin-bottom:10px;display:block;transition:transform .3s,filter .3s;transform-style:preserve-3d}
+.cat-name{font-size:.84rem;font-weight:600}
+.cat-count{font-size:.71rem;color:var(--muted);margin-top:4px}
+
+/* ══════════════════════════
+   PRODUCTS
+══════════════════════════ */
+.products-section{max-width:1340px;margin:0 auto;padding:0 28px 88px}
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:32px;flex-wrap:wrap}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:.81rem;font-weight:500;
+  padding:8px 18px;border-radius:20px;cursor:pointer;
+  transition:all .22s;position:relative;overflow:hidden}
+.filter-btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent),#5b21b6);opacity:0;transition:opacity .22s}
+.filter-btn span{position:relative;z-index:1}
+.filter-btn:hover{border-color:rgba(124,58,237,.4);color:var(--text)}
+.filter-btn.active{border-color:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(124,58,237,.35)}
+.filter-btn.active::before{opacity:1}
+.sort-select{margin-left:auto;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;
+  padding:8px 14px;border-radius:10px;outline:none;cursor:pointer;
+  transition:border-color .2s}
+.sort-select:focus{border-color:var(--accent)}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:22px}
+
+/* Product card */
+.product-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;cursor:pointer;
+  position:relative;
+  transform-style:preserve-3d;perspective:1000px;
+  transition:border-color .3s,box-shadow .3s;
+}
+.product-card::after{content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(135deg,rgba(124,58,237,.0) 0%,rgba(6,182,212,.0) 100%);
+  transition:background .35s;pointer-events:none;z-index:2}
+.product-card:hover{
+  border-color:rgba(124,58,237,.5);
+  box-shadow:0 0 0 1px rgba(124,58,237,.2),
+             0 24px 60px rgba(0,0,0,.5),
+             0 0 40px rgba(124,58,237,.15)
+}
+.product-card:hover::after{background:linear-gradient(135deg,rgba(124,58,237,.04) 0%,rgba(6,182,212,.03) 100%)}
+.product-card:hover .product-thumb img{transform:scale(1.07)}
+
+.product-thumb{height:196px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.product-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+/* shimmer over image */
+.product-thumb::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.06) 50%,transparent 70%);
+  transform:translateX(-100%);transition:transform .6s ease;pointer-events:none}
+.product-card:hover .product-thumb::after{transform:translateX(100%)}
+
+.badge-new,.badge-hot,.badge-sale{
+  position:absolute;top:12px;left:12px;font-size:.64rem;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:6px;z-index:3;
+  backdrop-filter:blur(6px)
+}
+.badge-new{background:rgba(6,78,59,.85);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+.badge-hot{background:rgba(127,29,29,.85);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.badge-sale{background:rgba(120,53,15,.85);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.wish-btn{
+  position:absolute;top:10px;right:10px;z-index:3;
+  background:rgba(5,5,13,.65);backdrop-filter:blur(8px);
+  border:1px solid var(--border);color:var(--muted);
+  width:33px;height:33px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.92rem;
+  transition:all .22s,transform .3s cubic-bezier(.34,1.56,.64,1)
+}
+.wish-btn:hover,.wish-btn.active{background:rgba(239,68,68,.2);color:#f87171;border-color:#f87171;transform:scale(1.15)}
+
+.product-body{padding:18px}
+.product-cat{font-size:.69rem;color:var(--accent2);font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+.product-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:7px;line-height:1.3}
+.product-desc{font-size:.79rem;color:var(--muted);line-height:1.55;margin-bottom:16px}
+.product-footer{display:flex;align-items:center;justify-content:space-between}
+.product-price{font-family:'Syne',sans-serif;font-weight:800;font-size:1.12rem;
+  background:linear-gradient(90deg,var(--text),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.price-old{font-size:.77rem;color:var(--muted);text-decoration:line-through;margin-left:6px}
+.btn-ver{
+  background:linear-gradient(135deg,var(--accent),#5b21b6);color:#fff;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;
+  font-size:.79rem;padding:8px 17px;border-radius:9px;
+  transition:all .25s;text-decoration:none;
+  box-shadow:0 4px 14px rgba(124,58,237,.35);
+  position:relative;overflow:hidden
+}
+.btn-ver::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+  opacity:0;transition:opacity .2s}
+.btn-ver:hover{opacity:.9;transform:translateY(-2px) scale(1.04);box-shadow:0 8px 22px rgba(124,58,237,.5)}
+.btn-ver:hover::before{opacity:1}
+.product-meta{display:flex;align-items:center;gap:12px;padding:11px 18px;
+  border-top:1px solid var(--border);font-size:.74rem;color:var(--muted)}
+.stars{color:var(--accent3);letter-spacing:-2px}
+
+/* ══════════════════════════
+   CLIENTES / TESTIMONIALS
+══════════════════════════ */
+.clients-section{max-width:1340px;margin:0 auto;padding:0 28px 90px}
+
+/* floating avatar strip */
+.clients-avatars{
+  display:flex;align-items:center;gap:0;margin-bottom:12px
+}
+.clients-avatars img{
+  width:36px;height:36px;border-radius:50%;
+  border:2px solid var(--bg);object-fit:cover;
+  margin-left:-10px;transition:transform .25s,z-index 0s
+}
+.clients-avatars img:first-child{margin-left:0}
+.clients-avatars img:hover{transform:translateY(-4px) scale(1.12);z-index:10;position:relative}
+.clients-avg{margin-left:14px;font-size:.82rem;color:var(--muted)}
+.clients-avg strong{color:var(--accent3);font-family:'Syne',sans-serif}
+
+/* 3-col grid */
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+
+.test-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:28px;position:relative;overflow:hidden;
+  transform-style:preserve-3d;
+  transition:border-color .3s,box-shadow .3s,transform .3s
+}
+.test-card::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent4));opacity:.6}
+.test-card:hover{
+  border-color:rgba(124,58,237,.4);
+  box-shadow:0 20px 50px rgba(0,0,0,.45),0 0 30px rgba(124,58,237,.12);
+  transform:translateY(-6px) rotateX(2deg)
+}
+.test-quote{
+  font-size:3.5rem;line-height:1;color:var(--accent);opacity:.25;
+  font-family:'Playfair Display',serif;margin-bottom:-8px;margin-top:-8px;
+  display:block
+}
+.test-text{font-size:.88rem;color:rgba(240,240,248,.8);line-height:1.75;margin-bottom:22px;position:relative;z-index:1}
+.test-stars{color:var(--accent3);font-size:1rem;letter-spacing:1px;margin-bottom:18px}
+.test-footer{display:flex;align-items:center;gap:14px}
+.test-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(124,58,237,.4);box-shadow:0 0 16px rgba(124,58,237,.3)}
+.test-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem}
+.test-role{font-size:.75rem;color:var(--muted);margin-top:2px}
+.test-product{
+  position:absolute;top:20px;right:20px;
+  background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);
+  color:#c4b5fd;font-size:.64rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+  padding:3px 9px;border-radius:6px
+}
+/* featured card */
+.test-card.featured{
+  background:linear-gradient(135deg,rgba(124,58,237,.12) 0%,rgba(6,182,212,.06) 100%);
+  border-color:rgba(124,58,237,.3);
+  grid-row:span 1
+}
+.clients-cta{margin-top:36px;text-align:center}
+.clients-summary{display:flex;align-items:center;justify-content:center;gap:40px;
+  margin-top:50px;padding:30px;
+  background:var(--surface);border:1px solid var(--border);border-radius:20px}
+.cs-item{text-align:center}
+.cs-num{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-1px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cs-lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+/* ══════════════════════════
+   PROMO BANNER
+══════════════════════════ */
+.promo-wrap{max-width:1340px;margin:0 auto;padding:0 28px 72px}
+.promo-banner{
+  background:linear-gradient(135deg,#1a0838 0%,#0b2340 50%,#051518 100%);
+  border:1px solid rgba(124,58,237,.25);border-radius:28px;
+  padding:52px;display:flex;align-items:center;justify-content:space-between;
+  gap:32px;overflow:hidden;position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(124,58,237,.2)
+}
+.promo-banner::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(124,58,237,.2) 0%,transparent 70%);pointer-events:none}
+.promo-tag{display:inline-block;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.35);
+  color:var(--accent3);font-size:.74rem;font-weight:700;letter-spacing:.6px;
+  text-transform:uppercase;padding:5px 13px;border-radius:20px;margin-bottom:16px}
+.promo-text h2{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(1.7rem,3vw,2.4rem);
+  letter-spacing:-.8px;margin-bottom:12px;position:relative}
+.promo-text p{color:var(--muted);font-size:.9rem;max-width:380px;position:relative}
+.promo-actions{display:flex;gap:13px;flex-shrink:0;position:relative}
+
+/* ══════════════════════════
+   NEWSLETTER
+══════════════════════════ */
+.newsletter{max-width:1340px;margin:0 auto;padding:0 28px 88px}
+.newsletter-inner{
+  background:var(--surface);border:1px solid var(--border);border-radius:26px;
+  padding:52px;display:flex;align-items:center;justify-content:space-between;gap:44px;
+  position:relative;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)
+}
+.newsletter-inner::before{content:'';position:absolute;right:-80px;top:-80px;
+  width:300px;height:300px;background:radial-gradient(circle,rgba(124,58,237,.18) 0%,transparent 70%);pointer-events:none}
+.nl-text h3{font-family:'Playfair Display',serif;font-weight:700;font-size:1.55rem;margin-bottom:9px;letter-spacing:-.3px}
+.nl-text p{color:var(--muted);font-size:.88rem;line-height:1.6}
+.nl-form{display:flex;gap:10px;flex:1;max-width:460px;position:relative}
+.nl-form input{flex:1;background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;
+  padding:13px 18px;border-radius:11px;outline:none;transition:border-color .22s,box-shadow .22s}
+.nl-form input::placeholder{color:var(--muted)}
+.nl-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.18)}
+.btn-nl{background:linear-gradient(135deg,var(--accent),#5b21b6);color:#fff;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-weight:600;padding:13px 26px;border-radius:11px;
+  white-space:nowrap;transition:all .25s;box-shadow:0 6px 20px rgba(124,58,237,.4)}
+.btn-nl:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,58,237,.55)}
+
+/* ══════════════════════════
+   FOOTER
+══════════════════════════ */
+footer{background:var(--surface);border-top:1px solid var(--border)}
+.footer-inner{max-width:1340px;margin:0 auto;padding:60px 28px 36px}
+.footer-top{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:44px;margin-bottom:52px}
+.footer-brand p{color:var(--muted);font-size:.84rem;line-height:1.72;margin:14px 0 22px;max-width:280px}
+.social-links{display:flex;gap:10px;flex-wrap:wrap}
+.social-link{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;text-decoration:none;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1)
+}
+.social-link:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-4px) scale(1.12)}
+.footer-col h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.87rem;margin-bottom:18px;letter-spacing:.2px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:11px}
+.footer-col ul li a{color:var(--muted);text-decoration:none;font-size:.83rem;transition:color .2s,padding-left .2s}
+.footer-col ul li a:hover{color:var(--text);padding-left:4px}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;
+  padding-top:26px;border-top:1px solid var(--border);
+  font-size:.77rem;color:var(--muted);gap:20px;flex-wrap:wrap}
+.footer-bottom a{color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:var(--text)}
+.payment-badges{display:flex;gap:8px}
+.pay-badge{background:var(--surface2);border:1px solid var(--border);
+  border-radius:7px;padding:4px 10px;font-size:.69rem;font-weight:600;
+  transition:border-color .2s;cursor:default}
+.pay-badge:hover{border-color:rgba(124,58,237,.4)}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:30px;right:30px;z-index:500;
+  background:rgba(6,78,59,.95);border:1px solid rgba(52,211,153,.4);
+  backdrop-filter:blur(14px);color:#d1fae5;font-size:.87rem;font-weight:500;
+  padding:13px 22px;border-radius:14px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 12px 36px rgba(0,0,0,.5),0 0 20px rgba(52,211,153,.2);
+  transform:translateY(90px);opacity:0;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ══ MOBILE DRAWER ══ */
+.nav-drawer{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.75);backdrop-filter:blur(6px)}
+.nav-drawer.open{display:flex}
+.nav-drawer-panel{background:var(--surface);width:270px;height:100%;
+  padding:30px 22px;display:flex;flex-direction:column;gap:6px;
+  border-right:1px solid var(--border);
+  box-shadow:12px 0 40px rgba(0,0,0,.6)}
+.nav-drawer-panel a{color:var(--text);text-decoration:none;font-size:.95rem;
+  padding:13px 17px;border-radius:11px;transition:background .2s;cursor:pointer;
+  display:flex;align-items:center;gap:10px}
+.nav-drawer-panel a:hover{background:var(--surface2)}
+.drawer-socials{display:flex;gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+
+/* ══════════════════════════
+   PRODUCT LANDING PAGE
+══════════════════════════ */
+#page-product.active{display:block}
+
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--muted);
+  font-size:.88rem;cursor:pointer;padding:10px 0;
+  transition:color .2s,gap .2s;border:none;background:none;font-family:'DM Sans',sans-serif}
+.back-btn:hover{color:var(--text);gap:12px}
+.back-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;transition:transform .2s}
+.back-btn:hover svg{transform:translateX(-4px)}
+
+.product-landing{max-width:1100px;margin:0 auto;padding:36px 28px 88px}
+.product-landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-bottom:80px}
+
+.lp-gallery{position:sticky;top:90px}
+.lp-main-img{border-radius:22px;overflow:hidden;margin-bottom:14px;
+  border:1px solid var(--border);
+  box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(124,58,237,.1);
+  transform-style:preserve-3d;transition:transform .06s ease-out}
+.lp-main-img img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;
+  transition:transform .5s ease}
+.lp-main-img:hover img{transform:scale(1.03)}
+.lp-thumbs{display:flex;gap:10px}
+.lp-thumb{width:74px;height:58px;border-radius:11px;overflow:hidden;
+  border:2px solid transparent;cursor:pointer;transition:border-color .22s,transform .22s;flex-shrink:0}
+.lp-thumb.active{border-color:var(--accent)}
+.lp-thumb:hover{transform:translateY(-3px);border-color:rgba(124,58,237,.5)}
+.lp-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+.lp-cat{font-size:.71rem;color:var(--accent2);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.lp-title{font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(1.9rem,3vw,2.7rem);line-height:1.08;letter-spacing:-1px;margin-bottom:16px}
+.lp-rating{display:flex;align-items:center;gap:9px;margin-bottom:22px;font-size:.84rem;color:var(--muted)}
+.lp-rating .stars{color:var(--accent3);font-size:1.05rem}
+.lp-desc{color:var(--muted);font-size:.94rem;line-height:1.8;margin-bottom:28px}
+.lp-price-box{display:flex;align-items:baseline;gap:12px;margin-bottom:28px}
+.lp-price{font-family:'Syne',sans-serif;font-weight:800;font-size:2.5rem;letter-spacing:-1px;
+  background:linear-gradient(90deg,var(--text),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lp-price-old{font-size:1rem;color:var(--muted);text-decoration:line-through}
+.lp-discount{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.35);
+  color:var(--accent3);font-size:.74rem;font-weight:700;padding:3px 9px;border-radius:6px}
+.lp-features{list-style:none;margin-bottom:34px;display:flex;flex-direction:column;gap:11px}
+.lp-features li{display:flex;align-items:center;gap:11px;font-size:.87rem;color:rgba(240,240,248,.8)}
+.lp-features li::before{content:'✓';color:#34d399;font-weight:800;font-size:.78rem;
+  background:rgba(52,211,153,.12);border-radius:50%;width:22px;height:22px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border:1px solid rgba(52,211,153,.25)}
+.lp-cta{display:flex;gap:13px;flex-wrap:wrap}
+.btn-buy{
+  background:linear-gradient(135deg,var(--accent) 0%,#5b21b6 100%);
+  color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-weight:700;font-size:1rem;padding:16px 38px;border-radius:13px;
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 10px 30px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.2);
+  text-decoration:none;position:relative;overflow:hidden
+}
+.btn-buy::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);opacity:0;transition:opacity .2s}
+.btn-buy:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 44px rgba(124,58,237,.6)}
+.btn-buy:hover::after{opacity:1}
+
+.lp-details{border-top:1px solid var(--border);padding-top:62px}
+.lp-details h2{font-family:'Playfair Display',serif;font-weight:700;font-size:1.65rem;margin-bottom:28px;letter-spacing:-.3px}
+.lp-specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:16px;margin-bottom:50px}
+.spec-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:18px;
+  transition:border-color .22s,transform .22s,box-shadow .22s}
+.spec-card:hover{border-color:rgba(124,58,237,.35);transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.3)}
+.spec-label{font-size:.69rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.spec-val{font-family:'Syne',sans-serif;font-weight:700;font-size:.94rem}
+
+.related-section{max-width:1100px;margin:0 auto;padding:0 28px 88px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1060px){
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  nav{display:none}
+  .hamburger{display:flex;flex-direction:column}
+  .hero{grid-template-columns:1fr;text-align:center;padding:56px 20px 48px}
+  .hero p{margin:0 auto 28px}
+  .hero-btns{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-visual{display:none}
+  .newsletter-inner{flex-direction:column}
+  .nl-form{max-width:100%}
+  .promo-banner{flex-direction:column;text-align:center;padding:40px 28px}
+  .promo-actions{justify-content:center}
+  .product-landing-grid{grid-template-columns:1fr}
+  .lp-gallery{position:static}
+  .clients-summary{gap:24px;flex-wrap:wrap}
+}
+@media(max-width:600px){
+  .header-inner{padding:0 16px;gap:8px}
+  .search-wrap{display:none}
+  .nav-socials{display:none}
+  .footer-top{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;align-items:center;text-align:center}
+  .test-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<!-- Cursor -->
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<!-- Orbs -->
+<div id="orb1"></div><div id="orb2"></div><div id="orb3"></div>
+
+<!-- ═══════════ HEADER ═══════════ -->
 <header>
   <div class="header-inner">
+    <!-- Logo 3D Cube -->
     <div class="logo" onclick="goHome()">
-      <div class="logo-icon">⚡</div>
+      <div class="logo-cube">
+        <div class="cube-face cube-front">⚡</div>
+        <div class="cube-face cube-back">✦</div>
+        <div class="cube-face cube-left">◈</div>
+        <div class="cube-face cube-right">❋</div>
+      </div>
       <span class="logo-text">NexusStore</span>
     </div>
+
+    <!-- Main nav -->
     <nav id="main-nav">
-      <a onclick="goHome()" class="active">Inicio</a>
-      <a onclick="goHome();setTimeout(()=>document.getElementById('productos').scrollIntoView({behavior:'smooth'}),100)">Productos</a>
-      <a onclick="goHome();setTimeout(()=>document.getElementById('categorias').scrollIntoView({behavior:'smooth'}),100)">Categorías</a>
-      <a href="#">Ofertas</a>
-      <a href="#">Blog</a>
+      <a onclick="goHome()" class="active" id="nav-inicio">Inicio</a>
+      <a onclick="goHome();setTimeout(()=>document.getElementById('productos')?.scrollIntoView({behavior:'smooth'}),120)">Productos</a>
+      <a onclick="goHome();setTimeout(()=>document.getElementById('categorias')?.scrollIntoView({behavior:'smooth'}),120)">Categorías</a>
+      <a onclick="goHome();setTimeout(()=>document.getElementById('clientes')?.scrollIntoView({behavior:'smooth'}),120)">Clientes</a>
       <a href="#">Contacto</a>
     </nav>
-    <div class="search-wrap">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="search-input" placeholder="Buscar templates, cursos, plugins…" oninput="filterProducts()" />
+
+    <!-- Social icons -->
+    <div class="nav-socials">
+      <!-- Instagram -->
+      <a class="soc-btn soc-ig" href="https://instagram.com/nexusstore" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <!-- Facebook -->
+      <a class="soc-btn soc-fb" href="https://facebook.com/nexusstore" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <!-- TikTok -->
+      <a class="soc-btn soc-tt" href="https://tiktok.com/@nexusstore" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.83 1.55V6.79a4.85 4.85 0 01-1.06-.1z" fill="white"/><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.83 1.55V6.79a4.85 4.85 0 01-1.06-.1z" fill="#69c9d0" opacity="0.6"/></svg>
+      </a>
+      <!-- WhatsApp -->
+      <a class="soc-btn soc-wa" href="https://wa.me/51999999999" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
     </div>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar productos…" oninput="filterProducts()"/>
+    </div>
+
+    <!-- Hamburger -->
     <button class="hamburger" onclick="toggleDrawer()" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<!-- ── MOBILE DRAWER ── -->
+<!-- Mobile drawer -->
 <div class="nav-drawer" id="nav-drawer" onclick="closeDrawer(event)">
   <div class="nav-drawer-panel">
     <a onclick="goHome();closeDrawerDirect()">🏠 Inicio</a>
     <a onclick="goHome();closeDrawerDirect()">📦 Productos</a>
     <a onclick="goHome();closeDrawerDirect()">🗂 Categorías</a>
-    <a onclick="closeDrawerDirect()">🔥 Ofertas</a>
-    <a onclick="closeDrawerDirect()">📝 Blog</a>
+    <a onclick="goHome();setTimeout(()=>document.getElementById('clientes')?.scrollIntoView({behavior:'smooth'}),120);closeDrawerDirect()">⭐ Clientes</a>
     <a onclick="closeDrawerDirect()">📬 Contacto</a>
+    <div class="drawer-socials">
+      <a class="soc-btn soc-ig" href="https://instagram.com/nexusstore" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="white"/></svg>
+      </a>
+      <a class="soc-btn soc-fb" href="https://facebook.com/nexusstore" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/></svg>
+      </a>
+      <a class="soc-btn soc-tt" href="https://tiktok.com/@nexusstore" target="_blank" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.83 1.55V6.79a4.85 4.85 0 01-1.06-.1z" fill="white"/></svg>
+      </a>
+      <a class="soc-btn soc-wa" href="https://wa.me/51999999999" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="white"/></svg>
+      </a>
+    </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     PAGE: HOME
-════════════════════════════════════ -->
+<!-- ════════════════ PAGE HOME ════════════════ -->
 <div id="page-home" class="page active">
 
   <!-- HERO -->
   <section class="hero">
-    <div class="orb1 hero-orb"></div>
-    <div class="orb2 hero-orb"></div>
     <div class="hero-copy">
-      <div class="hero-badge"><span></span> +2,400 productos digitales disponibles</div>
-      <h1>Tu marketplace de<br><em>productos digitales</em><br>premium</h1>
-      <p>Templates, cursos, plugins, herramientas de diseño y más. Descarga al instante, úsalos de por vida.</p>
+      <div class="hero-badge"><span class="dot"></span>+2,400 productos digitales premium</div>
+      <h1>Tu marketplace de<br><em>productos digitales</em><br>de élite</h1>
+      <p>Templates, cursos, plugins y herramientas de diseño para profesionales. Descarga al instante, úsalos de por vida.</p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">Explorar productos →</button>
-        <button class="btn-ghost">Ver demos gratis</button>
+        <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">Explorar catálogo →</button>
+        <button class="btn-ghost" onclick="document.getElementById('clientes').scrollIntoView({behavior:'smooth'})">Ver opiniones ★</button>
       </div>
       <div class="hero-stats">
         <div><div class="stat-val">12K+</div><div class="stat-lbl">Clientes felices</div></div>
@@ -316,52 +769,75 @@
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-mosaic" id="hero-mosaic"></div>
+      <div class="scene3d-wrap">
+        <div class="scene3d" id="scene3d">
+          <div class="s-card sc1">
+            <img class="s-card-img" src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80" alt="UI Kit"/>
+            <span class="s-card-price">$49</span>
+            <span class="s-card-label">Aurora UI Kit</span>
+          </div>
+          <div class="s-card sc2">
+            <img class="s-card-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80" alt="Dashboard"/>
+            <span class="s-card-price">$89</span>
+            <span class="s-card-label">SaaS Dashboard Pro</span>
+          </div>
+          <div class="s-card sc3">
+            <img class="s-card-img" src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&q=80" alt="Landing"/>
+            <span class="s-card-price">$59</span>
+            <span class="s-card-label">Landing Builder</span>
+          </div>
+          <div class="s-card sc4">
+            <img class="s-card-img" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&q=80" alt="Curso"/>
+            <span class="s-card-price">$39</span>
+            <span class="s-card-label">Curso UX Research</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- CATEGORIES -->
   <section class="categories" id="categorias">
-    <div class="section-header">
+    <div class="section-header reveal">
       <h2>Categorías</h2>
       <a href="#" class="see-all">Ver todas →</a>
     </div>
     <div class="cat-grid">
-      <a class="cat-card active" href="#" onclick="filterByCategory('todos',this);return false">
-        <div class="cat-emoji">🌐</div><div class="cat-name">Todos</div><div class="cat-count">2,413 items</div>
+      <a class="cat-card active reveal" href="#" onclick="filterByCategory('todos',this);return false" style="transition-delay:.0s">
+        <span class="cat-emoji">🌐</span><div class="cat-name">Todos</div><div class="cat-count">2,413 items</div>
       </a>
-      <a class="cat-card" href="#" onclick="filterByCategory('ui-kits',this);return false">
-        <div class="cat-emoji">🎨</div><div class="cat-name">UI Kits</div><div class="cat-count">348 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('ui-kits',this);return false" style="transition-delay:.06s">
+        <span class="cat-emoji">🎨</span><div class="cat-name">UI Kits</div><div class="cat-count">348 items</div>
       </a>
-      <a class="cat-card" href="#" onclick="filterByCategory('templates',this);return false">
-        <div class="cat-emoji">📐</div><div class="cat-name">Templates Web</div><div class="cat-count">512 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('templates',this);return false" style="transition-delay:.12s">
+        <span class="cat-emoji">📐</span><div class="cat-name">Templates Web</div><div class="cat-count">512 items</div>
       </a>
-      <a class="cat-card" href="#" onclick="filterByCategory('cursos',this);return false">
-        <div class="cat-emoji">🎓</div><div class="cat-name">Cursos</div><div class="cat-count">194 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('cursos',this);return false" style="transition-delay:.18s">
+        <span class="cat-emoji">🎓</span><div class="cat-name">Cursos</div><div class="cat-count">194 items</div>
       </a>
-      <a class="cat-card" href="#" onclick="filterByCategory('plugins',this);return false">
-        <div class="cat-emoji">🔌</div><div class="cat-name">Plugins</div><div class="cat-count">287 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('plugins',this);return false" style="transition-delay:.24s">
+        <span class="cat-emoji">🔌</span><div class="cat-name">Plugins</div><div class="cat-count">287 items</div>
       </a>
-      <a class="cat-card" href="#" onclick="filterByCategory('fuentes',this);return false">
-        <div class="cat-emoji">✒️</div><div class="cat-name">Fuentes</div><div class="cat-count">420 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('fuentes',this);return false" style="transition-delay:.30s">
+        <span class="cat-emoji">✒️</span><div class="cat-name">Fuentes</div><div class="cat-count">420 items</div>
       </a>
-      <a class="cat-card" href="#" onclick="filterByCategory('iconos',this);return false">
-        <div class="cat-emoji">🖼</div><div class="cat-name">Iconos</div><div class="cat-count">653 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('iconos',this);return false" style="transition-delay:.36s">
+        <span class="cat-emoji">🖼</span><div class="cat-name">Iconos</div><div class="cat-count">653 items</div>
       </a>
     </div>
   </section>
 
   <!-- PRODUCTS -->
   <section class="products-section" id="productos">
-    <div class="section-header">
+    <div class="section-header reveal">
       <h2>Productos destacados</h2>
       <a href="#" class="see-all">Ver todos →</a>
     </div>
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
-      <button class="filter-btn" onclick="setFilter('nuevo',this)">Nuevos</button>
-      <button class="filter-btn" onclick="setFilter('popular',this)">Populares</button>
-      <button class="filter-btn" onclick="setFilter('oferta',this)">Ofertas</button>
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" onclick="setFilter('todos',this)"><span>Todos</span></button>
+      <button class="filter-btn" onclick="setFilter('nuevo',this)"><span>Nuevos</span></button>
+      <button class="filter-btn" onclick="setFilter('popular',this)"><span>Populares</span></button>
+      <button class="filter-btn" onclick="setFilter('oferta',this)"><span>Ofertas</span></button>
       <select class="sort-select" onchange="sortProducts(this.value)">
         <option value="default">Ordenar por</option>
         <option value="price-asc">Precio: menor</option>
@@ -372,15 +848,44 @@
     <div class="product-grid" id="product-grid"></div>
   </section>
 
+  <!-- CLIENTES -->
+  <section class="clients-section" id="clientes">
+    <div class="section-header reveal">
+      <h2>Lo que dicen nuestros clientes</h2>
+      <a href="#" class="see-all">Ver todas →</a>
+    </div>
+
+    <div class="reveal" style="margin-bottom:36px">
+      <div class="clients-avatars">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="cliente"/>
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="cliente"/>
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&q=80" alt="cliente"/>
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" alt="cliente"/>
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="cliente"/>
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="cliente"/>
+        <div class="clients-avg">
+          <strong>4.9 ★</strong> promedio · <strong>12,000+</strong> clientes satisfechos
+        </div>
+      </div>
+    </div>
+
+    <div class="test-grid" id="test-grid"></div>
+
+    <div class="clients-summary reveal" style="margin-top:44px">
+      <div class="cs-item"><div class="cs-num">12,400+</div><div class="cs-lbl">Clientes activos</div></div>
+      <div class="cs-item"><div class="cs-num">98%</div><div class="cs-lbl">Satisfacción</div></div>
+      <div class="cs-item"><div class="cs-num">4.9 / 5</div><div class="cs-lbl">Valoración media</div></div>
+      <div class="cs-item"><div class="cs-num">3,200+</div><div class="cs-lbl">Reseñas verificadas</div></div>
+    </div>
+  </section>
+
   <!-- PROMO -->
   <div class="promo-wrap">
-    <div class="promo-banner">
-      <div class="porb1 promo-orb"></div>
-      <div class="porb2 promo-orb"></div>
+    <div class="promo-banner reveal">
       <div class="promo-text">
         <div class="promo-tag">🔥 Oferta por tiempo limitado</div>
         <h2>50% OFF en todos los UI Kits</h2>
-        <p>Solo este fin de semana. Más de 300 kits de diseño para Figma, Sketch y Adobe XD.</p>
+        <p>Solo este fin de semana. Más de 300 kits de diseño para Figma, Sketch y Adobe XD con licencia comercial incluida.</p>
       </div>
       <div class="promo-actions">
         <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">Comprar ahora</button>
@@ -391,13 +896,13 @@
 
   <!-- NEWSLETTER -->
   <section class="newsletter">
-    <div class="newsletter-inner">
+    <div class="newsletter-inner reveal">
       <div class="nl-text">
         <h3>Recibe novedades y descuentos</h3>
-        <p>Únete a más de 12,000 diseñadores y desarrolladores que ya reciben nuestras ofertas exclusivas.</p>
+        <p>Únete a más de 12,000 profesionales que ya reciben nuestras ofertas exclusivas cada semana.</p>
       </div>
       <div class="nl-form">
-        <input type="email" placeholder="tu@email.com" />
+        <input type="email" placeholder="tu@email.com"/>
         <button class="btn-nl" onclick="subscribeNewsletter()">Suscribirme</button>
       </div>
     </div>
@@ -408,16 +913,21 @@
     <div class="footer-inner">
       <div class="footer-top">
         <div class="footer-brand">
-          <div class="logo" onclick="goHome()">
-            <div class="logo-icon">⚡</div>
+          <div class="logo" onclick="goHome()" style="margin-bottom:0">
+            <div class="logo-cube" style="animation-duration:12s">
+              <div class="cube-face cube-front">⚡</div>
+              <div class="cube-face cube-back">✦</div>
+              <div class="cube-face cube-left">◈</div>
+              <div class="cube-face cube-right">❋</div>
+            </div>
             <span class="logo-text">NexusStore</span>
           </div>
           <p>El marketplace líder de productos digitales para diseñadores y desarrolladores de habla hispana.</p>
           <div class="social-links">
-            <a class="social-link" href="#" aria-label="Twitter">𝕏</a>
-            <a class="social-link" href="#" aria-label="Instagram">📸</a>
-            <a class="social-link" href="#" aria-label="LinkedIn">in</a>
-            <a class="social-link" href="#" aria-label="YouTube">▶</a>
+            <a class="social-link" href="https://instagram.com/nexusstore" target="_blank" aria-label="Instagram">📸</a>
+            <a class="social-link" href="https://facebook.com/nexusstore" target="_blank" aria-label="Facebook">f</a>
+            <a class="social-link" href="https://tiktok.com/@nexusstore" target="_blank" aria-label="TikTok">♪</a>
+            <a class="social-link" href="https://wa.me/51999999999" target="_blank" aria-label="WhatsApp">💬</a>
           </div>
         </div>
         <div class="footer-col">
@@ -434,7 +944,7 @@
           <h4>Empresa</h4>
           <ul>
             <li><a href="#">Acerca de</a></li>
-            <li><a href="#">Blog</a></li>
+            <li><a onclick="document.getElementById('clientes').scrollIntoView({behavior:'smooth'})">Clientes</a></li>
             <li><a href="#">Afiliados</a></li>
             <li><a href="#">Ser Vendedor</a></li>
             <li><a href="#">Prensa</a></li>
@@ -464,26 +974,20 @@
   </footer>
 </div><!-- /page-home -->
 
-<!-- ════════════════════════════════════
-     PAGE: PRODUCT LANDING
-════════════════════════════════════ -->
+<!-- ════════════════ PAGE PRODUCT ════════════════ -->
 <div id="page-product" class="page">
   <div class="product-landing">
     <button class="back-btn" onclick="goHome()">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Volver al catálogo
     </button>
-
     <div class="product-landing-grid">
-      <!-- Gallery -->
       <div class="lp-gallery">
-        <div class="lp-main-img">
-          <img id="lp-main-img" src="" alt="Producto" />
+        <div class="lp-main-img" id="lp-main-wrap">
+          <img id="lp-main-img" src="" alt="Producto"/>
         </div>
         <div class="lp-thumbs" id="lp-thumbs"></div>
       </div>
-
-      <!-- Info -->
       <div class="lp-info">
         <div class="lp-cat" id="lp-cat"></div>
         <h1 class="lp-title" id="lp-title"></h1>
@@ -499,172 +1003,207 @@
         </div>
         <ul class="lp-features" id="lp-features"></ul>
         <div class="lp-cta">
-          <a href="#" class="btn-buy" onclick="showToast('✅ Redirigiendo al pago…');return false">Comprar ahora — <span id="lp-cta-price"></span></a>
+          <a href="#" class="btn-buy" onclick="showToast('✅ Redirigiendo al pago…');return false">Comprar — <span id="lp-cta-price"></span></a>
           <button class="btn-ghost" onclick="showToast('❤️ Guardado en favoritos')">♡ Guardar</button>
         </div>
       </div>
     </div>
-
-    <!-- Specs -->
     <div class="lp-details">
       <h2>Especificaciones</h2>
       <div class="lp-specs" id="lp-specs"></div>
     </div>
   </div>
-
-  <!-- Related -->
   <div class="related-section">
     <div class="section-header">
-      <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.5rem">Productos relacionados</h2>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.5rem;background:linear-gradient(90deg,var(--text),rgba(200,200,255,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Productos relacionados</h2>
     </div>
     <div class="related-grid" id="related-grid"></div>
   </div>
-</div><!-- /page-product -->
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast">✅ <span id="toast-msg">Listo</span></div>
 
 <script>
-/* ── PRODUCT DATA ── */
-const products = [
-  {
-    id:1, name:'Aurora UI Kit', cat:'UI Kits', catKey:'ui-kits',
-    desc:'800+ componentes para Figma con auto-layout y variables de diseño. Incluye dark/light mode, sistema de color completo y documentación.',
-    longDesc:'Aurora UI Kit es el sistema de diseño más completo para Figma del mercado hispano. Con más de 800 componentes organizados en 40 categorías, variables de color para dark y light mode, y compatibilidad total con Auto Layout 4.0. Incluye biblioteca de iconos, sistema tipográfico y guía de uso paso a paso.',
-    price:49, oldPrice:99,
-    img:'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
-      'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
-      'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80',
-    ],
-    badge:'hot', rating:4.9, reviews:312, tag:'popular',
-    features:['800+ componentes listos para usar','Dark & Light mode variables','Auto Layout 4.0 compatible','Sistema tipográfico completo','Licencia comercial incluida','Actualizaciones de por vida'],
-    specs:[{l:'Formato',v:'Figma'},{l:'Componentes',v:'800+'},{l:'Versiones',v:'Dark & Light'},{l:'Actualizaciones',v:'De por vida'},{l:'Soporte',v:'Email 24h'},{l:'Licencia',v:'Comercial'}]
-  },
-  {
-    id:2, name:'SaaS Dashboard Pro', cat:'Templates Web', catKey:'templates',
-    desc:'Template Next.js completo con autenticación, gráficas y dark mode. Construido con Tailwind CSS, listo para producción.',
-    longDesc:'SaaS Dashboard Pro es el template más completo para lanzar tu aplicación SaaS en tiempo récord. Incluye sistema de autenticación con NextAuth, 15+ páginas pre-construidas, más de 30 componentes de datos, gráficas interactivas con Recharts y modo oscuro nativo.',
-    price:89, oldPrice:null,
-    img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
-      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80',
-    ],
-    badge:'nuevo', rating:4.8, reviews:148, tag:'nuevo',
-    features:['Next.js 14 + Tailwind CSS','Autenticación lista con NextAuth','15 páginas incluidas','30+ componentes de datos','Gráficas con Recharts','TypeScript incluido'],
-    specs:[{l:'Framework',v:'Next.js 14'},{l:'CSS',v:'Tailwind CSS'},{l:'Lenguaje',v:'TypeScript'},{l:'Páginas',v:'15+'},{l:'Gráficas',v:'Recharts'},{l:'Auth',v:'NextAuth.js'}]
-  },
-  {
-    id:3, name:'Curso UX Research', cat:'Cursos', catKey:'cursos',
-    desc:'60h de contenido práctico. Aprende a investigar y diseñar experiencias que los usuarios aman.',
-    longDesc:'Este curso intensivo de UX Research cubre desde los fundamentos de la investigación de usuarios hasta técnicas avanzadas de análisis. Aprenderás a diseñar estudios de usabilidad, interpretar datos cualitativos y cuantitativos, y traducir hallazgos en decisiones de diseño concretas y basadas en evidencia.',
-    price:39, oldPrice:79,
-    img:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
-      'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80',
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80',
-    ],
-    badge:'sale', rating:4.9, reviews:522, tag:'oferta',
-    features:['60 horas de video HD','Proyectos prácticos reales','Certificado de finalización','Acceso de por vida','Comunidad privada','Mentorías grupales mensuales'],
-    specs:[{l:'Duración',v:'60 horas'},{l:'Nivel',v:'Intermedio'},{l:'Idioma',v:'Español'},{l:'Formato',v:'Video HD'},{l:'Acceso',v:'De por vida'},{l:'Certificado',v:'Sí'}]
-  },
-  {
-    id:4, name:'IconFlow 3000', cat:'Iconos', catKey:'iconos',
-    desc:'3,000 iconos SVG optimizados en 12 estilos. Licencia comercial incluida para todos tus proyectos.',
-    longDesc:'IconFlow 3000 es la colección de iconos más versátil del mercado. Cada icono está disponible en 12 estilos visuales (outline, filled, duotone, rounded y más) y viene en formatos SVG, PNG y como componente React. Incluye plugin para Figma y herramienta de búsqueda online.',
-    price:29, oldPrice:null,
-    img:'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
-      'https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=800&q=80',
-      'https://images.unsplash.com/photo-1542744094-24638eff58bb?w=800&q=80',
-    ],
-    badge:null, rating:4.7, reviews:210, tag:'popular',
-    features:['3,000 iconos únicos','12 estilos visuales','Formatos SVG, PNG, React','Plugin para Figma incluido','Actualizaciones gratuitas','Licencia comercial ilimitada'],
-    specs:[{l:'Total iconos',v:'3,000'},{l:'Estilos',v:'12'},{l:'Formatos',v:'SVG / PNG / JSX'},{l:'Plugin Figma',v:'Incluido'},{l:'Búsqueda',v:'Herramienta online'},{l:'Licencia',v:'Comercial'}]
-  },
-  {
-    id:5, name:'Geist Font Family', cat:'Fuentes', catKey:'fuentes',
-    desc:'Familia tipográfica moderna con 8 pesos y versión mono incluida. Perfecta para interfaces digitales.',
-    longDesc:'Geist Font Family es una tipografía humanista sans-serif diseñada específicamente para interfaces digitales. Ofrece 8 pesos (desde Thin hasta Black) más una versión monoespaciada ideal para código. Incluye caracteres latinos extendidos, ligaduras OpenType y soporte para más de 40 idiomas.',
-    price:19, oldPrice:38,
-    img:'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
-      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80',
-      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80',
-    ],
-    badge:'sale', rating:4.8, reviews:88, tag:'oferta',
-    features:['8 pesos tipográficos','Versión mono incluida','Caracteres latinos extendidos','Ligaduras OpenType','40+ idiomas soportados','Web font incluida (WOFF2)'],
-    specs:[{l:'Pesos',v:'8 (Thin–Black)'},{l:'Versión Mono',v:'Sí'},{l:'Formatos',v:'OTF / TTF / WOFF2'},{l:'Caracteres',v:'1,200+'},{l:'Idiomas',v:'40+'},{l:'Licencia',v:'Web + Desktop'}]
-  },
-  {
-    id:6, name:'FormKit Plugin', cat:'Plugins', catKey:'plugins',
-    desc:'Plugin Figma para generar formularios validados en React o Vue. Exporta código limpio en segundos.',
-    longDesc:'FormKit Plugin revoluciona la manera en que diseñas y exportas formularios. Diseña visualmente en Figma y exporta automáticamente código React o Vue con validación incluida (Zod, Yup o VeeValidate), accesibilidad WCAG 2.1 y soporte para React Hook Form.',
-    price:24, oldPrice:null,
-    img:'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80',
-      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
-      'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&q=80',
-    ],
-    badge:'nuevo', rating:4.6, reviews:67, tag:'nuevo',
-    features:['Genera código React y Vue','Validación automática (Zod/Yup)','Accesibilidad WCAG 2.1','Integra React Hook Form','30+ tipos de campos','Actualizaciones gratuitas 1 año'],
-    specs:[{l:'Plugin',v:'Figma'},{l:'Frameworks',v:'React / Vue'},{l:'Validación',v:'Zod / Yup / VeeValidate'},{l:'Accesibilidad',v:'WCAG 2.1'},{l:'Campos',v:'30+'},{l:'Soporte',v:'1 año'}]
-  },
-  {
-    id:7, name:'Landing Page Builder', cat:'Templates Web', catKey:'templates',
-    desc:'Constructor de landing pages con 50+ secciones modulares y exportación de código limpio HTML/CSS.',
-    longDesc:'Landing Page Builder es un sistema modular de secciones pre-diseñadas para construir páginas de aterrizaje de alta conversión. Las 50+ secciones incluyen heroes, testimonios, precios, FAQs y más. Disponible en HTML/CSS puro y como componentes React, con animaciones CSS incluidas.',
-    price:59, oldPrice:null,
-    img:'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
-      'https://images.unsplash.com/photo-1481487196290-c152efe083f5?w=800&q=80',
-      'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&q=80',
-    ],
-    badge:null, rating:4.9, reviews:394, tag:'popular',
-    features:['50+ secciones modulares','HTML/CSS puro + React','Animaciones CSS incluidas','Responsive por defecto','Alta conversión probada','Documentación completa'],
-    specs:[{l:'Secciones',v:'50+'},{l:'Tecnología',v:'HTML/CSS + React'},{l:'Responsive',v:'Sí'},{l:'Animaciones',v:'CSS + JS'},{l:'Documentación',v:'Completa'},{l:'Licencia',v:'Comercial'}]
-  },
-  {
-    id:8, name:'Motion Design Kit', cat:'UI Kits', catKey:'ui-kits',
-    desc:'Variables de animación, easing presets y micro-interacciones para Figma. Lleva tu UI al siguiente nivel.',
-    longDesc:'Motion Design Kit te da todo lo que necesitas para crear interfaces con animaciones fluidas y memorables. Incluye 100+ variables de animación, 40 easing presets calibrados, 60 micro-interacciones listas para usar y una guía de principios de motion design que transformará tu proceso.',
-    price:34, oldPrice:69,
-    img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
-    imgs:[
-      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
-      'https://images.unsplash.com/photo-1536240478700-b869ad10e2c7?w=800&q=80',
-    ],
-    badge:'sale', rating:4.7, reviews:156, tag:'oferta',
-    features:['100+ variables de animación','40 easing presets','60 micro-interacciones','Guía de motion design','Compatible con Figma Variables','Biblioteca de componentes animados'],
-    specs:[{l:'Formato',v:'Figma'},{l:'Variables',v:'100+'},{l:'Easing presets',v:'40'},{l:'Micro-interacciones',v:'60'},{l:'Guía incluida',v:'Sí'},{l:'Licencia',v:'Comercial'}]
-  }
+/* ══ CURSOR ══ */
+const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;
+  dot.style.left=mx+'px';dot.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+
+/* ══ 3D TILT on hero ══ */
+const scene=document.getElementById('scene3d');
+if(scene){
+  const heroV=scene.closest('.hero-visual');
+  heroV?.addEventListener('mousemove',e=>{
+    const r=heroV.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*24;
+    const y=-((e.clientY-r.top)/r.height-.5)*18;
+    scene.style.animation='none';
+    scene.style.transform=`rotateX(${y}deg) rotateY(${x}deg)`;
+  });
+  heroV?.addEventListener('mouseleave',()=>{
+    scene.style.animation='sceneFloat 6s ease-in-out infinite';
+    scene.style.transform='';
+  });
+}
+
+/* ══ CARD 3D TILT ══ */
+function add3DTilt(el){
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*16;
+    const y=-((e.clientY-r.top)/r.height-.5)*12;
+    el.style.transform=`perspective(900px) rotateX(${y}deg) rotateY(${x}deg) translateY(-5px)`;
+  });
+  el.addEventListener('mouseleave',()=>{el.style.transform='perspective(900px) rotateX(0) rotateY(0)'});
+}
+
+/* ══ SCROLL REVEAL ══ */
+const revObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('visible');revObs.unobserve(e.target)}
+}),{threshold:.08});
+function observeAll(){document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revObs.observe(el))}
+observeAll();
+
+/* ══ DATA ══ */
+const products=[
+  {id:1,name:'Aurora UI Kit',cat:'UI Kits',catKey:'ui-kits',
+   desc:'800+ componentes para Figma con auto-layout y variables de diseño.',
+   longDesc:'Aurora UI Kit es el sistema de diseño más completo para Figma. Con más de 800 componentes en 40 categorías, variables de color dark/light, Auto Layout 4.0, biblioteca de iconos y guía de uso paso a paso. Ideal para acelerar cualquier proyecto de producto digital.',
+   price:49,oldPrice:99,
+   img:'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80','https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80','https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80'],
+   badge:'hot',rating:4.9,reviews:312,tag:'popular',
+   features:['800+ componentes listos','Dark & Light mode variables','Auto Layout 4.0 compatible','Sistema tipográfico completo','Licencia comercial incluida','Actualizaciones de por vida'],
+   specs:[{l:'Formato',v:'Figma'},{l:'Componentes',v:'800+'},{l:'Versiones',v:'Dark & Light'},{l:'Actualizaciones',v:'De por vida'},{l:'Soporte',v:'Email 24h'},{l:'Licencia',v:'Comercial'}]},
+  {id:2,name:'SaaS Dashboard Pro',cat:'Templates Web',catKey:'templates',
+   desc:'Template Next.js completo con autenticación, gráficas y dark mode.',
+   longDesc:'SaaS Dashboard Pro te permite lanzar tu aplicación en tiempo récord. Incluye NextAuth, 15+ páginas, 30+ componentes de datos, gráficas con Recharts, modo oscuro nativo y TypeScript desde el primer día.',
+   price:89,oldPrice:null,
+   img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80','https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80','https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80'],
+   badge:'nuevo',rating:4.8,reviews:148,tag:'nuevo',
+   features:['Next.js 14 + Tailwind CSS','Autenticación lista con NextAuth','15 páginas incluidas','30+ componentes de datos','Gráficas con Recharts','TypeScript incluido'],
+   specs:[{l:'Framework',v:'Next.js 14'},{l:'CSS',v:'Tailwind CSS'},{l:'Lenguaje',v:'TypeScript'},{l:'Páginas',v:'15+'},{l:'Gráficas',v:'Recharts'},{l:'Auth',v:'NextAuth.js'}]},
+  {id:3,name:'Curso UX Research',cat:'Cursos',catKey:'cursos',
+   desc:'60h de contenido práctico. Diseña experiencias que los usuarios aman.',
+   longDesc:'Curso intensivo de UX Research desde fundamentos hasta técnicas avanzadas. Cubre estudios de usabilidad, análisis de datos cualitativos y cuantitativos, y cómo traducir hallazgos en decisiones de diseño concretas y basadas en evidencia.',
+   price:39,oldPrice:79,
+   img:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80','https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80'],
+   badge:'sale',rating:4.9,reviews:522,tag:'oferta',
+   features:['60 horas de video HD','Proyectos prácticos reales','Certificado de finalización','Acceso de por vida','Comunidad privada','Mentorías grupales mensuales'],
+   specs:[{l:'Duración',v:'60 horas'},{l:'Nivel',v:'Intermedio'},{l:'Idioma',v:'Español'},{l:'Formato',v:'Video HD'},{l:'Acceso',v:'De por vida'},{l:'Certificado',v:'Sí'}]},
+  {id:4,name:'IconFlow 3000',cat:'Iconos',catKey:'iconos',
+   desc:'3,000 iconos SVG optimizados en 12 estilos. Licencia comercial incluida.',
+   longDesc:'La colección de iconos más versátil del mercado. 3,000 iconos en 12 estilos visuales disponibles en SVG, PNG y componente React. Incluye plugin para Figma y herramienta de búsqueda online.',
+   price:29,oldPrice:null,
+   img:'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80','https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=800&q=80','https://images.unsplash.com/photo-1542744094-24638eff58bb?w=800&q=80'],
+   badge:null,rating:4.7,reviews:210,tag:'popular',
+   features:['3,000 iconos únicos','12 estilos visuales','Formatos SVG, PNG, React','Plugin para Figma incluido','Actualizaciones gratuitas','Licencia comercial ilimitada'],
+   specs:[{l:'Total iconos',v:'3,000'},{l:'Estilos',v:'12'},{l:'Formatos',v:'SVG / PNG / JSX'},{l:'Plugin Figma',v:'Incluido'},{l:'Búsqueda',v:'Herramienta online'},{l:'Licencia',v:'Comercial'}]},
+  {id:5,name:'Geist Font Family',cat:'Fuentes',catKey:'fuentes',
+   desc:'Familia tipográfica moderna con 8 pesos y versión mono incluida.',
+   longDesc:'Tipografía humanista sans-serif para interfaces digitales. 8 pesos (Thin–Black) más versión monoespaciada para código. Soporta 40+ idiomas, caracteres latinos extendidos y ligaduras OpenType.',
+   price:19,oldPrice:38,
+   img:'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80','https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80','https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80'],
+   badge:'sale',rating:4.8,reviews:88,tag:'oferta',
+   features:['8 pesos tipográficos','Versión mono incluida','Caracteres latinos extendidos','Ligaduras OpenType','40+ idiomas soportados','Web font incluida (WOFF2)'],
+   specs:[{l:'Pesos',v:'8 (Thin–Black)'},{l:'Versión Mono',v:'Sí'},{l:'Formatos',v:'OTF / TTF / WOFF2'},{l:'Caracteres',v:'1,200+'},{l:'Idiomas',v:'40+'},{l:'Licencia',v:'Web + Desktop'}]},
+  {id:6,name:'FormKit Plugin',cat:'Plugins',catKey:'plugins',
+   desc:'Plugin Figma para generar formularios validados en React o Vue.',
+   longDesc:'Diseña en Figma y exporta código React o Vue con validación automática (Zod, Yup o VeeValidate), accesibilidad WCAG 2.1 y soporte para React Hook Form. Código limpio en segundos.',
+   price:24,oldPrice:null,
+   img:'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1555421689-491a97ff2040?w=800&q=80','https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80','https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&q=80'],
+   badge:'nuevo',rating:4.6,reviews:67,tag:'nuevo',
+   features:['Genera código React y Vue','Validación automática (Zod/Yup)','Accesibilidad WCAG 2.1','Integra React Hook Form','30+ tipos de campos','Actualizaciones gratuitas 1 año'],
+   specs:[{l:'Plugin',v:'Figma'},{l:'Frameworks',v:'React / Vue'},{l:'Validación',v:'Zod / Yup / VeeValidate'},{l:'Accesibilidad',v:'WCAG 2.1'},{l:'Campos',v:'30+'},{l:'Soporte',v:'1 año'}]},
+  {id:7,name:'Landing Page Builder',cat:'Templates Web',catKey:'templates',
+   desc:'50+ secciones modulares con exportación HTML/CSS y React limpia.',
+   longDesc:'Sistema modular de 50+ secciones para landing pages de alta conversión. HTML/CSS puro y React, animaciones CSS incluidas, responsive por defecto y documentación completa.',
+   price:59,oldPrice:null,
+   img:'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80','https://images.unsplash.com/photo-1481487196290-c152efe083f5?w=800&q=80','https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&q=80'],
+   badge:null,rating:4.9,reviews:394,tag:'popular',
+   features:['50+ secciones modulares','HTML/CSS puro + React','Animaciones CSS incluidas','Responsive por defecto','Alta conversión probada','Documentación completa'],
+   specs:[{l:'Secciones',v:'50+'},{l:'Tecnología',v:'HTML/CSS + React'},{l:'Responsive',v:'Sí'},{l:'Animaciones',v:'CSS + JS'},{l:'Documentación',v:'Completa'},{l:'Licencia',v:'Comercial'}]},
+  {id:8,name:'Motion Design Kit',cat:'UI Kits',catKey:'ui-kits',
+   desc:'Variables de animación, easing presets y micro-interacciones para Figma.',
+   longDesc:'100+ variables de animación, 40 easing presets calibrados y 60 micro-interacciones en Figma. Guía de principios de motion design y biblioteca de componentes animados incluida.',
+   price:34,oldPrice:69,
+   img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
+   imgs:['https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80','https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80','https://images.unsplash.com/photo-1536240478700-b869ad10e2c7?w=800&q=80'],
+   badge:'sale',rating:4.7,reviews:156,tag:'oferta',
+   features:['100+ variables de animación','40 easing presets','60 micro-interacciones','Guía de motion design','Compatible con Figma Variables','Biblioteca de componentes animados'],
+   specs:[{l:'Formato',v:'Figma'},{l:'Variables',v:'100+'},{l:'Easing presets',v:'40'},{l:'Micro-interacciones',v:'60'},{l:'Guía incluida',v:'Sí'},{l:'Licencia',v:'Comercial'}]}
 ];
 
-let activeFilter = 'todos';
-let wishlist = new Set();
+const testimonials=[
+  {name:'Carla Mendoza',role:'UI Designer · Lima, Perú',avatar:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80',
+   text:'Aurora UI Kit transformó completamente mi flujo de trabajo. En menos de una semana entregué un proyecto que antes me habría tomado un mes. Los componentes son impresionantes y el soporte es increíble.',
+   stars:5,product:'Aurora UI Kit',featured:true},
+  {name:'Diego Ramírez',role:'Full Stack Dev · Bogotá, Colombia',avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
+   text:'El SaaS Dashboard Pro me ahorró semanas de desarrollo. El código es limpio, bien estructurado y la documentación es excelente. Lo recomiendo al 100% a cualquier desarrollador serio.',
+   stars:5,product:'SaaS Dashboard Pro',featured:false},
+  {name:'Ana Sofía Torres',role:'UX Researcher · Ciudad de México',avatar:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&q=80',
+   text:'El Curso UX Research superó todas mis expectativas. El contenido es profundo, práctico y actualizado. Conseguí mi primer trabajo como UX researcher apenas 2 meses después de terminarlo.',
+   stars:5,product:'Curso UX Research',featured:true},
+  {name:'Marcos Herrera',role:'Freelance Designer · Buenos Aires, Argentina',avatar:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80',
+   text:'IconFlow 3000 es el mejor pack de iconos que he comprado. La variedad de estilos y la calidad SVG es impecable. Ya lo usé en más de 15 proyectos de clientes. Totalmente recomendado.',
+   stars:5,product:'IconFlow 3000',featured:false},
+  {name:'Valentina Cruz',role:'Brand Designer · Santiago, Chile',avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80',
+   text:'Geist Font Family es simplemente perfecta para diseño de interfaces. Los 8 pesos y la versión mono hacen que sea extremadamente versátil. La usé en un rebrand corporativo y el cliente quedó encantado.',
+   stars:4,product:'Geist Font Family',featured:false},
+  {name:'Roberto Quispe',role:'Frontend Dev · Lima, Perú',avatar:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80',
+   text:'El Landing Page Builder es una joya. En dos horas armé una landing completa que convierte increíblemente bien. Mis clientes están felices y yo ahorro días de trabajo en cada proyecto. Compra obligatoria.',
+   stars:5,product:'Landing Page Builder',featured:true},
+];
 
-/* ── RENDER PRODUCTS ── */
-function renderProducts(list) {
-  const grid = document.getElementById('product-grid');
-  if (!list.length) {
-    grid.innerHTML = `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:60px 0">No se encontraron productos.</p>`;
+/* ══ RENDER TESTIMONIALS ══ */
+function renderTestimonials(){
+  const g=document.getElementById('test-grid');
+  if(!g)return;
+  g.innerHTML=testimonials.map((t,i)=>`
+    <div class="test-card ${t.featured?'featured':''} reveal" style="transition-delay:${i*.09}s">
+      <span class="test-quote">"</span>
+      <div class="test-product">${t.product}</div>
+      <div class="test-stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</div>
+      <p class="test-text">${t.text}</p>
+      <div class="test-footer">
+        <img class="test-avatar" src="${t.avatar}" alt="${t.name}" loading="lazy"/>
+        <div>
+          <div class="test-name">${t.name}</div>
+          <div class="test-role">${t.role}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  observeAll();
+  document.querySelectorAll('.test-card').forEach(add3DTilt);
+}
+
+/* ══ RENDER PRODUCTS ══ */
+let wishlist=new Set();
+let activeFilter='todos';
+
+function renderProducts(list){
+  const grid=document.getElementById('product-grid');
+  if(!list.length){
+    grid.innerHTML='<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:60px 0;font-size:.95rem">No se encontraron productos.</p>';
     return;
   }
-  grid.innerHTML = list.map(p => `
-    <div class="product-card" onclick="openProduct(${p.id})">
+  grid.innerHTML=list.map((p,i)=>`
+    <div class="product-card reveal" style="transition-delay:${i*.07}s" onclick="openProduct(${p.id})">
       <div class="product-thumb">
-        <img src="${p.img}" alt="${p.name}" loading="lazy" />
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
         ${p.badge==='nuevo'?'<span class="badge-new">Nuevo</span>':p.badge==='hot'?'<span class="badge-hot">🔥 Top</span>':p.badge==='sale'?'<span class="badge-sale">Sale</span>':''}
-        <button class="wish-btn ${wishlist.has(p.id)?'active':''}" onclick="event.stopPropagation();toggleWish(${p.id})" title="Favorito">${wishlist.has(p.id)?'❤️':'🤍'}</button>
+        <button class="wish-btn${wishlist.has(p.id)?' active':''}" onclick="event.stopPropagation();toggleWish(${p.id})">${wishlist.has(p.id)?'❤️':'🤍'}</button>
       </div>
       <div class="product-body">
         <div class="product-cat">${p.cat}</div>
@@ -681,66 +1220,82 @@ function renderProducts(list) {
       <div class="product-meta">
         <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
         <span>${p.rating} (${p.reviews})</span>
-        <span style="margin-left:auto">⬇ Descarga instant.</span>
+        <span style="margin-left:auto;font-size:.7rem">⬇ Instant</span>
       </div>
     </div>
   `).join('');
+  observeAll();
+  document.querySelectorAll('.product-card').forEach(add3DTilt);
 }
 
-/* ── HERO MOSAIC ── */
-function renderHeroMosaic() {
-  const mosaic = document.getElementById('hero-mosaic');
-  if (!mosaic) return;
-  const picks = [products[0], products[1], products[6]];
-  mosaic.innerHTML = picks.map((p,i) => `
-    <div class="mosaic-img" onclick="openProduct(${p.id})" style="cursor:pointer${i===0?';grid-row:1/3':''}">
-      <img src="${p.img}" alt="${p.name}" loading="lazy" />
-      <div class="mosaic-overlay"></div>
-      <span class="mosaic-label">${p.name}</span>
-    </div>
-  `).join('');
+/* ══ FILTERS ══ */
+function applyFilters(){
+  const q=document.getElementById('search-input').value.toLowerCase();
+  let res=products.filter(p=>
+    (activeFilter==='todos'||p.tag===activeFilter)&&
+    (p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q))
+  );
+  renderProducts(res);
+}
+function filterProducts(){applyFilters()}
+function setFilter(tag,el){
+  activeFilter=tag;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');applyFilters();
+}
+function filterByCategory(catKey,el){
+  document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const q=document.getElementById('search-input').value.toLowerCase();
+  let res=catKey==='todos'?products:products.filter(p=>p.catKey===catKey);
+  if(q)res=res.filter(p=>p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q));
+  renderProducts(res);
+  document.getElementById('productos').scrollIntoView({behavior:'smooth'});
+}
+function sortProducts(val){
+  const q=document.getElementById('search-input').value.toLowerCase();
+  let res=products.filter(p=>(activeFilter==='todos'||p.tag===activeFilter)&&
+    (p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
+  if(val==='price-asc')res.sort((a,b)=>a.price-b.price);
+  else if(val==='price-desc')res.sort((a,b)=>b.price-a.price);
+  else if(val==='rating')res.sort((a,b)=>b.rating-a.rating);
+  renderProducts(res);
 }
 
-/* ── OPEN PRODUCT LANDING ── */
-function openProduct(id) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
+/* ══ WISHLIST ══ */
+function toggleWish(id){
+  if(wishlist.has(id)){wishlist.delete(id);showToast('💔 Eliminado de favoritos')}
+  else{wishlist.add(id);showToast('❤️ Añadido a favoritos')}
+  applyFilters();
+}
 
-  // Fill landing page
-  document.getElementById('lp-cat').textContent = p.cat;
-  document.getElementById('lp-title').textContent = p.name;
-  document.getElementById('lp-stars').textContent = '★'.repeat(Math.floor(p.rating)) + '☆'.repeat(5-Math.floor(p.rating));
-  document.getElementById('lp-rating-text').textContent = `${p.rating} — ${p.reviews} reseñas`;
-  document.getElementById('lp-desc').textContent = p.longDesc;
-  document.getElementById('lp-price').textContent = `$${p.price}`;
-  document.getElementById('lp-cta-price').textContent = `$${p.price}`;
-  const po = document.getElementById('lp-price-old');
-  const pd = document.getElementById('lp-discount');
-  if (p.oldPrice) {
-    po.textContent = `$${p.oldPrice}`; po.style.display='inline';
-    const pct = Math.round((1 - p.price/p.oldPrice)*100);
-    pd.textContent = `-${pct}%`; pd.style.display='inline';
-  } else { po.style.display='none'; pd.style.display='none'; }
-
-  // Features
-  document.getElementById('lp-features').innerHTML = p.features.map(f=>`<li>${f}</li>`).join('');
-
-  // Specs
-  document.getElementById('lp-specs').innerHTML = p.specs.map(s=>`<div class="spec-card"><div class="spec-label">${s.l}</div><div class="spec-val">${s.v}</div></div>`).join('');
-
-  // Gallery
-  document.getElementById('lp-main-img').src = p.imgs[0];
-  document.getElementById('lp-thumbs').innerHTML = p.imgs.map((img,i)=>`
-    <div class="lp-thumb ${i===0?'active':''}" onclick="switchImg(this,'${img}')">
-      <img src="${img}" alt="" loading="lazy" />
-    </div>
-  `).join('');
-
-  // Related
-  const related = products.filter(x => x.catKey===p.catKey && x.id!==p.id).slice(0,4);
-  document.getElementById('related-grid').innerHTML = related.map(r=>`
+/* ══ OPEN PRODUCT ══ */
+function openProduct(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('lp-cat').textContent=p.cat;
+  document.getElementById('lp-title').textContent=p.name;
+  document.getElementById('lp-stars').textContent='★'.repeat(Math.floor(p.rating))+'☆'.repeat(5-Math.floor(p.rating));
+  document.getElementById('lp-rating-text').textContent=`${p.rating} — ${p.reviews} reseñas verificadas`;
+  document.getElementById('lp-desc').textContent=p.longDesc;
+  document.getElementById('lp-price').textContent=`$${p.price}`;
+  document.getElementById('lp-cta-price').textContent=`$${p.price}`;
+  const po=document.getElementById('lp-price-old'),pd=document.getElementById('lp-discount');
+  if(p.oldPrice){
+    po.textContent=`$${p.oldPrice}`;po.style.display='inline';
+    pd.textContent=`-${Math.round((1-p.price/p.oldPrice)*100)}%`;pd.style.display='inline-block';
+  }else{po.style.display='none';pd.style.display='none'}
+  document.getElementById('lp-features').innerHTML=p.features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('lp-specs').innerHTML=p.specs.map(s=>`<div class="spec-card"><div class="spec-label">${s.l}</div><div class="spec-val">${s.v}</div></div>`).join('');
+  document.getElementById('lp-main-img').src=p.imgs[0];
+  document.getElementById('lp-thumbs').innerHTML=p.imgs.map((img,i)=>`
+    <div class="lp-thumb${i===0?' active':''}" onclick="switchImg(this,'${img}')">
+      <img src="${img}" alt="" loading="lazy"/>
+    </div>`).join('');
+  const related=products.filter(x=>x.catKey===p.catKey&&x.id!==p.id).slice(0,4);
+  document.getElementById('related-grid').innerHTML=related.map(r=>`
     <div class="product-card" onclick="openProduct(${r.id})" style="cursor:pointer">
-      <div class="product-thumb"><img src="${r.img}" alt="${r.name}" loading="lazy" /></div>
+      <div class="product-thumb"><img src="${r.img}" alt="${r.name}" loading="lazy"/></div>
       <div class="product-body">
         <div class="product-cat">${r.cat}</div>
         <div class="product-name">${r.name}</div>
@@ -749,92 +1304,60 @@ function openProduct(id) {
           <span class="btn-ver" style="font-size:.75rem;padding:6px 12px">Ver →</span>
         </div>
       </div>
-    </div>
-  `).join('');
-
-  // Switch pages
+    </div>`).join('');
+  document.querySelectorAll('.related-grid .product-card').forEach(add3DTilt);
+  /* 3D tilt on lp gallery */
+  const wrap=document.getElementById('lp-main-wrap');
+  if(wrap){
+    wrap.addEventListener('mousemove',e=>{
+      const r=wrap.getBoundingClientRect();
+      const x=((e.clientX-r.left)/r.width-.5)*10;
+      const y=-((e.clientY-r.top)/r.height-.5)*8;
+      wrap.style.transform=`perspective(700px) rotateX(${y}deg) rotateY(${x}deg)`;
+    });
+    wrap.addEventListener('mouseleave',()=>{wrap.style.transform='perspective(700px) rotateX(0) rotateY(0)'});
+  }
   document.getElementById('page-home').classList.remove('active');
   document.getElementById('page-product').classList.add('active');
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function switchImg(thumb, src) {
-  document.getElementById('lp-main-img').src = src;
-  document.querySelectorAll('.lp-thumb').forEach(t => t.classList.remove('active'));
+function switchImg(thumb,src){
+  document.getElementById('lp-main-img').src=src;
+  document.querySelectorAll('.lp-thumb').forEach(t=>t.classList.remove('active'));
   thumb.classList.add('active');
 }
 
-/* ── GO HOME ── */
-function goHome() {
+/* ══ GO HOME ══ */
+function goHome(){
   document.getElementById('page-product').classList.remove('active');
   document.getElementById('page-home').classList.add('active');
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ── FILTERS ── */
-function applyFilters() {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  let res = products.filter(p =>
-    (activeFilter==='todos' || p.tag===activeFilter) &&
-    (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
-  );
-  renderProducts(res);
-}
-function filterProducts() { applyFilters(); }
-function setFilter(tag, el) {
-  activeFilter = tag;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active'); applyFilters();
-}
-function filterByCategory(catKey, el) {
-  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  const q = document.getElementById('search-input').value.toLowerCase();
-  let res = catKey==='todos' ? products : products.filter(p => p.catKey===catKey);
-  if (q) res = res.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
-  renderProducts(res);
-  document.getElementById('productos').scrollIntoView({behavior:'smooth'});
-}
-function sortProducts(val) {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  let res = products.filter(p => (activeFilter==='todos'||p.tag===activeFilter) && (p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));
-  if (val==='price-asc') res.sort((a,b)=>a.price-b.price);
-  else if (val==='price-desc') res.sort((a,b)=>b.price-a.price);
-  else if (val==='rating') res.sort((a,b)=>b.rating-a.rating);
-  renderProducts(res);
+/* ══ TOAST ══ */
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-/* ── WISHLIST ── */
-function toggleWish(id) {
-  if (wishlist.has(id)) { wishlist.delete(id); showToast('💔 Eliminado de favoritos'); }
-  else { wishlist.add(id); showToast('❤️ Añadido a favoritos'); }
-  applyFilters();
-}
-
-/* ── TOAST ── */
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = msg;
-  t.classList.add('show'); clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-/* ── NEWSLETTER ── */
-function subscribeNewsletter() {
-  const inp = document.querySelector('.nl-form input');
-  if (inp.value && inp.value.includes('@')) { showToast('✉️ ¡Suscripción confirmada!'); inp.value=''; }
+/* ══ NEWSLETTER ══ */
+function subscribeNewsletter(){
+  const inp=document.querySelector('.nl-form input');
+  if(inp.value&&inp.value.includes('@')){showToast('✉️ ¡Suscripción confirmada!');inp.value=''}
   else inp.focus();
 }
 
-/* ── MOBILE DRAWER ── */
-function toggleDrawer() { document.getElementById('nav-drawer').classList.toggle('open'); }
-function closeDrawer(e) { if (e.target===document.getElementById('nav-drawer')) document.getElementById('nav-drawer').classList.remove('open'); }
-function closeDrawerDirect() { document.getElementById('nav-drawer').classList.remove('open'); }
+/* ══ MOBILE DRAWER ══ */
+function toggleDrawer(){document.getElementById('nav-drawer').classList.toggle('open')}
+function closeDrawer(e){if(e.target===document.getElementById('nav-drawer'))document.getElementById('nav-drawer').classList.remove('open')}
+function closeDrawerDirect(){document.getElementById('nav-drawer').classList.remove('open')}
 
-/* ── INIT ── */
+/* ══ INIT ══ */
 renderProducts(products);
-renderHeroMosaic();
+renderTestimonials();
 </script>
 </body>
 </html>
