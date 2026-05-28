@@ -761,18 +761,18 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
         <div class="scene3d" id="scene3d">
           <div class="s-card sc1">
             <img class="s-card-img" src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80" alt="UI Kit"/>
-            <span class="s-card-price">$49</span>
-            <span class="s-card-label">Aurora UI Kit</span>
+            <span class="s-card-price">$3.90</span>
+            <span class="s-card-label">Colección premium</span>
           </div>
           <div class="s-card sc2">
             <img class="s-card-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80" alt="Dashboard"/>
-            <span class="s-card-price">$89</span>
-            <span class="s-card-label">SaaS Dashboard Pro</span>
+            <span class="s-card-price">$2.00</span>
+            <span class="s-card-label">Cartas Decorativas</span>
           </div>
           <div class="s-card sc3">
             <img class="s-card-img" src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&q=80" alt="Landing"/>
-            <span class="s-card-price">$59</span>
-            <span class="s-card-label">Landing Builder</span>
+            <span class="s-card-price">$1.90</span>
+            <span class="s-card-label">Hábitos de vida</span>
           </div>
           <div class="s-card sc4">
             <img class="s-card-img" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&q=80" alt="Curso"/>
@@ -1037,34 +1037,34 @@ observeAll();
 
 /* ══ DATA ══ */
 const products=[
-  {id:1,name:'Aurora UI Kit',cat:'UI Kits',catKey:'ui-kits',
+  {id:1,url:'coleccionmundialista.html',name:'Colección Premium Mundialista',cat:'UI Kits',catKey:'ui-kits',
    desc:'800+ componentes para Figma con auto-layout y variables de diseño.',
    longDesc:'Aurora UI Kit es el sistema de diseño más completo para Figma. Con más de 800 componentes en 40 categorías, variables de color dark/light, Auto Layout 4.0, biblioteca de iconos y guía de uso paso a paso. Ideal para acelerar cualquier proyecto de producto digital.',
    price:49,oldPrice:99,
-   img:'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80',
+   img:'flyercoleccion.png',
    imgs:['https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80','https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80','https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80'],
    badge:'hot',rating:4.9,reviews:312,tag:'popular',
    features:['800+ componentes listos','Dark & Light mode variables','Auto Layout 4.0 compatible','Sistema tipográfico completo','Licencia comercial incluida','Actualizaciones de por vida'],
    specs:[{l:'Formato',v:'Figma'},{l:'Componentes',v:'800+'},{l:'Versiones',v:'Dark & Light'},{l:'Actualizaciones',v:'De por vida'},{l:'Soporte',v:'Email 24h'},{l:'Licencia',v:'Comercial'}]},
-  {id:2,name:'SaaS Dashboard Pro',cat:'Templates Web',catKey:'templates',
+  {id:2,url:'habitos.html',name:'Hábitos de vida',cat:'Templates Web',catKey:'templates',
    desc:'Template Next.js completo con autenticación, gráficas y dark mode.',
    longDesc:'SaaS Dashboard Pro te permite lanzar tu aplicación en tiempo récord. Incluye NextAuth, 15+ páginas, 30+ componentes de datos, gráficas con Recharts, modo oscuro nativo y TypeScript desde el primer día.',
    price:89,oldPrice:null,
-   img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+   img:'flyerhabitos.png',
    imgs:['https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80','https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80','https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80'],
    badge:'nuevo',rating:4.8,reviews:148,tag:'nuevo',
    features:['Next.js 14 + Tailwind CSS','Autenticación lista con NextAuth','15 páginas incluidas','30+ componentes de datos','Gráficas con Recharts','TypeScript incluido'],
    specs:[{l:'Framework',v:'Next.js 14'},{l:'CSS',v:'Tailwind CSS'},{l:'Lenguaje',v:'TypeScript'},{l:'Páginas',v:'15+'},{l:'Gráficas',v:'Recharts'},{l:'Auth',v:'NextAuth.js'}]},
-  {id:3,name:'Curso UX Research',cat:'Cursos',catKey:'cursos',
+  {id:3,url:'cartas.html',name:'Megapack Cartas Decorativas',cat:'Cursos',catKey:'cursos',
    desc:'60h de contenido práctico. Diseña experiencias que los usuarios aman.',
    longDesc:'Curso intensivo de UX Research desde fundamentos hasta técnicas avanzadas. Cubre estudios de usabilidad, análisis de datos cualitativos y cuantitativos, y cómo traducir hallazgos en decisiones de diseño concretas y basadas en evidencia.',
    price:39,oldPrice:79,
-   img:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80',
+   img:'flyercartas.png',
    imgs:['https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80','https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80'],
    badge:'sale',rating:4.9,reviews:522,tag:'oferta',
    features:['60 horas de video HD','Proyectos prácticos reales','Certificado de finalización','Acceso de por vida','Comunidad privada','Mentorías grupales mensuales'],
    specs:[{l:'Duración',v:'60 horas'},{l:'Nivel',v:'Intermedio'},{l:'Idioma',v:'Español'},{l:'Formato',v:'Video HD'},{l:'Acceso',v:'De por vida'},{l:'Certificado',v:'Sí'}]},
-  {id:4,name:'IconFlow 3000',cat:'Iconos',catKey:'iconos',
+  {id:4,url:'iconflow.html',name:'IconFlow 3000',cat:'Iconos',catKey:'iconos',
    desc:'3,000 iconos SVG optimizados en 12 estilos. Licencia comercial incluida.',
    longDesc:'La colección de iconos más versátil del mercado. 3,000 iconos en 12 estilos visuales disponibles en SVG, PNG y componente React. Incluye plugin para Figma y herramienta de búsqueda online.',
    price:29,oldPrice:null,
@@ -1073,7 +1073,7 @@ const products=[
    badge:null,rating:4.7,reviews:210,tag:'popular',
    features:['3,000 iconos únicos','12 estilos visuales','Formatos SVG, PNG, React','Plugin para Figma incluido','Actualizaciones gratuitas','Licencia comercial ilimitada'],
    specs:[{l:'Total iconos',v:'3,000'},{l:'Estilos',v:'12'},{l:'Formatos',v:'SVG / PNG / JSX'},{l:'Plugin Figma',v:'Incluido'},{l:'Búsqueda',v:'Herramienta online'},{l:'Licencia',v:'Comercial'}]},
-  {id:5,name:'Geist Font Family',cat:'Fuentes',catKey:'fuentes',
+  {id:5,url:'geist-font.html',name:'Geist Font Family',cat:'Fuentes',catKey:'fuentes',
    desc:'Familia tipográfica moderna con 8 pesos y versión mono incluida.',
    longDesc:'Tipografía humanista sans-serif para interfaces digitales. 8 pesos (Thin–Black) más versión monoespaciada para código. Soporta 40+ idiomas, caracteres latinos extendidos y ligaduras OpenType.',
    price:19,oldPrice:38,
@@ -1082,7 +1082,7 @@ const products=[
    badge:'sale',rating:4.8,reviews:88,tag:'oferta',
    features:['8 pesos tipográficos','Versión mono incluida','Caracteres latinos extendidos','Ligaduras OpenType','40+ idiomas soportados','Web font incluida (WOFF2)'],
    specs:[{l:'Pesos',v:'8 (Thin–Black)'},{l:'Versión Mono',v:'Sí'},{l:'Formatos',v:'OTF / TTF / WOFF2'},{l:'Caracteres',v:'1,200+'},{l:'Idiomas',v:'40+'},{l:'Licencia',v:'Web + Desktop'}]},
-  {id:6,name:'FormKit Plugin',cat:'Plugins',catKey:'plugins',
+  {id:6,url:'formkit-plugin.html',name:'FormKit Plugin',cat:'Plugins',catKey:'plugins',
    desc:'Plugin Figma para generar formularios validados en React o Vue.',
    longDesc:'Diseña en Figma y exporta código React o Vue con validación automática (Zod, Yup o VeeValidate), accesibilidad WCAG 2.1 y soporte para React Hook Form. Código limpio en segundos.',
    price:24,oldPrice:null,
@@ -1091,7 +1091,7 @@ const products=[
    badge:'nuevo',rating:4.6,reviews:67,tag:'nuevo',
    features:['Genera código React y Vue','Validación automática (Zod/Yup)','Accesibilidad WCAG 2.1','Integra React Hook Form','30+ tipos de campos','Actualizaciones gratuitas 1 año'],
    specs:[{l:'Plugin',v:'Figma'},{l:'Frameworks',v:'React / Vue'},{l:'Validación',v:'Zod / Yup / VeeValidate'},{l:'Accesibilidad',v:'WCAG 2.1'},{l:'Campos',v:'30+'},{l:'Soporte',v:'1 año'}]},
-  {id:7,name:'Landing Page Builder',cat:'Templates Web',catKey:'templates',
+  {id:7,url:'landing-builder.html',name:'Landing Page Builder',cat:'Templates Web',catKey:'templates',
    desc:'50+ secciones modulares con exportación HTML/CSS y React limpia.',
    longDesc:'Sistema modular de 50+ secciones para landing pages de alta conversión. HTML/CSS puro y React, animaciones CSS incluidas, responsive por defecto y documentación completa.',
    price:59,oldPrice:null,
@@ -1100,7 +1100,7 @@ const products=[
    badge:null,rating:4.9,reviews:394,tag:'popular',
    features:['50+ secciones modulares','HTML/CSS puro + React','Animaciones CSS incluidas','Responsive por defecto','Alta conversión probada','Documentación completa'],
    specs:[{l:'Secciones',v:'50+'},{l:'Tecnología',v:'HTML/CSS + React'},{l:'Responsive',v:'Sí'},{l:'Animaciones',v:'CSS + JS'},{l:'Documentación',v:'Completa'},{l:'Licencia',v:'Comercial'}]},
-  {id:8,name:'Motion Design Kit',cat:'UI Kits',catKey:'ui-kits',
+  {id:8,url:'motion-kit.html',name:'Motion Design Kit',cat:'UI Kits',catKey:'ui-kits',
    desc:'Variables de animación, easing presets y micro-interacciones para Figma.',
    longDesc:'100+ variables de animación, 40 easing presets calibrados y 60 micro-interacciones en Figma. Guía de principios de motion design y biblioteca de componentes animados incluida.',
    price:34,oldPrice:69,
