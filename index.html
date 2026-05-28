@@ -1158,7 +1158,7 @@ function renderTestimonials(){
 /* ══ RENDER PRODUCTS ══ */
 let wishlist=new Set();
 let activeFilter='todos';
-
+ 
 function renderProducts(list){
   const grid=document.getElementById('product-grid');
   if(!list.length){
@@ -1166,7 +1166,7 @@ function renderProducts(list){
     return;
   }
   grid.innerHTML=list.map((p,i)=>`
-    <div class="product-card reveal" style="transition-delay:${i*.07}s" onclick="openProduct(${p.id})">
+    <div class="product-card reveal" style="transition-delay:${i*.07}s" onclick="window.location.href='${p.url}'">
       <div class="product-thumb">
         <img src="${p.img}" alt="${p.name}" loading="lazy"/>
         ${p.badge==='nuevo'?'<span class="badge-new">Nuevo</span>':p.badge==='hot'?'<span class="badge-hot">🔥 Top</span>':p.badge==='sale'?'<span class="badge-sale">Sale</span>':''}
@@ -1181,7 +1181,7 @@ function renderProducts(list){
             <span class="product-price">$${p.price}</span>
             ${p.oldPrice?`<span class="price-old">$${p.oldPrice}</span>`:''}
           </div>
-          <span class="btn-ver">Ver producto →</span>
+          <a class="btn-ver" href="${p.url}">Ver producto →</a>
         </div>
       </div>
       <div class="product-meta">
