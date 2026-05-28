@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harry Potter +20 Libros PDF | Colección Mágica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{
+font-family:Montserrat,sans-serif;
+background:#05020c;color:#fff;overflow-x:hidden;
+}
+body::before{
+content:"";position:fixed;inset:0;
+background:
+radial-gradient(circle at top,#39205c 0%,#05020c 55%),
+url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=1920&auto=format&fit=crop');
+background-size:cover;background-position:center;
+opacity:.18;z-index:-2;
+}
+.particles{position:fixed;inset:0;z-index:-1}
+.star{
+position:absolute;width:8px;height:8px;border-radius:50%;
+background:#ffd700;animation:float 12s linear infinite;opacity:.5
+}
+@keyframes float{
+from{transform:translateY(100vh) rotate(0)}
+to{transform:translateY(-100vh) rotate(360deg)}
+}
+header{min-height:100vh;display:flex;align-items:center;padding:50px 20px}
+.hero{
+max-width:1400px;margin:auto;display:grid;
+grid-template-columns:1fr 1fr;gap:60px;align-items:center
+}
+.hero-text h1{
+font-size:4rem;font-weight:900;line-height:1;
+text-transform:uppercase;text-shadow:0 0 25px rgba(255,215,0,.3)
+}
+.hero-text span{color:#ffd700}
+.hero-text p{
+margin:25px 0;font-size:1.15rem;line-height:1.9;color:#ddd
+}
+.cta{
+display:inline-block;padding:18px 42px;border-radius:60px;
+background:linear-gradient(45deg,#ffd700,#ff9800);
+color:#000;font-weight:900;text-decoration:none;
+box-shadow:0 10px 40px rgba(255,193,7,.45);
+animation:pulse 2s infinite;transition:.35s
+}
+.cta:hover{transform:translateY(-5px) scale(1.05)}
+@keyframes pulse{
+50%{transform:scale(1.05)}
+}
+.hero-image{perspective:1400px;display:flex;justify-content:center}
+.card3d{
+max-width:550px;border-radius:30px;overflow:hidden;
+transform-style:preserve-3d;
+animation:rotate 8s ease-in-out infinite;
+box-shadow:0 30px 80px rgba(255,215,0,.25)
+}
+.card3d img{width:100%;display:block}
+@keyframes rotate{
+0%{transform:rotateY(-10deg) rotateX(5deg)}
+50%{transform:rotateY(10deg) rotateX(-5deg) translateY(-12px)}
+100%{transform:rotateY(-10deg) rotateX(5deg)}
+}
+section{padding:100px 20px}
+.section-title{
+text-align:center;font-size:3rem;
+font-weight:900;text-transform:uppercase;margin-bottom:60px
+}
+.section-title span{color:#ffd700}
+.features,.deep{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;max-width:1250px;margin:auto
+}
+.card{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(8px);
+padding:30px;border-radius:25px;
+transition:.4s;transform-style:preserve-3d
+}
+.card:hover{
+transform:translateY(-10px) rotateX(4deg) rotateY(-4deg);
+box-shadow:0 20px 50px rgba(255,215,0,.18)
+}
+.card img{
+width:100%;height:230px;object-fit:cover;border-radius:18px;margin-bottom:18px
+}
+.card h3{color:#ffd700;margin-bottom:12px}
+.slider{overflow:hidden;margin-top:40px}
+.track{
+display:flex;gap:25px;width:max-content;
+animation:scroll 28s linear infinite
+}
+@keyframes scroll{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+.slide{
+width:340px;height:500px;border-radius:24px;
+overflow:hidden;position:relative;flex-shrink:0;
+transition:.5s;box-shadow:0 25px 60px rgba(0,0,0,.5)
+}
+.slide:hover{transform:rotateY(10deg) scale(1.05)}
+.slide img{width:100%;height:100%;object-fit:cover}
+.overlay{
+position:absolute;inset:0;
+background:linear-gradient(to top,rgba(0,0,0,.95),transparent);
+display:flex;align-items:flex-end;padding:25px;font-weight:800;font-size:1.2rem
+}
+.deep-card{
+background:linear-gradient(180deg,rgba(60,30,100,.5),rgba(10,10,20,.7));
+padding:35px;border-radius:25px;
+box-shadow:0 20px 50px rgba(255,215,0,.08)
+}
+.final{
+text-align:center;padding:120px 20px;
+background:linear-gradient(180deg,transparent,#1b1033)
+}
+.final h2{font-size:3.5rem;font-weight:900;margin-bottom:20px}
+.final p{max-width:900px;margin:0 auto 35px;color:#ddd;line-height:1.9}
+footer{text-align:center;padding:30px;background:#05020c;color:#999}
+
+.whatsapp{
+position:fixed;right:25px;bottom:25px;width:72px;height:72px;
+border-radius:50%;background:#25D366;
+display:flex;align-items:center;justify-content:center;
+text-decoration:none;z-index:9999;
+animation:wpPulse 2s infinite, glow 1.5s infinite alternate;
+transition:.3s;
+}
+.whatsapp:hover{transform:scale(1.1) rotate(8deg)}
+.tip{
+position:absolute;right:90px;background:#111;color:#fff;
+padding:12px 18px;border-radius:12px;
+opacity:0;transition:.3s;white-space:nowrap;font-weight:700
+}
+.whatsapp:hover .tip{opacity:1}
+@keyframes glow{
+0%{box-shadow:0 0 10px rgba(37,211,102,.5),0 0 25px rgba(37,211,102,.4)}
+100%{box-shadow:0 0 25px rgba(37,211,102,.95),0 0 60px rgba(37,211,102,.8)}
+}
+@media(max-width:900px){
+.hero{grid-template-columns:1fr}
+.hero-text{text-align:center}
+.hero-text h1{font-size:2.8rem}
+.section-title,.final h2{font-size:2.2rem}
+.tip{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="particles">
+<div class="star" style="left:10%;animation-duration:10s"></div>
+<div class="star" style="left:30%;animation-duration:12s"></div>
+<div class="star" style="left:50%;animation-duration:9s"></div>
+<div class="star" style="left:70%;animation-duration:14s"></div>
+<div class="star" style="left:90%;animation-duration:11s"></div>
+</div>
+
+<header>
+<div class="hero">
+<div class="hero-text">
+<h1>Despierta tu <span>Imaginación</span><br>y entra al Mundo Mágico</h1>
+<p>
+Más que una colección de libros: una experiencia de inspiración, imaginación y crecimiento personal.
+Descubre hábitos de lectura, desconexión del estrés y momentos de motivación a través del universo de Harry Potter.
+</p>
+<a class="cta" href="https://hotm.io/habitosdevida" target="_blank">✨ QUIERO MI COLECCIÓN</a>
+</div>
+
+<div class="hero-image">
+<div class="card3d">
+<img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop">
+</div>
+</div>
+</div>
+</header>
+
+<section>
+<h2 class="section-title">¿Qué incluye esta <span>colección?</span></h2>
+<div class="features">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200&auto=format&fit=crop">
+<h3>📚 Saga Completa</h3>
+<p>Los 7 libros principales de Harry Potter en PDF para disfrutar la historia completa.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1495640388908-05fa85288e61?q=80&w=1200&auto=format&fit=crop">
+<h3>🪄 Material Extra</h3>
+<p>Animales Fantásticos, Quidditch a Través de los Tiempos, Beedle el Bardo y mucho más.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1200&auto=format&fit=crop">
+<h3>⚡ +20 Libros PDF</h3>
+<p>Una biblioteca digital completa para leer desde celular, tablet o computadora.</p>
+</div>
+</div>
+</section>
+
+<section>
+<h2 class="section-title">Explora el <span>Mundo Mágico</span></h2>
+<div class="slider">
+<div class="track">
+<div class="slide"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1200"><div class="overlay">Harry Potter</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1511108690759-009324a90311?q=80&w=1200"><div class="overlay">Imaginación</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200"><div class="overlay">Hábitos de Lectura</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200"><div class="overlay">Motivación</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1200"><div class="overlay">Colección Premium</div></div>
+
+<div class="slide"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1200"><div class="overlay">Harry Potter</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1511108690759-009324a90311?q=80&w=1200"><div class="overlay">Imaginación</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200"><div class="overlay">Hábitos de Lectura</div></div>
+</div>
+</div>
+</section>
+
+<section>
+<h2 class="section-title">Conoce más del <span>contenido</span></h2>
+<div class="deep">
+<div class="deep-card">
+<h3>🧙 Saga Principal</h3>
+<p>Vive cada aventura desde La Piedra Filosofal hasta Las Reliquias de la Muerte y acompaña el crecimiento de Harry, Hermione y Ron.</p>
+</div>
+<div class="deep-card">
+<h3>🏰 Universo Expandido</h3>
+<p>Explora criaturas mágicas, historia de Hogwarts, deportes mágicos y relatos complementarios.</p>
+</div>
+<div class="deep-card">
+<h3>✨ Lectura y Desarrollo Personal</h3>
+<p>Leer fortalece la disciplina, la concentración y la organización del tiempo. Esta colección está pensada para convertir la lectura en un hábito inspirador.</p>
+</div>
+</div>
+</section>
+
+<section class="final">
+<h2>⚡ Más de 20 Libros en un solo lugar</h2>
+<p>
+Acceso digital inmediato al universo mágico más querido del mundo. Disfruta aventuras, inspiración y una colección diseñada para acompañarte cuando quieras desconectarte y alimentar tu imaginación.
+</p>
+<a class="cta" href="https://hotm.io/habitosdevida" target="_blank">🔥 ACCEDER AHORA</a>
+</section>
+
+<footer>
+© 2026 Colección Harry Potter PDF • Página lista para GitHub Pages
+</footer>
+
+<a href="https://wa.me/51958747534" class="whatsapp" target="_blank">
+<span class="tip">Contactar por WhatsApp</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="white" viewBox="0 0 24 24">
+<path d="M20.52 3.48A11.8 11.8 0 0012.07 0C5.53 0 .2 5.33.2 11.87c0 2.09.55 4.13 1.6 5.93L0 24l6.39-1.67a11.86 11.86 0 005.68 1.45h.01c6.54 0 11.87-5.33 11.87-11.87 0-3.17-1.23-6.14-3.43-8.43z"/>
+</svg>
+</a>
+
+</body>
+</html>
