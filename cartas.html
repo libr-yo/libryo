@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Megapack Cartas Decorativas de Amor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:#120617;color:#fff;overflow-x:hidden}
+body::before{
+content:'';
+position:fixed;inset:0;
+background:
+radial-gradient(circle at top,#ff4da6 0%,#120617 60%),
+url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1920&auto=format&fit=crop');
+background-size:cover;
+background-position:center;
+opacity:.15;
+z-index:-2}
+.particles{position:fixed;inset:0;overflow:hidden;z-index:-1}
+.ball{position:absolute;width:14px;height:14px;border-radius:50%;background:#ff4da6;opacity:.5;animation:float 12s linear infinite}
+@keyframes float{from{transform:translateY(100vh)}to{transform:translateY(-100vh) rotate(360deg)}}
+header{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1400px;align-items:center}
+.hero-text h1{font-size:4rem;font-weight:900;line-height:1;text-transform:uppercase;margin-bottom:20px}
+.hero-text span{color:#ff7ac3}
+.hero-text p{font-size:1.15rem;line-height:1.9;color:#eee;margin-bottom:30px}
+.cta{display:inline-block;padding:18px 40px;border-radius:50px;background:linear-gradient(45deg,#ff4da6,#ff7ac3);color:#fff;text-decoration:none;font-weight:900;box-shadow:0 10px 40px rgba(255,77,166,.45);animation:pulse 2s infinite}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.hero-image{perspective:1500px;display:flex;justify-content:center}
+.card3d{max-width:550px;border-radius:25px;overflow:hidden;animation:rotate 8s ease-in-out infinite;box-shadow:0 30px 80px rgba(255,122,195,.35)}
+.card3d img{width:100%;display:block}
+@keyframes rotate{0%{transform:rotateY(-10deg)}50%{transform:rotateY(10deg) translateY(-10px)}100%{transform:rotateY(-10deg)}}
+section{padding:100px 20px}
+.section-title{text-align:center;font-size:3rem;font-weight:900;margin-bottom:70px}
+.section-title span{color:#ff7ac3}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;max-width:1250px;margin:auto}
+.card{background:rgba(255,255,255,.05);padding:25px;border-radius:25px;backdrop-filter:blur(10px);transition:.4s}
+.card:hover{transform:translateY(-10px) rotateX(4deg);box-shadow:0 20px 40px rgba(255,122,195,.25)}
+.card img{width:100%;height:220px;object-fit:cover;border-radius:18px;margin-bottom:20px}
+.card h3{color:#ff7ac3;margin-bottom:12px}
+.slider-track{display:flex;gap:25px;width:calc(340px * 10);animation:scroll 28s linear infinite}
+.slider-container{overflow:hidden}
+@keyframes scroll{100%{transform:translateX(calc(-340px * 5))}}
+.slide{width:340px;height:460px;border-radius:25px;overflow:hidden;position:relative;flex-shrink:0}
+.slide img{width:100%;height:100%;object-fit:cover}
+.overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95),transparent);display:flex;align-items:flex-end;padding:25px;font-weight:800}
+.deep{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.deep img{width:100%;border-radius:25px;box-shadow:0 25px 60px rgba(255,122,195,.25)}
+.final{text-align:center;padding:120px 20px;background:linear-gradient(180deg,transparent,#2b0822)}
+.final h2{font-size:4rem;margin-bottom:20px}
+.final p{max-width:850px;margin:auto  auto 35px;line-height:1.9;color:#ddd}
+footer{text-align:center;padding:30px;background:#050205;color:#aaa}
+.whatsapp{position:fixed;right:25px;bottom:25px;width:72px;height:72px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;z-index:9999;text-decoration:none;animation:glow 1.5s infinite alternate,pulse2 2s infinite}
+@keyframes pulse2{50%{transform:scale(1.08)}}
+@keyframes glow{from{box-shadow:0 0 15px rgba(37,211,102,.5)}to{box-shadow:0 0 35px rgba(37,211,102,.95),0 0 60px rgba(37,211,102,.65)}}
+.tooltip{position:absolute;right:90px;background:#111;padding:12px 18px;border-radius:12px;opacity:0;transition:.3s;white-space:nowrap;font-weight:700}
+.whatsapp:hover .tooltip{opacity:1}
+@media(max-width:900px){.hero,.deep{grid-template-columns:1fr}.hero-text{text-align:center}.hero-text h1,.section-title,.final h2{font-size:2.3rem}.tooltip{display:none}}
+</style>
+</head>
+<body>
+
+<div class="particles">
+<div class="ball" style="left:10%"></div><div class="ball" style="left:30%"></div><div class="ball" style="left:60%"></div><div class="ball" style="left:85%"></div>
+</div>
+
+<header>
+<div class="hero">
+<div class="hero-text">
+<h1>MEGAPACK <span>Cartas Decorativas</span> de Amor</h1>
+<p>Descubre una colección digital única con cartas románticas, cajas explosivas, tarjetas 3D y diseños listos para imprimir y sorprender.</p>
+<a href="https://hotm.io/habitosdevida" target="_blank" class="cta">💖 QUIERO MI MEGAPACK</a>
+</div>
+
+<div class="hero-image">
+<div class="card3d">
+<img src="https://images.unsplash.com/photo-1518621012420-8cc2d0b6c2d4?q=80&w=1200&auto=format&fit=crop">
+</div>
+</div>
+</div>
+</header>
+
+<section>
+<h2 class="section-title">¿Qué incluye este <span>Megapack?</span></h2>
+<div class="features">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1200&auto=format&fit=crop">
+<h3>💌 Cartas Decorativas</h3>
+<p>Diseños románticos y creativos para expresar sentimientos especiales.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=1200&auto=format&fit=crop">
+<h3>🎁 Cajas Explosivas</h3>
+<p>Plantillas sorprendentes y originales para regalos memorables.</p>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop">
+<h3>✨ Tarjetas y Diseños 3D</h3>
+<p>Detalles visuales únicos listos para imprimir y personalizar.</p>
+</div>
+
+</div>
+</section>
+
+<section>
+<h2 class="section-title">Diseños que crean <span>emociones</span></h2>
+<div class="slider-container">
+<div class="slider-track">
+<div class="slide"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200"><div class="overlay">Amor y Creatividad</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1200"><div class="overlay">Momentos Especiales</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=1200"><div class="overlay">Regalos Memorables</div></div>
+<div class="slide"><img src="https://images.unsplash.com/photo-1518621012420-8cc2d0b6c2d4?q=80&w=1200"><div class="overlay">Detalles Inolvidables</div></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="deep">
+<div>
+<h2>Mucho más que un <span>PDF</span></h2>
+<p>Este megapack reúne diseños pensados para sorprender, emocionar y crear recuerdos especiales. Incluye plantillas para parejas, aniversarios, cumpleaños, Día del Padre y muchas ocasiones más.</p>
+<p>Ideal para emprendedores, amantes de la papelería creativa o personas que quieren crear regalos únicos sin empezar desde cero.</p>
+<a href="https://hotm.io/habitosdevida" class="cta">ACCEDER AHORA</a>
+</div>
+<div>
+<img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200">
+</div>
+</div>
+</section>
+
+<section class="final">
+<h2>💖 Sorprende con detalles únicos</h2>
+<p>Descarga, imprime y personaliza diseños listos para enamorar y crear recuerdos inolvidables.</p>
+<a href="https://hotm.io/habitosdevida" class="cta">🔥 COMPRAR AHORA</a>
+</section>
+
+<footer>© 2026 Megapack Cartas Decorativas • Diseñado para sorprender</footer>
+
+<a href="https://wa.me/51958747534" class="whatsapp" target="_blank">
+<span class="tooltip">Contactar por WhatsApp</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M20.52 3.48A11.8 11.8 0 0012.07 0C5.53 0 .2 5.33.2 11.87c0 2.09.55 4.13 1.6 5.93L0 24l6.39-1.67a11.86 11.86 0 005.68 1.45h.01c6.54 0 11.87-5.33 11.87-11.87"/></svg>
+</a>
+
+</body>
+</html>

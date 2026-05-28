@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organiza Tu Vida | Hábitos, Metas y Finanzas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{
+font-family:'Montserrat',sans-serif;
+background:#070b08;
+color:white;
+overflow-x:hidden;
+}
+body::before{
+content:'';
+position:fixed;
+width:100%;height:100%;
+background:
+radial-gradient(circle at top,#274833 0%,#070b08 55%),
+url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1920&auto=format&fit=crop');
+background-size:cover;
+background-position:center;
+opacity:.16;
+z-index:-2;
+}
+.particles{position:fixed;width:100%;height:100%;z-index:-1;overflow:hidden}
+.ball{
+position:absolute;width:12px;height:12px;border-radius:50%;
+background:#9cffc0;opacity:.45;animation:float 14s linear infinite;
+}
+@keyframes float{
+from{transform:translateY(100vh) rotate(0)}
+to{transform:translateY(-100vh) rotate(360deg)}
+}
+header{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px 20px;
+}
+.hero{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+max-width:1400px;
+align-items:center;
+}
+.hero-text h1{
+font-size:4rem;
+font-weight:900;
+line-height:1;
+margin-bottom:20px;
+text-transform:uppercase;
+}
+.hero-text h1 span{color:#8cffb3}
+.hero-text p{
+font-size:1.15rem;
+line-height:1.9;
+color:#d8d8d8;
+margin-bottom:35px;
+}
+.cta{
+display:inline-block;
+padding:18px 42px;
+border-radius:50px;
+background:linear-gradient(45deg,#4caf71,#b8ffcb);
+color:#04140a;
+font-weight:900;
+text-decoration:none;
+transition:.4s;
+box-shadow:0 10px 35px rgba(76,175,113,.5);
+animation:pulse 2s infinite;
+}
+.cta:hover{
+transform:translateY(-5px) scale(1.05);
+box-shadow:0 20px 55px rgba(156,255,192,.6);
+}
+@keyframes pulse{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.04)}
+}
+.hero-image{display:flex;justify-content:center;perspective:1500px}
+.card3d{
+width:100%;
+max-width:540px;
+height:520px;
+border-radius:30px;
+background:linear-gradient(145deg,#173021,#294836);
+display:flex;
+justify-content:center;
+align-items:center;
+padding:40px;
+transform-style:preserve-3d;
+animation:rotate 8s ease-in-out infinite;
+box-shadow:0 30px 70px rgba(140,255,179,.25);
+}
+.card3d h2{
+font-size:2.2rem;
+text-align:center;
+line-height:1.3;
+}
+@keyframes rotate{
+0%{transform:rotateY(-10deg) rotateX(5deg)}
+50%{transform:rotateY(10deg) rotateX(-5deg) translateY(-10px)}
+100%{transform:rotateY(-10deg) rotateX(5deg)}
+}
+section{padding:100px 20px}
+.section-title{
+font-size:3rem;
+text-align:center;
+margin-bottom:70px;
+font-weight:900;
+text-transform:uppercase;
+}
+.section-title span{color:#8cffb3}
+.features{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+max-width:1200px;
+margin:auto;
+}
+.feature-card{
+background:rgba(255,255,255,.05);
+padding:35px;
+border-radius:28px;
+backdrop-filter:blur(8px);
+transition:.4s;
+border:1px solid rgba(255,255,255,.08);
+}
+.feature-card:hover{
+transform:translateY(-10px) rotateX(4deg);
+box-shadow:0 25px 45px rgba(140,255,179,.15);
+}
+.feature-card h3{
+color:#8cffb3;
+margin-bottom:15px;
+}
+.slider-container{overflow:hidden;margin-top:50px}
+.slider-track{
+display:flex;
+gap:25px;
+width:max-content;
+animation:scroll 28s linear infinite;
+}
+@keyframes scroll{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+.slide-card{
+width:340px;
+height:420px;
+background:linear-gradient(145deg,#12231a,#284433);
+border-radius:25px;
+padding:35px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+box-shadow:0 20px 45px rgba(0,0,0,.45);
+transition:.5s;
+}
+.slide-card:hover{
+transform:rotateY(8deg) scale(1.04);
+}
+.slide-card h3{
+font-size:1.6rem;
+margin-bottom:10px;
+color:#8cffb3;
+}
+.emotion{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+max-width:1200px;
+margin:auto;
+align-items:center;
+}
+.emotion-text h2{
+font-size:3rem;
+margin-bottom:20px;
+}
+.emotion-text h2 span{color:#8cffb3}
+.emotion-text p{
+line-height:1.9;
+color:#ddd;
+margin-bottom:25px;
+}
+.emotion-box{
+height:420px;
+border-radius:30px;
+background:linear-gradient(145deg,#173021,#284433);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:2rem;
+text-align:center;
+box-shadow:0 30px 60px rgba(140,255,179,.15);
+transform:rotateY(-8deg);
+}
+.final{
+text-align:center;
+padding:120px 20px;
+background:linear-gradient(180deg,transparent,#0d1e15);
+}
+.final h2{
+font-size:4rem;
+margin-bottom:20px;
+font-weight:900;
+}
+.final p{
+max-width:900px;
+margin:auto;
+line-height:1.9;
+margin-bottom:40px;
+color:#ddd;
+}
+footer{text-align:center;padding:35px;background:#020202;color:#999}
+.whatsapp-float{
+position:fixed;
+right:25px;
+bottom:25px;
+width:72px;height:72px;
+border-radius:50%;
+background:#25D366;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+z-index:9999;
+animation:glow 1.5s infinite alternate,pulsew 2s infinite;
+box-shadow:0 15px 40px rgba(37,211,102,.5);
+}
+.tooltip{
+position:absolute;
+right:90px;
+background:#111;
+padding:12px 16px;
+border-radius:12px;
+opacity:0;
+transition:.3s;
+white-space:nowrap;
+color:white;
+font-weight:700;
+}
+.whatsapp-float:hover .tooltip{opacity:1}
+@keyframes pulsew{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.08)}
+}
+@keyframes glow{
+0%{box-shadow:0 0 12px rgba(37,211,102,.4),0 0 28px rgba(37,211,102,.3)}
+100%{box-shadow:0 0 25px rgba(37,211,102,.9),0 0 60px rgba(37,211,102,.6)}
+}
+@media(max-width:900px){
+.hero,.emotion{grid-template-columns:1fr}
+.hero-text{text-align:center}
+.hero-text h1,.final h2,.emotion-text h2,.section-title{font-size:2.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="particles">
+<div class="ball" style="left:10%;animation-duration:9s"></div>
+<div class="ball" style="left:25%;animation-duration:13s"></div>
+<div class="ball" style="left:50%;animation-duration:11s"></div>
+<div class="ball" style="left:70%;animation-duration:15s"></div>
+<div class="ball" style="left:90%;animation-duration:12s"></div>
+</div>
+
+<header>
+<div class="hero">
+
+<div class="hero-text">
+<h1>Transforma tus <span>Hábitos</span><br> y Organiza tu Vida</h1>
+<p>Descubre el pack digital diseñado para ayudarte a mejorar tus hábitos, organizar tus tareas, fortalecer tus finanzas y alcanzar tus metas personales con claridad y motivación.</p>
+<a href="https://hotm.io/habitosdevida" target="_blank" class="cta">✨ QUIERO MI TRANSFORMACIÓN</a>
+</div>
+
+<div class="hero-image">
+<div class="card3d">
+<img src="https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=1200&auto=format&fit=crop"
+style="width:100%;height:100%;object-fit:cover;border-radius:30px;">
+</div>
+</div>
+
+</div>
+</header>
+
+<section>
+<h2 class="section-title">¿Qué incluye este <span>pack?</span></h2>
+
+<div class="features">
+<div class="feature-card">
+<h3>📋 Organización Personal</h3>
+<p>Planifica tareas, prioridades y actividades diarias para vivir con mayor claridad.</p>
+</div>
+
+<div class="feature-card">
+<h3>🎯 Objetivos y Metas</h3>
+<p>Convierte sueños en planes con seguimiento y estructura.</p>
+</div>
+
+<div class="feature-card">
+<h3>💰 Finanzas Inteligentes</h3>
+<p>Aprende a organizar gastos y construir hábitos financieros saludables.</p>
+</div>
+
+<div class="feature-card">
+<h3>🌱 Hábitos Positivos</h3>
+<p>Desarrolla rutinas sostenibles que impulsen tu crecimiento.</p>
+</div>
+</div>
+</section>
+
+<section>
+<h2 class="section-title">Construye tu <span>mejor versión</span></h2>
+
+<div class="slider-container">
+<div class="slider-track">
+
+<div class="slide-card" style="background:url('https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1200&auto=format&fit=crop');background-size:cover;"><h3>Hábitos</h3><p>La disciplina diaria crea resultados extraordinarios.</p></div>
+<div class="slide-card" style="background:url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1200&auto=format&fit=crop');background-size:cover;"><h3>Finanzas</h3><p>Tu tranquilidad comienza con organización financiera.</p></div>
+<div class="slide-card" style="background:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop');background-size:cover;"><h3>Metas</h3><p>Los objetivos claros impulsan tu crecimiento.</p></div>
+<div class="slide-card" style="background:url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200&auto=format&fit=crop');background-size:cover;"><h3>Productividad</h3><p>Más enfoque y menos caos.</p></div>
+<div class="slide-card" style="background:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop');background-size:cover;"><h3>Motivación</h3><p>Pequeñas acciones cambian grandes vidas.</p></div>
+<div class="slide-card" style="background:url('https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1200&auto=format&fit=crop');background-size:cover;"><h3>Organización</h3><p>Tu tiempo también merece un plan.</p></div>
+
+</div>
+</div>
+</section>
+
+<section>
+<div class="emotion">
+<div class="emotion-text">
+<h2>Tu vida puede <span>cambiar</span></h2>
+<p>La organización no es rigidez: es libertad. Cuando administras tu tiempo, dinero y hábitos, comienzas a construir una vida con propósito, enfoque y equilibrio.</p>
+<p>Este producto digital reúne herramientas creadas para ayudarte a avanzar paso a paso hacia la vida que deseas.</p>
+<a href="https://hotm.io/habitosdevida" target="_blank" class="cta">ACCEDER AHORA</a>
+</div>
+
+<div class="emotion-box" style="overflow:hidden">
+<img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=1200&auto=format&fit=crop"
+style="width:100%;height:100%;object-fit:cover;border-radius:30px;">
+</div>
+</div>
+</section>
+
+<section class="final">
+<h2>🔥 Organiza tu vida desde hoy</h2>
+<p>Da el primer paso hacia hábitos positivos, metas claras y finanzas saludables. Todo en un pack digital práctico y motivador.</p>
+<a href="https://hotm.io/habitosdevida" target="_blank" class="cta">COMPRAR AHORA</a>
+</section>
+
+<footer>
+© 2026 Organiza Tu Vida · Crecimiento personal y hábitos
+</footer>
+
+<a href="https://wa.me/51958747534" target="_blank" class="whatsapp-float">
+<span class="tooltip">Contactar por WhatsApp</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="white">
+<path d="M20.52 3.48A11.8 11.8 0 0012.07 0C5.53 0 .2 5.33.2 11.87c0 2.09.55 4.13 1.6 5.93L0 24l6.39-1.67a11.86 11.86 0 005.68 1.45h.01c6.54 0 11.87-5.33 11.87-11.87 0-3.17-1.23-6.14-3.43-8.43z"/>
+</svg>
+</a>
+
+</body>
+</html>
