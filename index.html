@@ -809,23 +809,23 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
       <a class="cat-card active reveal" href="#" onclick="filterByCategory('todos',this);return false" style="transition-delay:.0s">
         <span class="cat-emoji">🌐</span><div class="cat-name">Todos</div><div class="cat-count">5 items</div>
       </a>
-      <a class="cat-card reveal" href="#" onclick="filterByCategory('ui-kits',this);return false" style="transition-delay:.06s">
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('colecciones',this);return false" style="transition-delay:.24s">
+        <span class="cat-emoji">🗂️</span><div class="cat-name">Colecciones</div><div class="cat-count">2 items</div>
+      </a>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('libros',this);return false" style="transition-delay:.06s">
         <span class="cat-emoji">📚</span><div class="cat-name">Libros</div><div class="cat-count">1 items</div>
       </a>
-      <a class="cat-card reveal" href="#" onclick="filterByCategory('templates',this);return false" style="transition-delay:.12s">
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('plantillas',this);return false" style="transition-delay:.12s">
         <span class="cat-emoji">📐</span><div class="cat-name">Plantillas</div><div class="cat-count">2 items</div>
       </a>
-      <a class="cat-card reveal" href="#" onclick="filterByCategory('cursos',this);return false" style="transition-delay:.18s">
-        <span class="cat-emoji">🎓</span><div class="cat-name">Cursos</div><div class="cat-count">194 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('guias',this);return false" style="transition-delay:.18s">
+        <span class="cat-emoji">🎓</span><div class="cat-name">Guías</div><div class="cat-count">1 items</div>
       </a>
-      <a class="cat-card reveal" href="#" onclick="filterByCategory('plugins',this);return false" style="transition-delay:.24s">
-        <span class="cat-emoji">🔌</span><div class="cat-name">Plugins</div><div class="cat-count">287 items</div>
-      </a>
-      <a class="cat-card reveal" href="#" onclick="filterByCategory('fuentes',this);return false" style="transition-delay:.30s">
-        <span class="cat-emoji">✒️</span><div class="cat-name">Fuentes</div><div class="cat-count">420 items</div>
+      <a class="cat-card reveal" href="#" onclick="filterByCategory('cursos',this);return false" style="transition-delay:.30s">
+        <span class="cat-emoji">✒️</span><div class="cat-name">Cursos</div><div class="cat-count">0 items</div>
       </a>
       <a class="cat-card reveal" href="#" onclick="filterByCategory('iconos',this);return false" style="transition-delay:.36s">
-        <span class="cat-emoji">🖼</span><div class="cat-name">Iconos</div><div class="cat-count">653 items</div>
+        <span class="cat-emoji">🖼</span><div class="cat-name">Iconos</div><div class="cat-count">0 items</div>
       </a>
     </div>
   </section>
@@ -1052,10 +1052,10 @@ observeAll();
 
 /* ══ DATA ══ */
 const products=[
-  {id:1,url:'coleccionmundialista',name:'Colección Premium Mundialista',cat:'UI Kits',catKey:'ui-kits',
+  {id:1,url:'coleccionmundialista',name:'Colección Premium Mundialista',cat:'colecciones',catKey:'ui-kits',
    desc:'800+ componentes para Figma con auto-layout y variables de diseño.',
    longDesc:'Aurora UI Kit es el sistema de diseño más completo para Figma. Con más de 800 componentes en 40 categorías, variables de color dark/light, Auto Layout 4.0, biblioteca de iconos y guía de uso paso a paso. Ideal para acelerar cualquier proyecto de producto digital.',
-   price:49,oldPrice:99,
+   price:3.90,oldPrice:9.90,
    img:'flyercoleccion.png',
    imgs:['https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80','https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80','https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80'],
    badge:'hot',rating:4.9,reviews:312,tag:'popular',
@@ -1064,7 +1064,7 @@ const products=[
   {id:2,url:'habitos',name:'Hábitos de vida',cat:'Templates Web',catKey:'templates',
    desc:'Template Next.js completo con autenticación, gráficas y dark mode.',
    longDesc:'SaaS Dashboard Pro te permite lanzar tu aplicación en tiempo récord. Incluye NextAuth, 15+ páginas, 30+ componentes de datos, gráficas con Recharts, modo oscuro nativo y TypeScript desde el primer día.',
-   price:89,oldPrice:null,
+   price:1.90,oldPrice:null,
    img:'flyerhabitos.png',
    imgs:['https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80','https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80','https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80'],
    badge:'nuevo',rating:4.8,reviews:148,tag:'nuevo',
@@ -1073,7 +1073,7 @@ const products=[
   {id:3,url:'cartas',name:'Megapack Cartas Decorativas',cat:'Cursos',catKey:'cursos',
    desc:'60h de contenido práctico. Diseña experiencias que los usuarios aman.',
    longDesc:'Curso intensivo de UX Research desde fundamentos hasta técnicas avanzadas. Cubre estudios de usabilidad, análisis de datos cualitativos y cuantitativos, y cómo traducir hallazgos en decisiones de diseño concretas y basadas en evidencia.',
-   price:39,oldPrice:79,
+   price:2,oldPrice:5,
    img:'flyercartas.png',
    imgs:['https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80','https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80','https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80'],
    badge:'sale',rating:4.9,reviews:522,tag:'oferta',
@@ -1082,7 +1082,7 @@ const products=[
   {id:4,url:'harry',name:'Harry Potter',cat:'Iconos',catKey:'iconos',
    desc:'3,000 iconos SVG optimizados en 12 estilos. Licencia comercial incluida.',
    longDesc:'La colección de iconos más versátil del mercado. 3,000 iconos en 12 estilos visuales disponibles en SVG, PNG y componente React. Incluye plugin para Figma y herramienta de búsqueda online.',
-   price:29,oldPrice:null,
+   price:2,oldPrice:null,
    img:'flyerharry.png',
    imgs:['https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80','https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=800&q=80','https://images.unsplash.com/photo-1542744094-24638eff58bb?w=800&q=80'],
    badge:null,rating:4.7,reviews:210,tag:'popular',
