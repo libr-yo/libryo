@@ -867,7 +867,7 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
         <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="cliente"/>
         <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="cliente"/>
         <div class="clients-avg">
-          <strong>4.9 ★</strong> promedio · <strong>12,000+</strong> clientes satisfechos
+          <strong>4.9 ★</strong> promedio · <strong>100+</strong> clientes satisfechos
         </div>
       </div>
     </div>
@@ -875,10 +875,10 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
     <div class="test-grid" id="test-grid"></div>
 
     <div class="clients-summary reveal" style="margin-top:44px">
-      <div class="cs-item"><div class="cs-num">12,400+</div><div class="cs-lbl">Clientes activos</div></div>
+      <div class="cs-item"><div class="cs-num">100+</div><div class="cs-lbl">Clientes activos</div></div>
       <div class="cs-item"><div class="cs-num">98%</div><div class="cs-lbl">Satisfacción</div></div>
       <div class="cs-item"><div class="cs-num">4.9 / 5</div><div class="cs-lbl">Valoración media</div></div>
-      <div class="cs-item"><div class="cs-num">3,200+</div><div class="cs-lbl">Reseñas verificadas</div></div>
+      <div class="cs-item"><div class="cs-num">10+</div><div class="cs-lbl">Reseñas verificadas</div></div>
     </div>
   </section>
 
@@ -889,14 +889,11 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
         <div class="footer-brand">
           <div class="logo" onclick="goHome()" style="margin-bottom:0">
             <div class="logo-cube" style="animation-duration:12s">
-              <div class="cube-face cube-front">⚡</div>
-              <div class="cube-face cube-back">✦</div>
-              <div class="cube-face cube-left">◈</div>
-              <div class="cube-face cube-right">❋</div>
             </div>
-            <span class="logo-text">NexusStore</span>
+            <img src="logolibryo.png" alt="Libryo" class="logo-img"/>
+            <span class="logo-text">Libryo</span>
           </div>
-          <p>El marketplace líder de productos digitales para diseñadores y desarrolladores de habla hispana.</p>
+          <p>El marketplace en donde encontrarás lo que más te gusta y lo que más necesites</p>
           <div class="social-links">
             <a class="soc-btn soc-ig" href="https://www.instagram.com/libry_o/" target="_blank" aria-label="Instagram">
               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="white"/></svg>
@@ -915,41 +912,39 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
         <div class="footer-col">
           <h4>Tienda</h4>
           <ul>
-            <li><a href="#">UI Kits</a></li>
-            <li><a href="#">Templates Web</a></li>
-            <li><a href="#">Cursos</a></li>
-            <li><a href="#">Plugins</a></li>
-            <li><a href="#">Fuentes</a></li>
+            <li><a onclick="filterByCategory('colecciones',this);return false">Álbumes</a></li>
+            <li><a onclick="filterByCategory('libros',this);return false">Libros</a></li>
+            <li><a onclick="filterByCategory('plantillas',this);return false">Plantillas</a></li>
+            <li><a onclick="filterByCategory('guias',this);return false">Guías</a></li>
+            <li><a onclick="filterByCategory('cursos',this);return false">Cursos</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Empresa</h4>
           <ul>
-            <li><a href="#">Acerca de</a></li>
+            <li><a href="libryo.shop">Acerca de</a></li>
             <li><a onclick="document.getElementById('clientes').scrollIntoView({behavior:'smooth'})">Clientes</a></li>
-            <li><a href="#">Afiliados</a></li>
-            <li><a href="#">Ser Vendedor</a></li>
-            <li><a href="#">Prensa</a></li>
+            <li><a href="wa.me/+51958747534">Afiliados</a></li>
+            <li><a href="wa.me/+51958747534">Ser Vendedor</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Soporte</h4>
           <ul>
-            <li><a href="#">Centro de ayuda</a></li>
-            <li><a href="#">Términos de uso</a></li>
-            <li><a href="#">Privacidad</a></li>
-            <li><a href="#">Reembolsos</a></li>
-            <li><a href="#">Contacto</a></li>
+            <li><a href="wa.me/+51958747534">Centro de ayuda</a></li>
+            <li><a href="wa.me/+51958747534">Términos de uso</a></li>
+            <li><a href="wa.me/+51958747534">Privacidad</a></li>
+            <li><a href="wa.me/+51958747534">Contacto</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2025 NexusStore. Todos los derechos reservados. · <a href="#">nexusstore.com</a></span>
+        <span>© 2025 Libryo · Todos los derechos reservados · <a href="libryo.shop">libryo.shop</a></span>
         <div class="payment-badges">
-          <span class="pay-badge">💳 Visa</span>
-          <span class="pay-badge">💳 MC</span>
+          <span class="pay-badge">💳 Visa Débito</span>
+          <span class="pay-badge">💳 Visa Crédito</span>
+          <span class="pay-badge">💳 MasterCard</span>
           <span class="pay-badge">🅿 PayPal</span>
-          <span class="pay-badge">₿ Crypto</span>
         </div>
       </div>
     </div>
