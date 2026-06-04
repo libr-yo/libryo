@@ -759,7 +759,7 @@ footer{background:var(--surface);border-top:1px solid var(--border)}
   <section class="hero">
     <div class="hero-copy">
       <div class="hero-badge"><span class="dot"></span>+10 productos digitales premium</div>
-      <h1>Tu marketplace de<br><em>productos digitales</em><br>de élite</h1>
+      <h1>Encuentra<br><em>lo que necesites</em>en un solo lugar<br></h1>
       <p>Plantillas, cursos, guías, colecciones y libros para disfrutar. Descarga al instante, úsalos de por vida.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">Explorar catálogo →</button>
@@ -1049,7 +1049,7 @@ observeAll();
 
 /* ══ DATA ══ */
 const products=[
-  {id:1,url:'coleccionmundialista',name:'Colección Premium Mundialista',cat:'Mundial',catKey:'colecciones',
+  {id:1,url:'coleccionmundialista',name:'Colección Premium Mundialista',cat:'Álbumes',catKey:'colecciones',
    desc:'Colección de álbumes de MUNDIALES, COPA AMÉRICA y EUROCOPA + regalo extra',
    longDesc:'Aurora UI Kit es el sistema de diseño más completo para Figma. Con más de 800 componentes en 40 categorías, variables de color dark/light, Auto Layout 4.0, biblioteca de iconos y guía de uso paso a paso. Ideal para acelerar cualquier proyecto de producto digital.',
    price:3.90,oldPrice:9.90,
@@ -1058,7 +1058,7 @@ const products=[
    badge:'hot',rating:4.9,reviews:29,tag:'popular',
    features:['800+ componentes listos','Dark & Light mode variables','Auto Layout 4.0 compatible','Sistema tipográfico completo','Licencia comercial incluida','Actualizaciones de por vida'],
    specs:[{l:'Formato',v:'Figma'},{l:'Componentes',v:'800+'},{l:'Versiones',v:'Dark & Light'},{l:'Actualizaciones',v:'De por vida'},{l:'Soporte',v:'Email 24h'},{l:'Licencia',v:'Comercial'}]},
-  {id:2,url:'habitos',name:'Hábitos de vida',cat:'Hábitos',catKey:'plantillas',
+  {id:2,url:'habitos',name:'Hábitos de vida',cat:'Plantillas',catKey:'plantillas',
    desc:'Plantillas para organizar tu día a día, finanzas, hábitos para desarrollarte',
    longDesc:'SaaS Dashboard Pro te permite lanzar tu aplicación en tiempo récord. Incluye NextAuth, 15+ páginas, 30+ componentes de datos, gráficas con Recharts, modo oscuro nativo y TypeScript desde el primer día.',
    price:1.90,oldPrice:null,
@@ -1067,7 +1067,7 @@ const products=[
    badge:'nuevo',rating:4.8,reviews:148,tag:'nuevo',
    features:['Next.js 14 + Tailwind CSS','Autenticación lista con NextAuth','15 páginas incluidas','30+ componentes de datos','Gráficas con Recharts','TypeScript incluido'],
    specs:[{l:'Framework',v:'Next.js 14'},{l:'CSS',v:'Tailwind CSS'},{l:'Lenguaje',v:'TypeScript'},{l:'Páginas',v:'15+'},{l:'Gráficas',v:'Recharts'},{l:'Auth',v:'NextAuth.js'}]},
-  {id:3,url:'cartas',name:'Megapack Cartas Decorativas',cat:'Cartas',catKey:'plantillas',
+  {id:3,url:'cartas',name:'Megapack Cartas Decorativas',cat:'Plantillas',catKey:'plantillas',
    desc:'Plantillas de +50 diseños de cartas de amor, amistad, dias especiales y más',
    longDesc:'Curso intensivo de UX Research desde fundamentos hasta técnicas avanzadas. Cubre estudios de usabilidad, análisis de datos cualitativos y cuantitativos, y cómo traducir hallazgos en decisiones de diseño concretas y basadas en evidencia.',
    price:2,oldPrice:5,
@@ -1076,7 +1076,7 @@ const products=[
    badge:'sale',rating:4.9,reviews:522,tag:'oferta',
    features:['60 horas de video HD','Proyectos prácticos reales','Certificado de finalización','Acceso de por vida','Comunidad privada','Mentorías grupales mensuales'],
    specs:[{l:'Duración',v:'60 horas'},{l:'Nivel',v:'Intermedio'},{l:'Idioma',v:'Español'},{l:'Formato',v:'Video HD'},{l:'Acceso',v:'De por vida'},{l:'Certificado',v:'Sí'}]},
-  {id:4,url:'harry',name:'Harry Potter',cat:'Harry',catKey:'libros',
+  {id:4,url:'harry',name:'Harry Potter',cat:'Libros',catKey:'libros',
    desc:'+20 libros de la saga Harry Potter y extras del mundo mágico + bonus',
    longDesc:'La colección de iconos más versátil del mercado. 3,000 iconos en 12 estilos visuales disponibles en SVG, PNG y componente React. Incluye plugin para Figma y herramienta de búsqueda online.',
    price:2,oldPrice:null,
@@ -1085,16 +1085,16 @@ const products=[
    badge:null,rating:4.7,reviews:210,tag:'popular',
    features:['3,000 iconos únicos','12 estilos visuales','Formatos SVG, PNG, React','Plugin para Figma incluido','Actualizaciones gratuitas','Licencia comercial ilimitada'],
    specs:[{l:'Total iconos',v:'3,000'},{l:'Estilos',v:'12'},{l:'Formatos',v:'SVG / PNG / JSX'},{l:'Plugin Figma',v:'Incluido'},{l:'Búsqueda',v:'Herramienta online'},{l:'Licencia',v:'Comercial'}]},
-   /*
-  {id:5,url:'geist-font.html',name:'Geist Font Family',cat:'Fuentes',catKey:'fuentes',
-   desc:'Familia tipográfica moderna con 8 pesos y versión mono incluida.',
+  {id:5,url:'papercraft',name:'Pack Papercraft',cat:'Plantillas',catKey:'plantillas',
+   desc:'Pack de plantillas para cortar y armar. Máscaras, figuritas, pegables, y más',
    longDesc:'Tipografía humanista sans-serif para interfaces digitales. 8 pesos (Thin–Black) más versión monoespaciada para código. Soporta 40+ idiomas, caracteres latinos extendidos y ligaduras OpenType.',
-   price:19,oldPrice:38,
-   img:'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80',
+   price:3.90,oldPrice:null,
+   img:'flyerpapercraft',
    imgs:['https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80','https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80','https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80'],
-   badge:'sale',rating:4.8,reviews:88,tag:'oferta',
+   badge:'sale',rating:4.8,reviews:88,tag:'popular',
    features:['8 pesos tipográficos','Versión mono incluida','Caracteres latinos extendidos','Ligaduras OpenType','40+ idiomas soportados','Web font incluida (WOFF2)'],
    specs:[{l:'Pesos',v:'8 (Thin–Black)'},{l:'Versión Mono',v:'Sí'},{l:'Formatos',v:'OTF / TTF / WOFF2'},{l:'Caracteres',v:'1,200+'},{l:'Idiomas',v:'40+'},{l:'Licencia',v:'Web + Desktop'}]},
+     /*
   {id:6,url:'formkit-plugin.html',name:'FormKit Plugin',cat:'Plugins',catKey:'plugins',
    desc:'Plugin Figma para generar formularios validados en React o Vue.',
    longDesc:'Diseña en Figma y exporta código React o Vue con validación automática (Zod, Yup o VeeValidate), accesibilidad WCAG 2.1 y soporte para React Hook Form. Código limpio en segundos.',
